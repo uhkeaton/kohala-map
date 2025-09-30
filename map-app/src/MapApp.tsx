@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import "./App.css";
 
 export function MapApp() {
   useEffect(() => {
@@ -12,5 +11,5 @@ export function MapApp() {
     };
   }, []);
 
-  return <div>Map App</div>;
+  return <div className="text-blue-700">Map App</div>;
 }

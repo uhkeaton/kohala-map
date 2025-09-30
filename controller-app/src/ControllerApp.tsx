@@ -1,5 +1,5 @@
+import { Button } from "@mui/material";
 import { controlMap } from "./api";
-import "./App.css";
 
 import { useMutation } from "@tanstack/react-query";
 
@@ -10,15 +10,15 @@ export function ControllerApp() {
   });
 
   return (
-    <div>
+    <div className="text-green-700">
       <div>Controller App</div>
-      <button
+      <Button
         onClick={() => {
           mutation.mutate({ layers: ["Test!"] });
         }}
       >
         Send Message
-      </button>
+      </Button>
     </div>
   );
 }
