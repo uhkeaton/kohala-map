@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { EsriMap } from "./EsriMap";
 
 export function MapApp() {
   useEffect(() => {
@@ -11,5 +12,12 @@ export function MapApp() {
     };
   }, []);
 
-  return <div className="text-blue-700">Map App</div>;
+  return (
+    <div className="text-blue-700">
+      <div>Map App</div>
+      <div className="h-screen">
+        <EsriMap />
+      </div>
+    </div>
+  );
 }

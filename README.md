@@ -30,3 +30,8 @@ https://commons.wikimedia.org/wiki/File:Video-Game-Controller-Icon-IDV-green.svg
 https://commons.wikimedia.org/wiki/File:Kohala-Landsat.jpg
 
 
+# ESRI
+https://developers.arcgis.com/javascript/latest/get-started/#npm
+
+https://community.esri.com/t5/arcgis-javascript-maps-sdk-questions/react-19-web-components-and-future-of-arcgis-map/td-p/1579328
+https://github.com/omarkawach/maps-sdk-react-ts/tree/main
