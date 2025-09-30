@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import { controlMap } from "./api";
+import { controlMap, zoomIn, zoomOut } from "./api";
 
 import { useMutation } from "@tanstack/react-query";
 
@@ -7,6 +7,13 @@ export function ControllerApp() {
   const mutation = useMutation({
     mutationFn: controlMap,
     onSuccess: () => {},
+  });
+
+  const mutationZoomIn = useMutation({
+    mutationFn: zoomIn,
+  });
+  const mutationZoomOut = useMutation({
+    mutationFn: zoomOut,
   });
 
   return (
@@ -17,7 +24,21 @@ export function ControllerApp() {
           mutation.mutate({ layers: ["Test!"] });
         }}
       >
-        Send Message
+        Layers
+      </Button>
+      <Button
+        onClick={() => {
+          mutationZoomIn.mutate();
+        }}
+      >
+        Zoom In
+      </Button>
+      <Button
+        onClick={() => {
+          mutationZoomOut.mutate();
+        }}
+      >
+        Zoom Out
       </Button>
     </div>
   );

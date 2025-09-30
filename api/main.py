@@ -32,10 +32,22 @@ class MapState(BaseModel):
     layers: List[str]
     
 @app.post("/control")
-async def create_layer(state: MapState):
+async def control(state: MapState):
     for ws in connections:
         await ws.send_text(f"{state.layers[0]}")
-    return {"status": "Layer received"}
+    return {"status": "Success"}
+
+@app.post("/zoom-in")
+async def zoom_in():
+    for ws in connections:
+        await ws.send_text(f"zoom-in")
+    return {"status": "Success"}
+
+@app.post("/zoom-out")
+async def zoom_out():
+    for ws in connections:
+        await ws.send_text(f"zoom-out")
+    return {"status": "Success"}
 
 
 
