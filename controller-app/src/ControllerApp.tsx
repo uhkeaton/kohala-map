@@ -17,29 +17,33 @@ export function ControllerApp() {
   });
 
   return (
-    <div className="text-green-700">
-      <div>Controller App</div>
-      <Button
+    <div className="m-4">
+      <div className="text-2xl mb-4">Controller App</div>
+      {/* <Button
         onClick={() => {
           mutation.mutate({ layers: ["Test!"] });
         }}
       >
         Layers
-      </Button>
-      <Button
-        onClick={() => {
-          mutationZoomIn.mutate();
-        }}
-      >
-        Zoom In
-      </Button>
-      <Button
-        onClick={() => {
-          mutationZoomOut.mutate();
-        }}
-      >
-        Zoom Out
-      </Button>
+      </Button> */}
+      <div className="flex flex-col gap-4">
+        <Button
+          variant="contained"
+          onClick={() => {
+            mutationZoomIn.mutate();
+          }}
+        >
+          Zoom In
+        </Button>
+        <Button
+          variant="contained"
+          onClick={() => {
+            mutationZoomOut.mutate();
+          }}
+        >
+          Zoom Out
+        </Button>
+      </div>
     </div>
   );
 }

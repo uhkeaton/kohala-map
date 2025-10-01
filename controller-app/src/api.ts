@@ -2,8 +2,11 @@ type MapState = {
   layers: string[];
 };
 
+// get the VITE_API_BASE_URL from .env, default to localhost
+const API_URL = import.meta.env.VITE_API_BASE_URL ?? "http://127.0.0.1:8000";
+
 export async function controlMap(state: MapState) {
-  const res = await fetch("http://127.0.0.1:8000/control", {
+  const res = await fetch(`${API_URL}/control`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -19,7 +22,7 @@ export async function controlMap(state: MapState) {
 }
 
 export async function zoomIn() {
-  const res = await fetch("http://127.0.0.1:8000/zoom-in", {
+  const res = await fetch(`${API_URL}/zoom-in`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -34,7 +37,7 @@ export async function zoomIn() {
 }
 
 export async function zoomOut() {
-  const res = await fetch("http://127.0.0.1:8000/zoom-out", {
+  const res = await fetch(`${API_URL}/zoom-out`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
