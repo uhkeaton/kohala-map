@@ -3,12 +3,16 @@ import "@arcgis/map-components/dist/components/arcgis-legend";
 import "@arcgis/map-components/dist/components/arcgis-search";
 import { useEffect, useRef } from "react";
 
+// get the VITE_API_BASE_URL from .env, default to localhost
+const API_URL =
+  (import.meta.env.VITE_API_BASE_URL as string) ?? "http://127.0.0.1:8000";
+
 export function EsriMap() {
   const mapRef = useRef(null);
   const viewRef = useRef<__esri.MapView>(null);
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8000/map-ws");
+    const ws = new WebSocket(`${API_URL.replace("http://", "ws://")}/map-ws`);
     ws.onopen = () => console.log("Connected!");
     ws.onmessage = (e) => {
       if (e.data === "zoom-in") {
