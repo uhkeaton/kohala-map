@@ -2,8 +2,11 @@ import { Button } from "@mui/material";
 import { controlMap, zoomIn, zoomOut } from "./api";
 
 import { useMutation } from "@tanstack/react-query";
+import { CloseButton } from "./ui/CloseButton";
+import { useNavigate } from "react-router";
 
-export function ControllerApp() {
+export function Controller() {
+  const navigate = useNavigate();
   const mutation = useMutation({
     mutationFn: controlMap,
     onSuccess: () => {},
@@ -18,7 +21,15 @@ export function ControllerApp() {
 
   return (
     <div className="m-4">
-      <div className="text-2xl mb-4">Controller App</div>
+      <div className="w-full flex justify-between mb-4">
+        <div className="text-2xl mb-4">Controller</div>
+        <CloseButton
+          onClick={() => {
+            navigate("/");
+          }}
+        />
+      </div>
+
       {/* <Button
         onClick={() => {
           mutation.mutate({ layers: ["Test!"] });

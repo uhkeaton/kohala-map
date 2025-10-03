@@ -5,6 +5,12 @@
 
 @import "tailwindcss";
 
+/* MATERIAL UI ICONS */
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

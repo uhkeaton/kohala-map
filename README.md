@@ -21,6 +21,11 @@ npm install tailwindcss @tailwindcss/vite
 npm i @tanstack/react-query
 [https://tanstack.com/query/latest/docs/framework/react/installation](https://tanstack.com/query/latest/docs/framework/react/installation)
 
+React Router
+npm i react-router
+https://reactrouter.com/start/declarative/installation
+
+
 #### Controller Icon
 
 https://commons.wikimedia.org/wiki/File:Video-Game-Controller-Icon-IDV-green.svg
