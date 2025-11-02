@@ -1,0 +1,33 @@
+/* ESRI */
+@import "https://js.arcgis.com/calcite-components/3.2.1/calcite.css";
+@import "https://js.arcgis.com/4.33/@arcgis/core/assets/esri/themes/light/main.css";
+@import "https://js.arcgis.com/4.33/map-components/main.css";
+
+@import "tailwindcss";
+
+/* MATERIAL UI ICONS */
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root,
+html,
+body {
+  margin: 0;
+}
+arcgis-map {
+  display: block;
+  height: 100vh;
+}
