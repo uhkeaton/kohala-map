@@ -1,0 +1,25 @@
+.point {
+  width: 14px;
+  height: 14px;
+  background-color: white;
+  box-shadow: 0 0 3px 3px red;
+  border: 2px solid red;
+  border-radius: 50%;
+  opacity: 0;
+  animation: pulse 3s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.3);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.3);
+    opacity: 0.8;
+  }
+}

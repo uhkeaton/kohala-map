@@ -1,50 +1,7 @@
 import cx from "classnames";
-
-// [long, lat] follows the GeoJSON convention
-type Longitude = number;
-type Latitude = number;
-type Coordinates = [Longitude, Latitude];
-
-// real latitude coordinate range
-const mapMinX = -155.905;
-const mapMaxX = -155.58;
-
-// real longitude coordinate range
-const mapMinY = 20.01;
-const mapMaxY = 20.27;
-
-// map and table aspect ratios
-const aspect5_4 = "aspect-[calc(5/4)]";
-const aspect16_9 = "aspect-[calc(16/9)]";
-
-// calculations for web
-const mapRealWidthInches = 29.5;
-const tableRealWidthInches = 42.666;
-const mapWidthPercent = `w-[calc(${mapRealWidthInches}/${tableRealWidthInches}*100%)]`;
-
-/**
- * @param lat real latitude of point
- * @param long real longitude of point
- * @returns the percent offset of the point from the left and top of the map
- */
-function toPercent([long, lat]: Coordinates): [number, number] {
-  const rangeY = mapMaxY - mapMinY;
-  const rangeX = mapMaxX - mapMinX;
-
-  // measuring percent from top, not from the bottom, hence the (1 -) at the begining
-  const percentY = 1 - (long - mapMinY) / rangeY;
-
-  // measuring percent from left
-  const percentX = (lat - mapMinX) / rangeX;
-
-  // because the map is flipped upside down
-  // with North Kohala facing the viewer,
-  // we must rotate the coords 180 degrees.
-  const flippedX = 1 - percentX;
-  const flippedY = 1 - percentY;
-
-  return [flippedY, flippedX];
-}
+import type { Coordinates } from "./types";
+import { aspect16_9, aspect5_4, mapWidthPercent } from "./constants";
+import { Point } from "./point/Point";
 
 const coords: Coordinates[] = [
   [20.120687, -155.594712],
@@ -52,21 +9,8 @@ const coords: Coordinates[] = [
 ];
 
 export function MapImage() {
-  const Points = coords.map(([long, lat]) => {
-    const [percentY, percentX] = toPercent([long, lat]);
-    return (
-      <div
-        style={{
-          width: 8,
-          height: 8,
-          background: "red",
-          borderRadius: "100%",
-          position: "absolute",
-          top: `${percentY * 100}%`,
-          left: `${percentX * 100}%`,
-        }}
-      />
-    );
+  const Points = coords.map((coords) => {
+    return <Point coords={coords} />;
   });
   return (
     <div className="bg-black w-screen h-screen flex items-center">
