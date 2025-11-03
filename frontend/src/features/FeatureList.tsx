@@ -31,8 +31,8 @@ export function FeatureList() {
     return <FeatureItem feature={item} />;
   });
   return (
-    <div className="w-full h-full p-2">
-      <div className="w-full h-full rounded-lg bg-black/20 text-white overflow-scroll">
+    <div className="w-full h-full p-4">
+      <div className="w-full h-full rounded-lg bg-gray-500/20 text-white overflow-scroll">
         {Features}
       </div>
     </div>
