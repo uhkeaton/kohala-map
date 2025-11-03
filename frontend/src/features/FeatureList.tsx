@@ -1,10 +1,11 @@
-import { useGlobal } from "../hooks/useGlobal";
+import { useGlobal } from "../global/useGlobal";
 import type { Feature } from "../types";
 import cx from "classnames";
 import { features } from "./features";
+import { renderFeatureTitle } from "./feature";
 
 function FeatureItem({ feature }: { feature: Feature }) {
-  const { visibleFeature, setVisibleFeature } = useGlobal();
+  const { visibleFeature, setVisibleFeature, displaySettings } = useGlobal();
   return (
     <>
       <div
@@ -16,7 +17,9 @@ function FeatureItem({ feature }: { feature: Feature }) {
           setVisibleFeature(feature);
         }}
       >
-        <div className="p-1">{feature.titleEnglish}</div>
+        <div className="p-1">
+          {renderFeatureTitle(feature, displaySettings)}
+        </div>
         <hr className="opacity-10" />
       </div>
     </>

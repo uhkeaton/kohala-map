@@ -1,3 +1,5 @@
+import type { DisplaySettings } from "./types";
+
 // real latitude coordinate range
 export const mapMinX = -155.905;
 export const mapMaxX = -155.58;
@@ -14,3 +16,9 @@ export const aspect16_9 = "aspect-[calc(16/9)]";
 export const mapRealWidthInches = 29.5;
 export const tableRealWidthInches = 42.666;
 export const mapWidthPercent = `w-[calc(${mapRealWidthInches}/${tableRealWidthInches}*100%)]`;
+
+export const defaultDisplaySettings: DisplaySettings = {
+  language: "eng",
+  showMapOutline: true,
+  showFeatureList: true,
+};

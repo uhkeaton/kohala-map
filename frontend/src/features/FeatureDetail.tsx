@@ -1,9 +1,10 @@
 import { AutoScale } from "../ui/AutoScale";
 import { FadeIn } from "../ui/FadeIn";
-import { useGlobal } from "../hooks/useGlobal";
+import { useGlobal } from "../global/useGlobal";
+import { renderFeatureDescription, renderFeatureTitle } from "./feature";
 
 export function FeatureDetail() {
-  const { visibleFeature } = useGlobal();
+  const { visibleFeature, displaySettings } = useGlobal();
   return (
     <AutoScale>
       {(scale) => {
@@ -12,8 +13,9 @@ export function FeatureDetail() {
             <div
               style={{
                 padding: 16 * scale,
+                gap: 16 * scale,
               }}
-              className="w-full h-full flex flex-col justify-around"
+              className="w-full h-full flex flex-col justify-center"
             >
               <div>
                 <div
@@ -22,14 +24,16 @@ export function FeatureDetail() {
                   }}
                   className="mb-2 font-bold"
                 >
-                  {visibleFeature?.titleEnglish}
+                  {visibleFeature &&
+                    renderFeatureTitle(visibleFeature, displaySettings)}
                 </div>
                 <div
                   style={{
                     fontSize: 16 * scale,
                   }}
                 >
-                  {visibleFeature?.descriptionEnglish}
+                  {visibleFeature &&
+                    renderFeatureDescription(visibleFeature, displaySettings)}
                 </div>
               </div>
 

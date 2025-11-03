@@ -1,13 +1,13 @@
 .point {
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   background-color: limegreen;
   box-shadow: 0 0 3px 3px limegreen;
   border: 2px solid limegreen;
   border-width: 2px;
   border-radius: 50%;
   opacity: 0;
-  animation: pulse 3s infinite ease-in-out;
+  animation: pulse 6s infinite ease-in-out;
 }
 
 .point::before {
@@ -17,20 +17,24 @@
   height: 100%;
   background-color: white;
   border-radius: 50%;
-  animation: pulse 3s infinite ease-in-out;
+  animation: pulse 6s infinite ease-in-out;
 }
 
 @keyframes pulse {
   0% {
     transform: scale(0.3);
-    opacity: 0.8;
+    opacity: 0.5;
   }
-  50% {
+  30% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  70% {
     transform: scale(1);
     opacity: 1;
   }
   100% {
     transform: scale(0.3);
-    opacity: 0.8;
+    opacity: 0.5;
   }
 }

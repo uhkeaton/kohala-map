@@ -1,0 +1,42 @@
+import { FormControlLabel, FormGroup, Switch } from "@mui/material";
+import { useGlobal } from "../global/useGlobal";
+
+export function DisplaySettings() {
+  const { displaySettings, setDisplaySettings } = useGlobal();
+  return (
+    <div>
+      <FormGroup>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={displaySettings.showMapOutline}
+              onChange={() =>
+                setDisplaySettings((s) => ({
+                  ...s,
+                  showMapOutline: !s.showMapOutline,
+                }))
+              }
+              slotProps={{ input: { "aria-label": "controlled" } }}
+            />
+          }
+          label="Show Map Outline"
+        />
+        <FormControlLabel
+          control={
+            <Switch
+              checked={displaySettings.showFeatureList}
+              onChange={() =>
+                setDisplaySettings((s) => ({
+                  ...s,
+                  showFeatureList: !s.showFeatureList,
+                }))
+              }
+              slotProps={{ input: { "aria-label": "controlled" } }}
+            />
+          }
+          label="Show Feature List"
+        />
+      </FormGroup>
+    </div>
+  );
+}

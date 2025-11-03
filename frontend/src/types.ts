@@ -3,6 +3,12 @@ export type Longitude = number;
 export type Latitude = number;
 export type Coordinates = [Longitude, Latitude];
 
+export type DisplaySettings = {
+  language: "eng" | "haw";
+  showMapOutline: boolean;
+  showFeatureList: boolean;
+};
+
 export type Feature = {
   id: string;
   titleEnglish: string;

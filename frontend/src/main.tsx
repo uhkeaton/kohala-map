@@ -7,7 +7,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import { Home } from "./Home.tsx";
 import { Controller } from "./Controller.tsx";
 import { Scan } from "./Scan.tsx";
-import { GlobalProvider } from "./hooks/useGlobalProvider.tsx";
+import { GlobalProvider } from "./global/useGlobalProvider.tsx";
 
 const queryClient = new QueryClient();
 
