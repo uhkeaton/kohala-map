@@ -5,7 +5,7 @@ import { Button, Divider } from "@mui/material";
 import { useGlobal } from "../global/useGlobal";
 
 export function JoinRoom() {
-  const { displaySettings, setDisplaySettings } = useGlobal();
+  const { displaySettings, setDisplaySettings, socketConnected } = useGlobal();
   const { data } = useRoomCode();
 
   const handleClose = () => {
@@ -20,7 +20,12 @@ export function JoinRoom() {
 
   return (
     <>
-      <Button className="w-full" onClick={handleOpen} variant="contained">
+      <Button
+        disabled={!socketConnected}
+        className="w-full"
+        onClick={handleOpen}
+        variant="contained"
+      >
         Join This Room
       </Button>
       <Dialog
