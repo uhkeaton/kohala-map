@@ -6,7 +6,13 @@ export type Coordinates = [Longitude, Latitude];
 export type DisplaySettings = {
   language: "eng" | "haw";
   showMapOutline: boolean;
+  /**
+   * Map Alignment Mask to help align the projector with the real map.
+   */
+  showMapAlignmentMask: boolean;
   showFeatureList: boolean;
+  showJoinRoomDialog: boolean;
+  showCreateRoomDialog: boolean;
 };
 
 export type Feature = {

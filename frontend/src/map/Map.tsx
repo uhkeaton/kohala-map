@@ -39,6 +39,11 @@ export function Map() {
             className={cx("w-full h-full flex", {
               "bg-white/20": displaySettings.showMapOutline,
             })}
+            style={{
+              ...(displaySettings.showMapAlignmentMask && {
+                background: "blue",
+              }),
+            }}
           >
             <div
               // map width is a percentage of the table width
@@ -55,6 +60,13 @@ export function Map() {
                       "opacity-0": !displaySettings.showMapOutline,
                     })}
                     src="5-4-transparent.png"
+                    style={{
+                      ...(displaySettings.showMapAlignmentMask && {
+                        opacity: 1,
+                        filter:
+                          "grayscale(100%) sepia(100%) saturate(1000%) hue-rotate(50deg) contrast(2)",
+                      }),
+                    }}
                   />
 
                   {visibleFeature?.coordinates && (

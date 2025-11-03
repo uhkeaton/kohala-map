@@ -1,0 +1,42 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import localforage from "localforage";
+import { toast } from "react-hot-toast";
+
+export function generateRandomFourLetterCode() {
+  const code = Array.from({ length: 4 }, () =>
+    String.fromCharCode(65 + Math.floor(Math.random() * 26))
+  ).join("");
+  return code;
+}
+
+async function fetchRoomCode() {
+  const code = await localforage.getItem("kohalaRoomCode");
+  if (code && typeof code === "string") return code;
+  return null;
+}
+
+async function createRoomCode() {
+  const code = generateRandomFourLetterCode();
+  await localforage.setItem("kohalaRoomCode", code);
+  return code;
+}
+
+export function useRoomCode() {
+  return useQuery({
+    queryKey: ["roomCode"],
+    queryFn: fetchRoomCode,
+  });
+}
+
+export function useCreateRoomCode() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: createRoomCode,
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["roomCode"] });
+    },
+    onSuccess: () => {
+      toast.success("New Room Created!");
+    },
+  });
+}

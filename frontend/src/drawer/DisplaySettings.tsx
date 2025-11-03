@@ -36,6 +36,21 @@ export function DisplaySettings() {
           }
           label="Show Feature List"
         />
+        <FormControlLabel
+          control={
+            <Switch
+              checked={displaySettings.showMapAlignmentMask}
+              onChange={() =>
+                setDisplaySettings((s) => ({
+                  ...s,
+                  showMapAlignmentMask: !s.showMapAlignmentMask,
+                }))
+              }
+              slotProps={{ input: { "aria-label": "controlled" } }}
+            />
+          }
+          label="Show Map Alignment Mask"
+        />
       </FormGroup>
     </div>
   );

@@ -15,5 +15,8 @@ export const tableRealWidthInches = 42.666;
 export const defaultDisplaySettings: DisplaySettings = {
   language: "eng",
   showMapOutline: true,
+  showMapAlignmentMask: false,
   showFeatureList: true,
+  showJoinRoomDialog: false,
+  showCreateRoomDialog: false,
 };

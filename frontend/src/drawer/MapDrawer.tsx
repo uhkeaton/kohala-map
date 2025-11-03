@@ -3,6 +3,7 @@ import { useState } from "react";
 import { IconMenu } from "../icons/menu";
 import { DisplaySettings } from "./DisplaySettings";
 import { LanguageSelect } from "./LanguageSelect";
+import { RoomSettings } from "../room/RoomSettings";
 
 export function MapDrawer() {
   const [open, setOpen] = useState(false);
@@ -17,14 +18,15 @@ export function MapDrawer() {
         </div>
       </div>
       <Drawer anchor={"right"} open={open} onClose={() => setOpen(false)}>
-        <div className="m-4">
+        <div className="m-4 mt-8">
           <div className="text-xl mb-4">Settings</div>
           <DisplaySettings />
-          <div className="my-8">
-            <Divider />
-          </div>
+          <Divider sx={{ my: 4 }} />
           <div className="text-xl mb-4">Language</div>
           <LanguageSelect />
+          <Divider sx={{ my: 4 }} />
+          <div className="text-xl mb-4">Room</div>
+          <RoomSettings />
         </div>
       </Drawer>
     </>

@@ -8,11 +8,24 @@ import { Home } from "./Home.tsx";
 import { Controller } from "./Controller.tsx";
 import { Scan } from "./Scan.tsx";
 import { GlobalProvider } from "./global/useGlobalProvider.tsx";
+import { Toaster } from "react-hot-toast";
 
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
+    <Toaster
+      toastOptions={{
+        className: "",
+        style: {
+          // dark mode
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      }}
+      // position="bottom-center"
+    />
     <BrowserRouter>
       <GlobalProvider>
         <QueryClientProvider client={queryClient}>
