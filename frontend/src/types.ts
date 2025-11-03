@@ -7,7 +7,8 @@ export type Feature = {
   id: string;
   titleEnglish: string;
   descriptionEnglish: string;
-  titleHawaiian: string;
-  descriptionHawaiian: string;
   coordinates: Coordinates;
+  imgSrc?: string;
+  titleHawaiian?: string;
+  descriptionHawaiian?: string;
 };

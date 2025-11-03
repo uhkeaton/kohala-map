@@ -1,11 +1,12 @@
-import { useGlobal } from "./hooks/useGlobal";
-import type { Feature } from "./types";
-import cx from "classnames";
+import type { Feature } from "../types";
+import kalahikiolaChurch from "/assets/kalahikiola-church.png";
+import kohalaVolcano from "/assets/kohala-volcano.png";
+import waipioValley from "/assets/waipio-valley.png";
 
 /**
  * These descriptions are AI generated as mock data
  */
-const features: Feature[] = [
+export const features: Feature[] = [
   {
     id: "waipio-valley",
     titleEnglish: "Waipiʻo Valley",
@@ -15,6 +16,7 @@ const features: Feature[] = [
     descriptionHawaiian:
       "He pāka ʻāina nani ʻo Waipiʻo, i kapa ʻia he “Valley of the Kings.” Nui nā pali kiʻekiʻe, nā lō wai ʻelima, ka ʻone hina, a me nā māla kalo ʻulaʻula, he wahi hohonu i ka moʻomeheu Hawaiʻi. He ʻāina mamao, kūloko, a nani hoʻi i ka ʻāina a me ke kai.",
     coordinates: [20.110074, -155.599717],
+    imgSrc: waipioValley,
   },
   {
     id: "kohala-volcano",
@@ -25,28 +27,17 @@ const features: Feature[] = [
     descriptionHawaiian:
       "He mauna ʻāhiu ʻo Kohala ma ka ʻākau ʻaoʻao o Hawaiʻi Nui. He mauna ʻokiʻoki ia, ua pau kona puhi, a ua kūkulu ʻia nā wāwae, nā pali, a me nā māla ʻāina ulu lāʻau. Ua noho nā kānaka kahiko ma kona mau pali a kanu i ka kalo, a kūkulu pū i nā heiau a me nā loko iʻa, he wahi hohonu i ka moʻomeheu Hawaiʻi.",
     coordinates: [20.085918, -155.717122],
+    imgSrc: kohalaVolcano,
+  },
+  {
+    id: "kalahikiola-church",
+    titleEnglish: "Kalahikiola Church",
+    descriptionEnglish:
+      "Kalahikiola Congregational Church is a historic 19th-century church in North Kohala, Hawaiʻi. Known for its classic missionary-style architecture, it remains an active place of worship and a symbol of the island’s cultural and spiritual heritage.",
+    titleHawaiian: "Kalahikiola",
+    descriptionHawaiian:
+      "He hale pule kahiko ʻo Kalahikiola ma Kohala ʻAmelika ʻĀkau, ma Hawaiʻi Nui. Ua kūkulu ʻia ia i ka wā misionari i ka 19th kenekulia, a he ʻano hale misionari maʻamau kona — he hale lāʻau paʻakikī, ʻeleʻele a keʻokeʻo kona ʻili, me ka pāpale ʻoi loa. Aia ia i loko o ka ʻāina ulu lāʻau, a noho mau ana i ka hana pule a he hōʻailona koʻikoʻi o ka moʻomeheu a me ka ʻuhane Hawaiʻi.",
+    coordinates: [20.222433, -155.794461],
+    imgSrc: kalahikiolaChurch,
   },
 ];
-
-function FeatureItem({ feature }: { feature: Feature }) {
-  const { visibleFeature, setVisibleFeature } = useGlobal();
-  return (
-    <div
-      className={cx("cursor-pointer", "hover:bg-sky-500/20", {
-        "bg-sky-500/20": visibleFeature?.id === feature.id,
-      })}
-      onClick={() => {
-        setVisibleFeature(feature);
-      }}
-    >
-      <div>{feature.titleEnglish}</div>
-    </div>
-  );
-}
-
-export function FeatureList() {
-  const Features = features.map((item) => {
-    return <FeatureItem feature={item} />;
-  });
-  return <div className="w-full h-full">{Features}</div>;
-}

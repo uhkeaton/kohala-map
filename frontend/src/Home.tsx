@@ -1,11 +1,11 @@
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router";
-import { MapImage } from "./Map";
+import { Map } from "./map/Map";
 
 export function Home() {
   const navigate = useNavigate();
 
-  return <MapImage />;
+  return <Map />;
   return (
     <div>
       <div className="w-full flex justify-between m-4">
