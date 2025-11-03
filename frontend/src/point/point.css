@@ -1,9 +1,9 @@
 .point {
   width: 14px;
   height: 14px;
-  background-color: red;
-  box-shadow: 0 0 3px 3px red;
-  border: 2px solid red;
+  background-color: limegreen;
+  box-shadow: 0 0 3px 3px limegreen;
+  border: 2px solid limegreen;
   border-width: 2px;
   border-radius: 50%;
   opacity: 0;

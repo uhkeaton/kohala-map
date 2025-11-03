@@ -3,6 +3,8 @@ import type { Coordinates } from "./types";
 import { aspect16_9, aspect5_4, mapWidthPercent } from "./constants";
 import { Point } from "./point/Point";
 import { AutoScale } from "./ui/AutoScale";
+import { FeatureList } from "./FeatureList";
+import { useGlobal } from "./hooks/useGlobal";
 
 const coords: Coordinates[] = [
   [20.120687, -155.594712],
@@ -10,9 +12,7 @@ const coords: Coordinates[] = [
 ];
 
 export function MapImage() {
-  const Points = coords.map((coords) => {
-    return <Point coords={coords} />;
-  });
+  const { visibleFeature } = useGlobal();
   return (
     <div className="bg-black w-screen h-screen flex items-center">
       <div className={cx(aspect16_9, "w-full bg-[#8281ab] flex")}>
@@ -23,7 +23,13 @@ export function MapImage() {
             // className="w-[50%]"
             // className="w-[calc(28.5/42.666*100%)]"
           />
-          {Points}
+          {visibleFeature?.coordinates && (
+            <Point coords={visibleFeature?.coordinates} />
+          )}
+          {/* This div is positioned in the blank space at the bottom left of the map */}
+          <div className="w-1/3 h-1/3 border-2 absolute bottom-0 left-0">
+            <FeatureList />
+          </div>
         </div>
         <div className="flex-1 p-2 flex flex-col justify-center items-center">
           <AutoScale>
@@ -37,22 +43,14 @@ export function MapImage() {
                       }}
                       className="mb-2 font-bold"
                     >
-                      Hello World
+                      {visibleFeature?.titleEnglish}
                     </div>
                     <div
                       style={{
                         fontSize: 16 * scale,
                       }}
                     >
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Phasellus laoreet at magna eget tempor. In hac habitasse
-                      platea dictumst. Duis mollis neque ut turpis aliquet
-                      malesuada. Phasellus imperdiet ligula turpis, id lobortis
-                      enim elementum. Lorem ipsum dolor sit amet, consectetur
-                      adipiscing elit. Phasellus laoreet at magna eget tempor.
-                      In hac habitasse platea dictumst. Duis mollis neque ut
-                      turpis aliquet malesuada. Phasellus imperdiet ligula
-                      turpis, id lobortis enim elementum.
+                      {visibleFeature?.descriptionEnglish}
                     </div>
                   </div>
                 </>

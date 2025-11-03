@@ -2,3 +2,12 @@
 export type Longitude = number;
 export type Latitude = number;
 export type Coordinates = [Longitude, Latitude];
+
+export type Feature = {
+  id: string;
+  titleEnglish: string;
+  descriptionEnglish: string;
+  titleHawaiian: string;
+  descriptionHawaiian: string;
+  coordinates: Coordinates;
+};
