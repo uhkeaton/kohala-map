@@ -21,6 +21,11 @@ async function createRoomCode() {
   return code;
 }
 
+async function joinRoomCode(code: string) {
+  await localforage.setItem("kohalaRoomCode", code);
+  return code;
+}
+
 export function useRoomCode() {
   return useQuery({
     queryKey: ["roomCode"],
@@ -37,6 +42,18 @@ export function useCreateRoomCode() {
     },
     onSuccess: () => {
       toast.success("New Room Created!");
+    },
+  });
+}
+export function useJoinRoomCode() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: joinRoomCode,
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["roomCode"] });
+    },
+    onSuccess: () => {
+      toast.success("Room Joined!");
     },
   });
 }

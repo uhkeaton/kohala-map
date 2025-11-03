@@ -1,5 +1,5 @@
-import { useEffect } from "react";
 import { useGlobal } from "../global/useGlobal";
+import { useSocketMutation } from "../socket";
 import { renderFeatureTitle } from "./feature";
 import {
   Box,
@@ -9,33 +9,44 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
+import { useRoomCode } from "../room/room";
 
-export function FeatureList() {
-  const { displaySettings, features, visibleFeature, setVisibleFeatureId } =
-    useGlobal();
+export function ControllerFeatureSelect() {
+  const { displaySettings, features, visibleFeature } = useGlobal();
+  const { data: roomId } = useRoomCode();
+
+  const socketMutation = useSocketMutation();
 
   const Options = features.map((item) => {
     return (
-      <MenuItem key={item.id} value={item.id}>
+      <MenuItem value={item.id}>
         {renderFeatureTitle(item, displaySettings)}
       </MenuItem>
     );
   });
 
   const handleChange = (event: SelectChangeEvent) => {
-    if (event.target.value) {
-      setVisibleFeatureId(event.target.value);
+    const feature = features.find(
+      (item) => item.id === (event.target.value as string)
+    );
+    if (feature) {
+      socketMutation.mutate({
+        room_code: roomId || "",
+        action: "selectFeature",
+        payload: {
+          id: feature.id,
+        },
+      });
     }
   };
 
-  useEffect(() => console.log(visibleFeature));
   return (
     <div className="w-full h-full p-4">
       <Box sx={{ minWidth: 120 }}>
         <FormControl fullWidth>
           <InputLabel>Feature</InputLabel>
           <Select
-            value={visibleFeature?.id ?? ""}
+            value={visibleFeature?.id}
             label="Feature"
             onChange={handleChange}
           >

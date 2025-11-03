@@ -1,14 +1,12 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import { MapApp } from "./MapApp.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
-import { Home } from "./Home.tsx";
-import { Controller } from "./Controller.tsx";
-import { Scan } from "./Scan.tsx";
+import { Controller } from "./controller/Controller.tsx";
 import { GlobalProvider } from "./global/useGlobalProvider.tsx";
 import { Toaster } from "react-hot-toast";
+import { Map } from "./map/Map.tsx";
 
 const queryClient = new QueryClient();
 
@@ -27,18 +25,18 @@ createRoot(document.getElementById("root")!).render(
       // position="bottom-center"
     />
     <BrowserRouter>
-      <GlobalProvider>
-        <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <GlobalProvider>
           <Routes>
-            <Route index path="/" element={<Home />} />
-            <Route path="/map" element={<MapApp />} />
+            <Route index path="/" element={<Map />} />
             <Route path="/controller" element={<Controller />} />
-            <Route path="/scan" element={<Scan />} />
+            {/* <Route path="/map" element={<MapApp />} /> */}
+            {/* <Route path="/scan" element={<Scan />} /> */}
             {/* Redirect all others to home */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
-        </QueryClientProvider>
-      </GlobalProvider>
+        </GlobalProvider>
+      </QueryClientProvider>
     </BrowserRouter>
   </StrictMode>
 );

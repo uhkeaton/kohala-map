@@ -1,23 +1,46 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { GlobalContext } from "./useGlobal";
-import type { DisplaySettings, Feature } from "../types";
+import type { DisplaySettings } from "../types";
 import { defaultDisplaySettings } from "../constants";
 import { featuresData } from "../features/features";
+import { useRoomCode } from "../room/room";
+import { GenericSocketMessage, useSocketConnection } from "../socket";
 
 export type GlobalContextValue = ReturnType<typeof useGlobalContext>;
 
 function useGlobalContext() {
-  const [visibleFeature, setVisibleFeature] = useState<Feature | null>(null);
+  const [visibleFeatureId, setVisibleFeatureId] = useState<string | null>(null);
+
+  const visibleFeature = featuresData.find(
+    (item) => item.id === visibleFeatureId
+  );
+
   const [displaySettings, setDisplaySettings] = useState<DisplaySettings>(
     defaultDisplaySettings
   );
 
+  const { data: roomId } = useRoomCode();
+
+  const callback = useCallback((msg: GenericSocketMessage) => {
+    switch (msg.action) {
+      case "selectFeature":
+        setVisibleFeatureId(msg.payload?.id || "");
+        break;
+      default:
+        console.log("Unhandled action:", msg);
+    }
+  }, []);
+
+  const { socketConnected } = useSocketConnection(roomId, callback);
+
   return {
     visibleFeature,
-    setVisibleFeature,
+    visibleFeatureId,
+    setVisibleFeatureId,
     displaySettings,
     setDisplaySettings,
     features: featuresData,
+    socketConnected,
   };
 }
 

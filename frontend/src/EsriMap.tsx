@@ -2,36 +2,36 @@ import "@arcgis/map-components/components/arcgis-map";
 import "@arcgis/map-components/components/arcgis-legend";
 import "@arcgis/map-components/components/arcgis-search";
 import { useEffect, useRef } from "react";
-
-// get the VITE_IP from .env, default to localhost
-const API_URL = (import.meta.env.VITE_IP ?? "http://127.0.0.1") + ":8000";
+import { WS_URL } from "./api";
 
 export function EsriMap() {
   const mapRef = useRef(null);
   const viewRef = useRef<__esri.MapView>(null);
 
-  useEffect(() => {
-    const ws = new WebSocket(`${API_URL.replace("http://", "ws://")}/map-ws`);
-    ws.onopen = () => console.log("Connected!");
+  // useEffect(() => {
+  //   const ws = new WebSocket(WS_URL);
+  //   // ws.onopen = () => console.log("Connected!");
 
-    ws.onmessage = (e) => {
-      if (e.data === "zoom-in") {
-        if (viewRef.current) {
-          viewRef.current.zoom = viewRef.current.zoom + 1;
-        }
-      } else if (e.data === "zoom-out") {
-        if (viewRef.current) {
-          viewRef.current.zoom = viewRef.current.zoom - 1;
-        }
-      } else {
-        console.log("Received:", e.data);
-      }
-    };
-    return () => {
-      ws.close();
-      console.log("WebSocket closed");
-    };
-  }, []);
+  //   ws.onmessage = (e) => {
+  //     console.log(JSON.stringify(e));
+
+  //     if (e.data === "zoom-in") {
+  //       if (viewRef.current) {
+  //         viewRef.current.zoom = viewRef.current.zoom + 1;
+  //       }
+  //     } else if (e.data === "zoom-out") {
+  //       if (viewRef.current) {
+  //         viewRef.current.zoom = viewRef.current.zoom - 1;
+  //       }
+  //     } else {
+  //       console.log("Received:", e.data);
+  //     }
+  //   };
+  //   return () => {
+  //     ws.close();
+  //     console.log("WebSocket closed");
+  //   };
+  // }, []);
 
   return (
     <>

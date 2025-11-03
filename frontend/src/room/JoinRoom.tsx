@@ -16,6 +16,8 @@ export function JoinRoom() {
     setDisplaySettings((s) => ({ ...s, showJoinRoomDialog: true }));
   };
 
+  const qrCode = window.location.origin + `/controller?code=${data}`;
+
   return (
     <>
       <Button className="w-full" onClick={handleOpen} variant="contained">
@@ -36,7 +38,7 @@ export function JoinRoom() {
                 <span>{data}</span>
               </div>
               <div className="w-full">
-                <QRCode className="w-full" value={data || ""} />
+                <QRCode className="w-full" value={qrCode} />
               </div>
             </div>
           </div>
