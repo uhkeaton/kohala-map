@@ -11,7 +11,7 @@ export function Map() {
     <div className="bg-black text-white w-screen h-screen flex items-center">
       <div className={cx(aspect16_9, "w-full flex bg-white/20")}>
         <div className={cx(aspect5_4, mapWidthPercent, "relative")}>
-          <img src="5-4.jpeg" className="border border-black/20" />
+          <img src="5-4-transparent.png" className="opacity-30 grayscale-100" />
           {visibleFeature?.coordinates && (
             <Point coords={visibleFeature?.coordinates} />
           )}
