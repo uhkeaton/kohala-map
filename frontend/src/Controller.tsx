@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import { controlMap, zoomIn, zoomOut } from "./api";
+import { zoomIn, zoomOut } from "./api";
 
 import { useMutation } from "@tanstack/react-query";
 import { CloseButton } from "./ui/CloseButton";
@@ -7,10 +7,10 @@ import { useNavigate } from "react-router";
 
 export function Controller() {
   const navigate = useNavigate();
-  const mutation = useMutation({
-    mutationFn: controlMap,
-    onSuccess: () => {},
-  });
+  // const mutation = useMutation({
+  //   mutationFn: controlMap,
+  //   onSuccess: () => {},
+  // });
 
   const mutationZoomIn = useMutation({
     mutationFn: zoomIn,

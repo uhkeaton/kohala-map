@@ -8,7 +8,7 @@ export function LanguageSelect() {
   const { displaySettings, setDisplaySettings } = useGlobal();
 
   const handleChange = (
-    event: React.MouseEvent<HTMLElement>,
+    _: React.MouseEvent<HTMLElement>,
     value: string
   ) => {
     setDisplaySettings((s) => ({
