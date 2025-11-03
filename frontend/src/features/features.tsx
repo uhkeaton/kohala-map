@@ -6,7 +6,7 @@ import waipioValley from "/assets/waipio-valley.png";
 /**
  * These descriptions are AI generated as mock data
  */
-export const features: Feature[] = [
+export const featuresData: Feature[] = [
   {
     id: "waipio-valley",
     titleEnglish: "Waipiʻo Valley",

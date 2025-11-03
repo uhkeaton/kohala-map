@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { GlobalContext } from "./useGlobal";
 import type { DisplaySettings, Feature } from "../types";
 import { defaultDisplaySettings } from "../constants";
+import { featuresData } from "../features/features";
 
 export type GlobalContextValue = ReturnType<typeof useGlobalContext>;
 
@@ -16,6 +17,7 @@ function useGlobalContext() {
     setVisibleFeature,
     displaySettings,
     setDisplaySettings,
+    features: featuresData,
   };
 }
 
