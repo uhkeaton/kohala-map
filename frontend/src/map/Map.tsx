@@ -8,8 +8,8 @@ import { FeatureDetail } from "../features/FeatureDetail";
 export function Map() {
   const { visibleFeature } = useGlobal();
   return (
-    <div className="bg-black w-screen h-screen flex items-center">
-      <div className={cx(aspect16_9, "w-full bg-[#8281ab] flex")}>
+    <div className="bg-black text-white w-screen h-screen flex items-center">
+      <div className={cx(aspect16_9, "w-full flex bg-white/20")}>
         <div className={cx(aspect5_4, mapWidthPercent, "relative")}>
           <img src="5-4.jpeg" className="border border-black/20" />
           {visibleFeature?.coordinates && (
