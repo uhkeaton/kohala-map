@@ -69,9 +69,14 @@ export function Map() {
                     }}
                   />
 
-                  {visibleFeature?.coordinates && (
-                    <Point coords={visibleFeature?.coordinates} />
-                  )}
+                  {visibleFeature?.layers &&
+                    visibleFeature?.layers.map((item) => {
+                      return <img className={cx("w-full absolute inset-0")} src={item.imgSrc} />;
+                    })}
+                  {visibleFeature?.points &&
+                    visibleFeature?.points.map((item) => {
+                      return <Point coords={item?.coordinates} />;
+                    })}
                   {/* This div is positioned in the blank space at the bottom left of the map */}
                   <div className="w-1/3 h-1/3 absolute bottom-0 left-0">
                     {displaySettings.showFeatureList && <FeatureList />}

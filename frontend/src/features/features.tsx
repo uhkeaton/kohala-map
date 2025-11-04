@@ -2,6 +2,7 @@ import type { Feature } from "../types";
 import kalahikiolaChurch from "/assets/kalahikiola-church.png";
 import kohalaVolcano from "/assets/kohala-volcano.png";
 import waipioValley from "/assets/waipio-valley.png";
+import kohalaVolcanoLayer from "/assets/kohala-volcano-layer.png";
 
 /**
  * These descriptions are AI generated as mock data
@@ -15,7 +16,11 @@ export const featuresData: Feature[] = [
     titleHawaiian: "Waipiʻo",
     descriptionHawaiian:
       "He pāka ʻāina nani ʻo Waipiʻo, i kapa ʻia he “Valley of the Kings.” Nui nā pali kiʻekiʻe, nā lō wai ʻelima, ka ʻone hina, a me nā māla kalo ʻulaʻula, he wahi hohonu i ka moʻomeheu Hawaiʻi. He ʻāina mamao, kūloko, a nani hoʻi i ka ʻāina a me ke kai.",
-    coordinates: [20.110074, -155.599717],
+    points: [
+      {
+        coordinates: [20.110074, -155.599717],
+      },
+    ],
     imgSrc: waipioValley,
   },
   {
@@ -26,7 +31,12 @@ export const featuresData: Feature[] = [
     titleHawaiian: "Kohala",
     descriptionHawaiian:
       "He mauna ʻāhiu ʻo Kohala ma ka ʻākau ʻaoʻao o Hawaiʻi Nui. He mauna ʻokiʻoki ia, ua pau kona puhi, a ua kūkulu ʻia nā wāwae, nā pali, a me nā māla ʻāina ulu lāʻau. Ua noho nā kānaka kahiko ma kona mau pali a kanu i ka kalo, a kūkulu pū i nā heiau a me nā loko iʻa, he wahi hohonu i ka moʻomeheu Hawaiʻi.",
-    coordinates: [20.085918, -155.717122],
+    points: [
+      {
+        coordinates: [20.085918, -155.717122],
+      },
+    ],
+    layers: [{ imgSrc: kohalaVolcanoLayer }],
     imgSrc: kohalaVolcano,
   },
   {
@@ -37,7 +47,11 @@ export const featuresData: Feature[] = [
     titleHawaiian: "Kalahikiola",
     descriptionHawaiian:
       "He hale pule kahiko ʻo Kalahikiola ma Kohala ʻAmelika ʻĀkau, ma Hawaiʻi Nui. Ua kūkulu ʻia ia i ka wā misionari i ka 19th kenekulia, a he ʻano hale misionari maʻamau kona — he hale lāʻau paʻakikī, ʻeleʻele a keʻokeʻo kona ʻili, me ka pāpale ʻoi loa. Aia ia i loko o ka ʻāina ulu lāʻau, a noho mau ana i ka hana pule a he hōʻailona koʻikoʻi o ka moʻomeheu a me ka ʻuhane Hawaiʻi.",
-    coordinates: [20.222433, -155.794461],
+    points: [
+      {
+        coordinates: [20.222433, -155.794461],
+      },
+    ],
     imgSrc: kalahikiolaChurch,
   },
 ];

@@ -15,11 +15,19 @@ export type DisplaySettings = {
   showCreateRoomDialog: boolean;
 };
 
+type Point = {
+  coordinates: Coordinates;
+};
+type Layer = {
+  imgSrc: string;
+};
+
 export type Feature = {
   id: string;
   titleEnglish: string;
   descriptionEnglish: string;
-  coordinates: Coordinates;
+  points?: Point[];
+  layers?: Layer[];
   imgSrc?: string;
   titleHawaiian?: string;
   descriptionHawaiian?: string;
