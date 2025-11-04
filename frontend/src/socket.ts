@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { API_URL, WS_URL } from "./api";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 export type GenericSocketMessage = {
   room_code: string;
@@ -42,10 +43,12 @@ export function useSocketConnection(
     let ws: WebSocket | null = null;
 
     const init = () => {
+      //   ws = new WebSocket("ws://:8000/socket");
       ws = new WebSocket(WS_URL);
 
       ws.onopen = () => {
-        console.log(`Connected! ${roomId}`);
+        // toast.success(`Connected! (${roomId})`);
+
         setSocketConnected(true);
 
         ws?.send(
@@ -76,7 +79,11 @@ export function useSocketConnection(
       };
     };
 
-    init();
+    try {
+      init();
+    } catch {
+      toast.error("Socket connection failed.");
+    }
 
     return () => {
       if (ws) ws.close();

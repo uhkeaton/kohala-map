@@ -40,9 +40,6 @@ export function useCreateRoomCode() {
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["roomCode"] });
     },
-    onSuccess: () => {
-      toast.success("New Room Created!");
-    },
   });
 }
 export function useJoinRoomCode() {

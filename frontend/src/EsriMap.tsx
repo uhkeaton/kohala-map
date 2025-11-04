@@ -1,8 +1,7 @@
 import "@arcgis/map-components/components/arcgis-map";
 import "@arcgis/map-components/components/arcgis-legend";
 import "@arcgis/map-components/components/arcgis-search";
-import { useEffect, useRef } from "react";
-import { WS_URL } from "./api";
+import { useRef } from "react";
 
 export function EsriMap() {
   const mapRef = useRef(null);

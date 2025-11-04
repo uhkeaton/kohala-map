@@ -1,6 +1,3 @@
-import { zoomIn, zoomOut } from "../api";
-
-import { useMutation } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "react-router";
 import { useEffect } from "react";
 import { useJoinRoomCode, useRoomCode } from "../room/room";
@@ -34,12 +31,12 @@ export function Controller() {
     }
   }, [mutate, location.pathname, location.search, navigate]);
 
-  const mutationZoomIn = useMutation({
-    mutationFn: zoomIn,
-  });
-  const mutationZoomOut = useMutation({
-    mutationFn: zoomOut,
-  });
+  // const mutationZoomIn = useMutation({
+  //   mutationFn: zoomIn,
+  // });
+  // const mutationZoomOut = useMutation({
+  //   mutationFn: zoomOut,
+  // });
 
   return (
     <div className="h-[100dvh] w-[100dvw] bg-white overflow-hidden p-4">
