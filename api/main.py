@@ -35,22 +35,6 @@ class Room:
 
 rooms: Dict[str, Room] = {}
 
-# --- API Endpoints ---
-
-class PushPayload(BaseModel):
-    room_code: str
-    action: str
-    payload: dict
-
-@app.post("/push")
-async def push(payload: PushPayload):
-    print(payload.room_code)
-    room = rooms.get(payload.room_code)
-    if room:
-        await room.broadcast_json(payload.model_dump())
-        return {"status": "Success"}
-    return {"status": "Room not found"}
-
 # --- WebSocket Endpoint ---
 
 @app.websocket("/socket")

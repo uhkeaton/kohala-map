@@ -1,6 +1,5 @@
 import { WS_URL } from "./api";
-import { useEffect, useRef, useState } from "react";
-import toast from "react-hot-toast";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export type GenericSocketMessage = {
   room_code: string;
@@ -8,86 +7,80 @@ export type GenericSocketMessage = {
   payload: { id: string };
 }; // | {} ... add more
 
-// export async function pushGenericSocketMessage(data: GenericSocketMessage) {
-//   const res = await fetch(`${API_URL}/push`, {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify(data),
-//   });
-
-//   if (!res.ok) {
-//     throw new Error(`Error: ${res.status}`);
-//   }
-
-//   return res.json();
-// }
-
-// export function useSocketMutation() {
-//   return useMutation({
-//     mutationFn: pushGenericSocketMessage,
-//   });
-// }
-
 export function useWebSocketConnection(
   roomId: string | null | undefined,
   onMessage?: (msg: GenericSocketMessage) => void
 ) {
   const [socketConnected, setSocketConnected] = useState(false);
   const socketRef = useRef<WebSocket | null>(null);
+  const reconnectTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  useEffect(() => {
+  const connect = useCallback(() => {
     if (!roomId) return;
-    socketRef.current = new WebSocket(WS_URL + `?code=${roomId}`);
-    const ws = socketRef.current;
 
-    const init = () => {
-      ws.onopen = () => {
-        setSocketConnected(true);
-
-        ws?.send(
-          JSON.stringify({
-            action: "join",
-            room_code: roomId,
-          })
-        );
-      };
-
-      ws.onmessage = (e) => {
-        try {
-          const msg = JSON.parse(e.data) as GenericSocketMessage;
-          onMessage?.(msg);
-        } catch (err) {
-          console.error("Failed to parse message:", err);
-        }
-      };
-
-      ws.onclose = () => {
-        console.log("WebSocket closed");
-        setSocketConnected(false);
-      };
-
-      ws.onerror = (err) => {
-        console.error("WebSocket error", err);
-      };
-    };
-
-    try {
-      init();
-    } catch {
-      toast.error("Socket connection failed.");
+    // Clear any pending reconnect attempts
+    if (reconnectTimeout.current) {
+      clearTimeout(reconnectTimeout.current);
+      reconnectTimeout.current = null;
     }
 
-    return () => {
-      if (ws) ws.close();
+    const ws = new WebSocket(WS_URL + `?code=${roomId}`);
+    socketRef.current = ws;
+
+    ws.onopen = () => {
+      setSocketConnected(true);
+      ws.send(JSON.stringify({}));
+    };
+
+    ws.onmessage = (e) => {
+      try {
+        const msg = JSON.parse(e.data) as GenericSocketMessage;
+        onMessage?.(msg);
+      } catch (err) {
+        console.error("Failed to parse message:", err);
+      }
+    };
+
+    ws.onclose = () => {
+      console.log("WebSocket closed");
+      setSocketConnected(false);
+
+      // 🔁 Automatically try to reconnect after delay
+      reconnectTimeout.current = setTimeout(() => {
+        console.log("Attempting to reconnect...");
+        connect();
+      }, 3000);
+    };
+
+    ws.onerror = (err) => {
+      console.error("WebSocket error", err);
+      ws.close(); // will trigger onclose + reconnect
     };
   }, [roomId, onMessage]);
 
+  useEffect(() => {
+    if (roomId) connect();
+    return () => {
+      if (reconnectTimeout.current) clearTimeout(reconnectTimeout.current);
+      socketRef.current?.close();
+    };
+  }, [roomId, connect]);
+
+  const reconnect = useCallback(() => {
+    socketRef.current?.close(); // will trigger the reconnect logic
+  }, []);
+
+  const send = useCallback((msg: GenericSocketMessage) => {
+    if (socketRef.current?.readyState === WebSocket.OPEN) {
+      socketRef.current.send(JSON.stringify(msg));
+    } else {
+      console.warn("Cannot send: socket not open");
+    }
+  }, []);
+
   return {
     socketConnected,
-    send: (e: GenericSocketMessage) => {
-      socketRef.current?.send(JSON.stringify(e));
-    },
+    send,
+    reconnect, // optional manual trigger
   };
 }

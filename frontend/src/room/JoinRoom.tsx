@@ -16,7 +16,8 @@ export function JoinRoom() {
     setDisplaySettings((s) => ({ ...s, showJoinRoomDialog: true }));
   };
 
-  const qrCode = window.location.origin + `/controller?code=${data}`;
+  //   const qrCode = window.location.origin + `/controller?code=${data}`;
+  const qrCode = "https://kohala.pages.dev" + `/controller?code=${data}`;
 
   return (
     <>
