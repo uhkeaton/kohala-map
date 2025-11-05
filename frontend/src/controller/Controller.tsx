@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useRoomCode } from "../room/room";
 import { ControllerFeatureSelect } from "../features/ControllerFeatureSelect";
 import { ManualJoinRoom } from "../room/ManualJoinRoom";
+import { ConnectedStatus } from "../room/ConnectedStatus";
 
 export function Controller() {
   const { roomCode } = useRoomCode();
@@ -42,14 +43,21 @@ export function Controller() {
 
   return (
     <div className="h-[100dvh] w-[100dvw] bg-white overflow-hidden p-4">
-      <div className="max-w-sm m-auto">
-        <div className="px-4 mb-4 text-2xl">Controller</div>
-        <div className="px-4 mb-4">Room: {roomCode}</div>
-        <div className="px-4 mb-4">
-          <ControllerFeatureSelect />
+      <div className="max-w-sm m-auto flex flex-col justify-between w-full h-full">
+        <div>
+          <div className="px-4 mb-8 text-2xl">Controller</div>
+
+          <div className="px-4 mb-4">
+            <ControllerFeatureSelect />
+          </div>
         </div>
-        <div className="px-4 mb-4">
-          <ManualJoinRoom />
+        <div>
+          <div className="px-4 mb-4">
+            <ConnectedStatus />
+          </div>
+          <div className="px-4 mb-4">
+            <ManualJoinRoom />
+          </div>
         </div>
       </div>
     </div>

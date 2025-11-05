@@ -19,4 +19,5 @@ export const defaultDisplaySettings: DisplaySettings = {
   showFeatureList: true,
   showShareRoomDialog: false,
   showCreateRoomDialog: false,
+  showManualJoinRoomDialog: false,
 };
