@@ -4,7 +4,7 @@ import { useJoinRoomCode, useRoomCode } from "../room/room";
 import { ControllerFeatureSelect } from "../features/ControllerFeatureSelect";
 
 export function Controller() {
-  const { data } = useRoomCode();
+  const { roomCode } = useRoomCode();
   const navigate = useNavigate();
 
   const location = useLocation();
@@ -48,7 +48,7 @@ export function Controller() {
         />
       </div> */}
       <div className="text-2xl mb-4">Controller</div>
-      <div>Room: {data}</div>
+      <div>Room: {roomCode}</div>
 
       {/* <Button
         onClick={() => {

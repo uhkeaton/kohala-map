@@ -36,7 +36,7 @@ export const featuresData: Feature[] = [
         coordinates: [20.085918, -155.717122],
       },
     ],
-    layers: [{ imgSrc: kohalaVolcanoLayer }],
+    layers: [{ imgSrc: kohalaVolcanoLayer, filter: "sepia(1) saturate(2)" }],
     imgSrc: kohalaVolcano,
   },
   {

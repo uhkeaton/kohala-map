@@ -6,19 +6,23 @@ import cx from "classnames";
 
 export function RoomSettings() {
   const { socketConnected } = useGlobal();
-  const { data } = useRoomCode();
+  const { roomCode } = useRoomCode();
 
   return (
     <>
-      <span
-        className={cx("text-md", {
-          "text-lime-500": socketConnected,
-          "text-red-500": !socketConnected,
-        })}
-      >
-        {socketConnected ? "(connected)" : "(disconnected)"}
-      </span>
-      {data && (
+      {roomCode && (
+        <div
+          className={cx("text-md", {
+            "text-lime-500": socketConnected,
+            "text-red-500": !socketConnected,
+          })}
+        >
+          <span className="mr-2">{roomCode}</span>
+          <span>{socketConnected ? "(connected)" : "(disconnected)"}</span>
+        </div>
+      )}
+
+      {roomCode && (
         <div className="my-4">
           <JoinRoom />
         </div>

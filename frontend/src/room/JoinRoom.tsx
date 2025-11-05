@@ -6,7 +6,7 @@ import { useGlobal } from "../global/useGlobal";
 
 export function JoinRoom() {
   const { displaySettings, setDisplaySettings, socketConnected } = useGlobal();
-  const { data } = useRoomCode();
+  const { roomCode } = useRoomCode();
 
   const handleClose = () => {
     setDisplaySettings((s) => ({ ...s, showJoinRoomDialog: false }));
@@ -17,7 +17,7 @@ export function JoinRoom() {
   };
 
   //   const qrCode = window.location.origin + `/controller?code=${data}`;
-  const qrCode = "https://kohala.pages.dev" + `/controller?code=${data}`;
+  const qrCode = "https://kohala.pages.dev" + `/controller?code=${roomCode}`;
 
   return (
     <>
@@ -41,7 +41,7 @@ export function JoinRoom() {
             <div className="p-4 pb-8">
               <div className="text-xl mb-4">
                 <span>Room Code: </span>
-                <span>{data}</span>
+                <span>{roomCode}</span>
               </div>
               <div className="w-full">
                 <QRCode className="w-full" value={qrCode} />

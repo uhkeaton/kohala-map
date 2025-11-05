@@ -71,7 +71,16 @@ export function Map() {
 
                   {visibleFeature?.layers &&
                     visibleFeature?.layers.map((item) => {
-                      return <img className={cx("w-full absolute inset-0")} src={item.imgSrc} />;
+                      const { filter, imgSrc } = item;
+                      return (
+                        <img
+                          style={{
+                            ...(filter && { filter: filter }),
+                          }}
+                          className={cx("w-full absolute inset-0")}
+                          src={imgSrc}
+                        />
+                      );
                     })}
                   {visibleFeature?.points &&
                     visibleFeature?.points.map((item) => {

@@ -20,6 +20,7 @@ type Point = {
 };
 type Layer = {
   imgSrc: string;
+  filter?: string;
 };
 
 export type Feature = {

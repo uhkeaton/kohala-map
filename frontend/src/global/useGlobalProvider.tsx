@@ -19,7 +19,7 @@ function useGlobalContext() {
     defaultDisplaySettings
   );
 
-  const { data: roomId } = useRoomCode();
+  const { roomCode } = useRoomCode();
 
   const callback = useCallback((msg: GenericSocketMessage) => {
     switch (msg.action) {
@@ -31,7 +31,7 @@ function useGlobalContext() {
     }
   }, []);
 
-  const { socketConnected } = useWebSocketConnection(roomId, callback);
+  const { socketConnected } = useWebSocketConnection(roomCode, callback);
 
   return {
     visibleFeature,

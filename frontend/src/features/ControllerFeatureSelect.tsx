@@ -13,10 +13,10 @@ import { useRoomCode } from "../room/room";
 
 export function ControllerFeatureSelect() {
   const { displaySettings, features, visibleFeature } = useGlobal();
-  const { data: roomId } = useRoomCode();
+  const { roomCode } = useRoomCode();
 
   //   const socketMutation = useSocketMutation();
-  const { send } = useWebSocketConnection(roomId);
+  const { send } = useWebSocketConnection(roomCode);
 
   const Options = features.map((item) => {
     return (
@@ -32,7 +32,7 @@ export function ControllerFeatureSelect() {
     );
     if (feature) {
       send?.({
-        room_code: roomId || "",
+        room_code: roomCode || "",
         action: "selectFeature",
         payload: {
           id: feature.id,

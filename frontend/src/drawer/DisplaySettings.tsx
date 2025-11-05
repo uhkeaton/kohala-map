@@ -1,10 +1,36 @@
-import { FormControlLabel, FormGroup, Switch } from "@mui/material";
+import { Button, FormControlLabel, FormGroup, Switch } from "@mui/material";
 import { useGlobal } from "../global/useGlobal";
 
 export function DisplaySettings() {
   const { displaySettings, setDisplaySettings } = useGlobal();
+
+  const { showMapOutline, showFeatureList, showMapAlignmentMask } =
+    displaySettings;
+
+  function enterDisplayMode() {
+    setDisplaySettings((s) => ({
+      ...s,
+      showMapOutline: false,
+      showFeatureList: false,
+      showMapAlignmentMask: false,
+    }));
+  }
+
+  const isDisplayMode =
+    !showMapOutline && !showFeatureList && !showMapAlignmentMask;
+
   return (
     <div>
+      <div className="my-2">
+        <Button
+          disabled={isDisplayMode}
+          className="w-full"
+          onClick={enterDisplayMode}
+          variant="outlined"
+        >
+          Enter Display Mode
+        </Button>
+      </div>
       <FormGroup>
         <FormControlLabel
           control={

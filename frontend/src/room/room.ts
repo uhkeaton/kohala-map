@@ -27,10 +27,14 @@ async function joinRoomCode(code: string) {
 }
 
 export function useRoomCode() {
-  return useQuery({
+  const query = useQuery({
     queryKey: ["roomCode"],
     queryFn: fetchRoomCode,
   });
+  return {
+    query,
+    roomCode: query.data,
+  };
 }
 
 export function useCreateRoomCode() {
