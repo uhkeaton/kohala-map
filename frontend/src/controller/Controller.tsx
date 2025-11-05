@@ -6,7 +6,6 @@ import { ManualJoinRoom } from "../room/ManualJoinRoom";
 import { ConnectedStatus } from "../room/ConnectedStatus";
 
 export function Controller() {
-  const { roomCode } = useRoomCode();
   const navigate = useNavigate();
 
   const location = useLocation();
