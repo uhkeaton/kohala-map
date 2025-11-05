@@ -4,7 +4,7 @@ import type { DisplaySettings } from "../types";
 import { defaultDisplaySettings } from "../constants";
 import { featuresData } from "../features/features";
 import { useRoomCode } from "../room/room";
-import { GenericSocketMessage, useSocketConnection } from "../socket";
+import { GenericSocketMessage, useWebSocketConnection } from "../socket";
 
 export type GlobalContextValue = ReturnType<typeof useGlobalContext>;
 
@@ -31,7 +31,7 @@ function useGlobalContext() {
     }
   }, []);
 
-  const { socketConnected } = useSocketConnection(roomId, callback);
+  const { socketConnected } = useWebSocketConnection(roomId, callback);
 
   return {
     visibleFeature,

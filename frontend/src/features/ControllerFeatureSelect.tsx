@@ -1,5 +1,5 @@
 import { useGlobal } from "../global/useGlobal";
-import { useSocketMutation } from "../socket";
+import { useWebSocketConnection } from "../socket";
 import { renderFeatureTitle } from "./feature";
 import {
   Box,
@@ -15,7 +15,8 @@ export function ControllerFeatureSelect() {
   const { displaySettings, features, visibleFeature } = useGlobal();
   const { data: roomId } = useRoomCode();
 
-  const socketMutation = useSocketMutation();
+  //   const socketMutation = useSocketMutation();
+  const { send } = useWebSocketConnection(roomId);
 
   const Options = features.map((item) => {
     return (
@@ -30,7 +31,7 @@ export function ControllerFeatureSelect() {
       (item) => item.id === (event.target.value as string)
     );
     if (feature) {
-      socketMutation.mutate({
+      send?.({
         room_code: roomId || "",
         action: "selectFeature",
         payload: {

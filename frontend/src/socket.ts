@@ -1,6 +1,5 @@
-import { useMutation } from "@tanstack/react-query";
-import { API_URL, WS_URL } from "./api";
-import { useEffect, useState } from "react";
+import { WS_URL } from "./api";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 
 export type GenericSocketMessage = {
@@ -9,46 +8,42 @@ export type GenericSocketMessage = {
   payload: { id: string };
 }; // | {} ... add more
 
-export async function pushGenericSocketMessage(data: GenericSocketMessage) {
-  const res = await fetch(`${API_URL}/push`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
+// export async function pushGenericSocketMessage(data: GenericSocketMessage) {
+//   const res = await fetch(`${API_URL}/push`, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify(data),
+//   });
 
-  if (!res.ok) {
-    throw new Error(`Error: ${res.status}`);
-  }
+//   if (!res.ok) {
+//     throw new Error(`Error: ${res.status}`);
+//   }
 
-  return res.json();
-}
+//   return res.json();
+// }
 
-export function useSocketMutation() {
-  return useMutation({
-    mutationFn: pushGenericSocketMessage,
-  });
-}
+// export function useSocketMutation() {
+//   return useMutation({
+//     mutationFn: pushGenericSocketMessage,
+//   });
+// }
 
-export function useSocketConnection(
+export function useWebSocketConnection(
   roomId: string | null | undefined,
-  onMessage: (msg: GenericSocketMessage) => void
+  onMessage?: (msg: GenericSocketMessage) => void
 ) {
   const [socketConnected, setSocketConnected] = useState(false);
+  const socketRef = useRef<WebSocket | null>(null);
 
   useEffect(() => {
     if (!roomId) return;
-
-    let ws: WebSocket | null = null;
+    socketRef.current = new WebSocket(WS_URL + `?code=${roomId}`);
+    const ws = socketRef.current;
 
     const init = () => {
-      //   ws = new WebSocket("ws://:8000/socket");
-      ws = new WebSocket(WS_URL);
-
       ws.onopen = () => {
-        // toast.success(`Connected! (${roomId})`);
-
         setSocketConnected(true);
 
         ws?.send(
@@ -60,10 +55,9 @@ export function useSocketConnection(
       };
 
       ws.onmessage = (e) => {
-        console.log("Hi");
         try {
           const msg = JSON.parse(e.data) as GenericSocketMessage;
-          onMessage(msg);
+          onMessage?.(msg);
         } catch (err) {
           console.error("Failed to parse message:", err);
         }
@@ -90,5 +84,10 @@ export function useSocketConnection(
     };
   }, [roomId, onMessage]);
 
-  return { socketConnected };
+  return {
+    socketConnected,
+    send: (e: GenericSocketMessage) => {
+      socketRef.current?.send(JSON.stringify(e));
+    },
+  };
 }

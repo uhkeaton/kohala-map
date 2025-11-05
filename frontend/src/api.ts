@@ -1,4 +1,6 @@
-export const WS_URL = "ws://" + import.meta.env.VITE_NETWORK + ":8000/socket";
+// export const WS_URL = "http://localhost:54410/ws";
+export const WS_URL = "https://sockets-api.georgekwilliamson.workers.dev/ws";
+// export const WS_URL = "ws://" + import.meta.env.VITE_NETWORK + ":8000/socket";
 export const API_URL = "http://" + import.meta.env.VITE_NETWORK + ":8000";
 
 export async function zoomIn() {
