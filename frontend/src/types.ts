@@ -11,8 +11,9 @@ export type DisplaySettings = {
    */
   showMapAlignmentMask: boolean;
   showFeatureList: boolean;
-  showJoinRoomDialog: boolean;
+  showShareRoomDialog: boolean;
   showCreateRoomDialog: boolean;
+  showManualJoinRoomDialog: boolean;
 };
 
 type Point = {

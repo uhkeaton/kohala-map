@@ -27,28 +27,21 @@ async function joinRoomCode(code: string) {
 }
 
 export function useRoomCode() {
+  const queryClient = useQueryClient();
+
   const query = useQuery({
     queryKey: ["roomCode"],
     queryFn: fetchRoomCode,
   });
-  return {
-    query,
-    roomCode: query.data,
-  };
-}
 
-export function useCreateRoomCode() {
-  const queryClient = useQueryClient();
-  return useMutation({
+  const createRoomMutation = useMutation({
     mutationFn: createRoomCode,
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["roomCode"] });
     },
   });
-}
-export function useJoinRoomCode() {
-  const queryClient = useQueryClient();
-  return useMutation({
+
+  const joinRoomMutation = useMutation({
     mutationFn: joinRoomCode,
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["roomCode"] });
@@ -57,4 +50,11 @@ export function useJoinRoomCode() {
       toast.success("Room Joined!");
     },
   });
+
+  return {
+    query: query,
+    roomCode: query.data,
+    createRoomMutation: createRoomMutation,
+    joinRoomMutation: joinRoomMutation,
+  };
 }

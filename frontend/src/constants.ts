@@ -17,6 +17,6 @@ export const defaultDisplaySettings: DisplaySettings = {
   showMapOutline: true,
   showMapAlignmentMask: false,
   showFeatureList: true,
-  showJoinRoomDialog: false,
+  showShareRoomDialog: false,
   showCreateRoomDialog: false,
 };

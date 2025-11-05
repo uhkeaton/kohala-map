@@ -1,8 +1,9 @@
 import { useRoomCode } from "./room";
-import { JoinRoom } from "./JoinRoom";
+import { ShareRoom } from "./ShareRoom";
 import { CreateRoom } from "./CreateRoom";
 import { useGlobal } from "../global/useGlobal";
 import cx from "classnames";
+import { ManualJoinRoom } from "./ManualJoinRoom";
 
 export function RoomSettings() {
   const { socketConnected } = useGlobal();
@@ -24,9 +25,12 @@ export function RoomSettings() {
 
       {roomCode && (
         <div className="my-4">
-          <JoinRoom />
+          <ShareRoom />
         </div>
       )}
+      <div className="my-4">
+        <ManualJoinRoom />
+      </div>
       <div className="my-4">
         <CreateRoom />
       </div>

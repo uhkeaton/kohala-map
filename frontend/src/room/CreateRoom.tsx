@@ -1,20 +1,20 @@
 import Dialog from "@mui/material/Dialog";
-import { useCreateRoomCode } from "./room";
+import { useRoomCode } from "./room";
 import { Button, Divider } from "@mui/material";
 import { useGlobal } from "../global/useGlobal";
 
 export function CreateRoom() {
   const { displaySettings, setDisplaySettings } = useGlobal();
 
-  const { mutate } = useCreateRoomCode();
+  const { createRoomMutation } = useRoomCode();
 
   function createRoom() {
     setDisplaySettings((s) => ({
       ...s,
       showCreateRoomDialog: false,
-      showJoinRoomDialog: true,
+      showShareRoomDialog: true,
     }));
-    mutate();
+    createRoomMutation.mutate();
   }
 
   const handleClose = () => {

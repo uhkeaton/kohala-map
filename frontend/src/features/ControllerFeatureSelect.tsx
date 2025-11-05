@@ -42,7 +42,7 @@ export function ControllerFeatureSelect() {
   };
 
   return (
-    <div className="w-full h-full p-4">
+    <div className="w-full h-full">
       <Box sx={{ minWidth: 120 }}>
         <FormControl fullWidth>
           <InputLabel>Feature</InputLabel>

@@ -4,16 +4,16 @@ import QRCode from "react-qr-code";
 import { Button, Divider } from "@mui/material";
 import { useGlobal } from "../global/useGlobal";
 
-export function JoinRoom() {
+export function ShareRoom() {
   const { displaySettings, setDisplaySettings, socketConnected } = useGlobal();
   const { roomCode } = useRoomCode();
 
   const handleClose = () => {
-    setDisplaySettings((s) => ({ ...s, showJoinRoomDialog: false }));
+    setDisplaySettings((s) => ({ ...s, showShareRoomDialog: false }));
   };
 
   const handleOpen = () => {
-    setDisplaySettings((s) => ({ ...s, showJoinRoomDialog: true }));
+    setDisplaySettings((s) => ({ ...s, showShareRoomDialog: true }));
   };
 
   //   const qrCode = window.location.origin + `/controller?code=${data}`;
@@ -27,16 +27,16 @@ export function JoinRoom() {
         onClick={handleOpen}
         variant="contained"
       >
-        Join This Room
+        Share This Room
       </Button>
       <Dialog
         maxWidth="sm"
         onClose={handleClose}
-        open={displaySettings.showJoinRoomDialog}
+        open={displaySettings.showShareRoomDialog}
       >
         <div className="flex flex-col items-center px-4">
           <div>
-            <div className="p-4 text-2xl font-bold">Join Room</div>
+            <div className="p-4 text-2xl font-bold">Share Room</div>
             <Divider sx={{ width: "100%" }} />
             <div className="p-4 pb-8">
               <div className="text-xl mb-4">

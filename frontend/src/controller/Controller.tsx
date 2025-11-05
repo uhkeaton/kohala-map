@@ -1,7 +1,8 @@
 import { useLocation, useNavigate } from "react-router";
 import { useEffect } from "react";
-import { useJoinRoomCode, useRoomCode } from "../room/room";
+import { useRoomCode } from "../room/room";
 import { ControllerFeatureSelect } from "../features/ControllerFeatureSelect";
+import { ManualJoinRoom } from "../room/ManualJoinRoom";
 
 export function Controller() {
   const { roomCode } = useRoomCode();
@@ -9,7 +10,8 @@ export function Controller() {
 
   const location = useLocation();
 
-  const { mutate } = useJoinRoomCode();
+  const { joinRoomMutation } = useRoomCode();
+  const { mutate } = joinRoomMutation;
 
   //  check url for room code
   useEffect(() => {
@@ -40,41 +42,15 @@ export function Controller() {
 
   return (
     <div className="h-[100dvh] w-[100dvw] bg-white overflow-hidden p-4">
-      {/* <div className="w-full flex justify-between mb-4">
-        <CloseButton
-          onClick={() => {
-            navigate("/");
-          }}
-        />
-      </div> */}
-      <div className="text-2xl mb-4">Controller</div>
-      <div>Room: {roomCode}</div>
-
-      {/* <Button
-        onClick={() => {
-          mutation.mutate({ layers: ["Test!"] });
-        }}
-      >
-        Layers
-      </Button> */}
-      <ControllerFeatureSelect />
-      <div className="flex flex-col gap-4">
-        {/* <Button
-          variant="contained"
-          onClick={() => {
-            mutationZoomIn.mutate();
-          }}
-        >
-          Zoom In
-        </Button>
-        <Button
-          variant="contained"
-          onClick={() => {
-            mutationZoomOut.mutate();
-          }}
-        >
-          Zoom Out
-        </Button> */}
+      <div className="max-w-sm m-auto">
+        <div className="px-4 mb-4 text-2xl">Controller</div>
+        <div className="px-4 mb-4">Room: {roomCode}</div>
+        <div className="px-4 mb-4">
+          <ControllerFeatureSelect />
+        </div>
+        <div className="px-4 mb-4">
+          <ManualJoinRoom />
+        </div>
       </div>
     </div>
   );
