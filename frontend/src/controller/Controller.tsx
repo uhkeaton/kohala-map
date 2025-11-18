@@ -4,6 +4,7 @@ import { useRoomCode } from "../room/room";
 import { ControllerFeatureSelect } from "../features/ControllerFeatureSelect";
 import { ManualJoinRoom } from "../room/ManualJoinRoom";
 import { ConnectedStatus } from "../room/ConnectedStatus";
+import { Button } from "@mui/material";
 
 export function Controller() {
   const navigate = useNavigate();
@@ -56,6 +57,17 @@ export function Controller() {
           </div>
           <div className="px-4 mb-4">
             <ManualJoinRoom />
+          </div>
+          <div>
+            <Button
+              className="w-full"
+              onClick={() => {
+                navigate("/");
+              }}
+              variant="text"
+            >
+              Map View
+            </Button>
           </div>
         </div>
       </div>

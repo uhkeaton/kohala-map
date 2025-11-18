@@ -1,21 +1,28 @@
 import "./point.css";
-import type { Coordinates } from "../types";
-import { mapMaxX, mapMaxY, mapMinX, mapMinY } from "../constants";
+import type { Coordinates } from "../types/types";
+import { MapConfig, useSpreadsheet } from "../spreadsheet/spreadsheet";
 
 /**
  * @param lat real latitude of point
  * @param long real longitude of point
  * @returns the percent offset of the point from the left and top of the map
  */
-function toPercent([long, lat]: Coordinates): [number, number] {
-  const rangeY = mapMaxY - mapMinY;
-  const rangeX = mapMaxX - mapMinX;
+function toPercent(
+  [long, lat]: Coordinates,
+  mapConfig: MapConfig
+): [number, number] {
+  const { minLon, maxLon, minLat, maxLat } = mapConfig;
+  const [minX, maxX] = [minLon, maxLon];
+  const [minY, maxY] = [minLat, maxLat];
+
+  const rangeY = maxY - minY;
+  const rangeX = maxX - minX;
 
   // measuring percent from top, not from the bottom, hence the (1 -) at the begining
-  const percentY = 1 - (long - mapMinY) / rangeY;
+  const percentY = 1 - (long - minY) / rangeY;
 
   // measuring percent from left
-  const percentX = (lat - mapMinX) / rangeX;
+  const percentX = (lat - minX) / rangeX;
 
   // because the map is flipped upside down
   // with North Kohala facing the viewer,
@@ -28,7 +35,8 @@ function toPercent([long, lat]: Coordinates): [number, number] {
 
 export function Point({ coords }: { coords: Coordinates }) {
   const [long, lat] = coords;
-  const [percentY, percentX] = toPercent([long, lat]);
+  const { mapConfig } = useSpreadsheet();
+  const [percentY, percentX] = toPercent([long, lat], mapConfig);
   return (
     <div
       style={{

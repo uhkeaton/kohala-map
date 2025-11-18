@@ -1,4 +1,4 @@
-import type { Feature } from "../types";
+import type { Feature } from "../types/types";
 import kalahikiolaChurch from "/assets/kalahikiola-church.png";
 import kohalaVolcano from "/assets/kohala-volcano.png";
 import waipioValley from "/assets/waipio-valley.png";
@@ -10,8 +10,8 @@ import kohalaVolcanoLayer from "/assets/kohala-volcano-layer.png";
 export const featuresData: Feature[] = [
   {
     id: "waipio-valley",
-    titleEnglish: "Waipiʻo Valley",
-    descriptionEnglish:
+    title: "Waipiʻo Valley",
+    description:
       "Waipiʻo Valley, once home to Hawaiian kings and aliʻi (chiefs), was a thriving center of agriculture and spiritual life. Its fertile lands supported taro cultivation, and sacred sites dotted the valley. Today, it remains a living symbol of Hawaiʻi’s ancient culture and natural beauty.",
     titleHawaiian: "Waipiʻo",
     descriptionHawaiian:
@@ -25,8 +25,8 @@ export const featuresData: Feature[] = [
   },
   {
     id: "kohala-volcano",
-    titleEnglish: "Kohala Volcano",
-    descriptionEnglish:
+    title: "Kohala Volcano",
+    description:
       "Kohala Volcano, the oldest volcano on Hawaiʻi’s Big Island, is extinct and heavily eroded, forming valleys, cliffs, and fertile lands. Its slopes supported ancient Hawaiian communities, agriculture, and sacred sites, making it an important cultural and historical center.",
     titleHawaiian: "Kohala",
     descriptionHawaiian:
@@ -41,8 +41,8 @@ export const featuresData: Feature[] = [
   },
   {
     id: "kalahikiola-church",
-    titleEnglish: "Kalahikiola Church",
-    descriptionEnglish:
+    title: "Kalahikiola Church",
+    description:
       "Kalahikiola Congregational Church is a historic 19th-century church in North Kohala, Hawaiʻi. Known for its classic missionary-style architecture, it remains an active place of worship and a symbol of the island’s cultural and spiritual heritage.",
     titleHawaiian: "Kalahikiola",
     descriptionHawaiian:

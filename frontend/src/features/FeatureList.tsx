@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useGlobal } from "../global/useGlobal";
 import { renderFeatureTitle } from "./feature";
 import {
@@ -9,10 +8,16 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
+import { useRoomCode } from "../room/room";
+import { useWebSocketConnection } from "../socket";
+import { useSpreadsheet } from "../spreadsheet/spreadsheet";
 
 export function FeatureList() {
-  const { displaySettings, features, visibleFeature, setVisibleFeatureId } =
-    useGlobal();
+  const { displaySettings, setVisibleFeatureId } = useGlobal();
+  const { features, visibleFeature } = useSpreadsheet();
+
+  const { roomCode } = useRoomCode();
+  const { send } = useWebSocketConnection(roomCode);
 
   const Options = features.map((item) => {
     return (
@@ -26,9 +31,28 @@ export function FeatureList() {
     if (event.target.value) {
       setVisibleFeatureId(event.target.value);
     }
+
+    //
+    if (visibleFeature?.id == event.target.value) {
+      return;
+    }
+
+    //
+    const feature = features.find(
+      (item) => item.id === (event.target.value as string)
+    );
+
+    //
+    if (feature) {
+      send?.({
+        action: "selectFeature",
+        payload: {
+          id: feature.id,
+        },
+      });
+    }
   };
 
-  useEffect(() => console.log(visibleFeature));
   return (
     <div className="w-full h-full p-4">
       <Box sx={{ minWidth: 120 }}>

@@ -1,18 +1,21 @@
 import React, { useCallback, useState } from "react";
 import { GlobalContext } from "./useGlobal";
-import type { DisplaySettings } from "../types";
+import type { DisplaySettings } from "../types/types";
 import { defaultDisplaySettings } from "../constants";
-import { featuresData } from "../features/features";
 import { useRoomCode } from "../room/room";
 import { GenericSocketMessage, useWebSocketConnection } from "../socket";
+import { dataSourceOptions } from "../spreadsheet/dataSourceOptions";
+import { useSearchParams } from "react-router";
 
 export type GlobalContextValue = ReturnType<typeof useGlobalContext>;
 
 function useGlobalContext() {
   const [visibleFeatureId, setVisibleFeatureId] = useState<string | null>(null);
 
-  const visibleFeature = featuresData.find(
-    (item) => item.id === visibleFeatureId
+  const [searchParams] = useSearchParams();
+  const urlSheetId = searchParams.get("sheet_id");
+  const [spreadsheetId, setSpeadsheetId] = useState(
+    urlSheetId ?? dataSourceOptions[0].id
   );
 
   const [displaySettings, setDisplaySettings] = useState<DisplaySettings>(
@@ -26,6 +29,9 @@ function useGlobalContext() {
       case "selectFeature":
         setVisibleFeatureId(msg.payload?.id || "");
         break;
+      case "selectSpreadsheetId":
+        setSpeadsheetId(msg.payload?.id || "");
+        break;
       default:
         console.log("Unhandled action:", msg);
     }
@@ -34,13 +40,13 @@ function useGlobalContext() {
   const { socketConnected } = useWebSocketConnection(roomCode, callback);
 
   return {
-    visibleFeature,
     visibleFeatureId,
     setVisibleFeatureId,
     displaySettings,
     setDisplaySettings,
-    features: featuresData,
     socketConnected,
+    spreadsheetId,
+    setSpeadsheetId,
   };
 }
 

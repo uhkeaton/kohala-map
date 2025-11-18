@@ -1,4 +1,4 @@
-import type { DisplaySettings, Feature } from "../types";
+import type { DisplaySettings, Feature } from "../types/types";
 
 export function renderFeatureTitle(
   feature: Feature,
@@ -6,11 +6,11 @@ export function renderFeatureTitle(
 ) {
   switch (settings.language) {
     case "haw": {
-      return feature.titleHawaiian || feature.titleEnglish;
+      return feature.titleHawaiian || feature.title;
     }
     case "eng":
     default: {
-      return feature.titleEnglish;
+      return feature.title;
     }
   }
 }
@@ -21,11 +21,11 @@ export function renderFeatureDescription(
 ) {
   switch (settings.language) {
     case "haw": {
-      return feature.descriptionHawaiian || feature.descriptionEnglish;
+      return feature.descriptionHawaiian || feature.description;
     }
     case "eng":
     default: {
-      return feature.descriptionEnglish;
+      return feature.description;
     }
   }
 }

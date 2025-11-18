@@ -2,7 +2,7 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import * as React from "react";
 import { useGlobal } from "../global/useGlobal";
-import type { DisplaySettings } from "../types";
+import type { DisplaySettings } from "../types/types";
 
 export function LanguageSelect() {
   const { displaySettings, setDisplaySettings } = useGlobal();

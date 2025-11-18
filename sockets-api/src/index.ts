@@ -18,6 +18,7 @@ const app = new Hono<{ Bindings: Bindings }>();
 app.get('/', (c) => c.text('Hello World!'));
 
 app.get('/ws', (c) => {
+	// get the room code from the url
 	const roomCode = c.req.query('code');
 
 	const upgradeHeader = c.req.header('Upgrade');

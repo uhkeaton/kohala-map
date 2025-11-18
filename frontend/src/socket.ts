@@ -1,11 +1,17 @@
 import { WS_URL } from "./api";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-export type GenericSocketMessage = {
-  room_code: string;
-  action: "selectFeature";
-  payload: { id: string };
-}; // | {} ... add more
+export type GenericSocketMessage =
+  | {
+      // room_code: string;
+      action: "selectFeature";
+      payload: { id: string };
+    }
+  | {
+      action: "selectSpreadsheetId";
+      payload: { id: string };
+    };
+// | {} ... add more
 
 export function useWebSocketConnection(
   roomId: string | null | undefined,

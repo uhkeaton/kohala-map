@@ -2,9 +2,11 @@ import { AutoScale } from "../ui/AutoScale";
 import { FadeIn } from "../ui/FadeIn";
 import { useGlobal } from "../global/useGlobal";
 import { renderFeatureDescription, renderFeatureTitle } from "./feature";
+import { useSpreadsheet } from "../spreadsheet/spreadsheet";
 
 export function FeatureDetail() {
-  const { visibleFeature, displaySettings } = useGlobal();
+  const { displaySettings } = useGlobal();
+  const { visibleFeature } = useSpreadsheet();
   return (
     <AutoScale>
       {(scale) => {

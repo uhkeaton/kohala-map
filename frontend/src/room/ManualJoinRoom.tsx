@@ -12,11 +12,11 @@ export function ManualJoinRoom() {
   const { mutate } = joinRoomMutation;
 
   const handleClose = () => {
-    setDisplaySettings((s) => ({ ...s, showManualJoinRoomDialog: false }));
+    setDisplaySettings((s) => ({ ...s, showDialogManualJoinRoom: false }));
   };
 
   const handleOpen = () => {
-    setDisplaySettings((s) => ({ ...s, showManualJoinRoomDialog: true }));
+    setDisplaySettings((s) => ({ ...s, showDialogManualJoinRoom: true }));
   };
 
   return (
@@ -27,7 +27,7 @@ export function ManualJoinRoom() {
       <Dialog
         maxWidth="sm"
         onClose={handleClose}
-        open={displaySettings.showManualJoinRoomDialog}
+        open={displaySettings.showDialogManualJoinRoom}
       >
         <div className="flex flex-col items-center px-4">
           <div>

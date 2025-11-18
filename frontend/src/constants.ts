@@ -1,4 +1,4 @@
-import type { DisplaySettings } from "./types";
+import type { DisplaySettings } from "./types/types";
 
 // real latitude coordinate range
 export const mapMinX = -155.905;
@@ -17,7 +17,9 @@ export const defaultDisplaySettings: DisplaySettings = {
   showMapOutline: true,
   showMapAlignmentMask: false,
   showFeatureList: true,
-  showShareRoomDialog: false,
-  showCreateRoomDialog: false,
-  showManualJoinRoomDialog: false,
+  //
+  showDialogShareRoom: false,
+  showDialogCreateRoom: false,
+  showDialogManualJoinRoom: false,
+  showDialogDataSource: false,
 };

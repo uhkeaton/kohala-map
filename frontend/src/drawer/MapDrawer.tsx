@@ -4,6 +4,7 @@ import { IconMenu } from "../icons/menu";
 import { DisplaySettings } from "./DisplaySettings";
 import { LanguageSelect } from "./LanguageSelect";
 import { RoomSettings } from "../room/RoomSettings";
+import { DataSettings } from "../spreadsheet/DataSettings";
 
 export function MapDrawer() {
   const [open, setOpen] = useState(false);
@@ -19,7 +20,10 @@ export function MapDrawer() {
       </div>
       <Drawer anchor={"right"} open={open} onClose={() => setOpen(false)}>
         <div className="m-4 mt-8">
-          <div className="text-xl mb-4">Settings</div>
+          <div className="text-xl mb-4">Data</div>
+          <DataSettings />
+          <Divider sx={{ my: 4 }} />
+          <div className="text-xl mb-4">Display</div>
           <DisplaySettings />
           <Divider sx={{ my: 4 }} />
           <div className="text-xl mb-4">Language</div>
@@ -27,6 +31,8 @@ export function MapDrawer() {
           <Divider sx={{ my: 4 }} />
           <div className="text-xl mb-4">Room</div>
           <RoomSettings />
+          {/* margin */}
+          <div className="my-12"/>
         </div>
       </Drawer>
     </>

@@ -10,9 +10,11 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import { useRoomCode } from "../room/room";
+import { useSpreadsheet } from "../spreadsheet/spreadsheet";
 
 export function ControllerFeatureSelect() {
-  const { displaySettings, features, visibleFeature } = useGlobal();
+  const { displaySettings } = useGlobal();
+  const { features, visibleFeature } = useSpreadsheet();
   const { roomCode } = useRoomCode();
 
   //   const socketMutation = useSocketMutation();
@@ -32,7 +34,6 @@ export function ControllerFeatureSelect() {
     );
     if (feature) {
       send?.({
-        room_code: roomCode || "",
         action: "selectFeature",
         payload: {
           id: feature.id,

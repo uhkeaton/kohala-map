@@ -9,11 +9,11 @@ export function ShareRoom() {
   const { roomCode } = useRoomCode();
 
   const handleClose = () => {
-    setDisplaySettings((s) => ({ ...s, showShareRoomDialog: false }));
+    setDisplaySettings((s) => ({ ...s, showDialogShareRoom: false }));
   };
 
   const handleOpen = () => {
-    setDisplaySettings((s) => ({ ...s, showShareRoomDialog: true }));
+    setDisplaySettings((s) => ({ ...s, showDialogShareRoom: true }));
   };
 
   //   const qrCode = window.location.origin + `/controller?code=${data}`;
@@ -32,7 +32,7 @@ export function ShareRoom() {
       <Dialog
         maxWidth="sm"
         onClose={handleClose}
-        open={displaySettings.showShareRoomDialog}
+        open={displaySettings.showDialogShareRoom}
       >
         <div className="flex flex-col items-center px-4">
           <div>

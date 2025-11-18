@@ -11,18 +11,18 @@ export function CreateRoom() {
   function createRoom() {
     setDisplaySettings((s) => ({
       ...s,
-      showCreateRoomDialog: false,
-      showShareRoomDialog: true,
+      showDialogCreateRoom: false,
+      showDialogShareRoom: true,
     }));
     createRoomMutation.mutate();
   }
 
   const handleClose = () => {
-    setDisplaySettings((s) => ({ ...s, showCreateRoomDialog: false }));
+    setDisplaySettings((s) => ({ ...s, showDialogCreateRoom: false }));
   };
 
   const handleOpen = () => {
-    setDisplaySettings((s) => ({ ...s, showCreateRoomDialog: true }));
+    setDisplaySettings((s) => ({ ...s, showDialogCreateRoom: true }));
   };
 
   return (
@@ -33,7 +33,7 @@ export function CreateRoom() {
       <Dialog
         maxWidth="sm"
         onClose={handleClose}
-        open={displaySettings.showCreateRoomDialog}
+        open={displaySettings.showDialogCreateRoom}
       >
         <div className="flex flex-col items-center px-4">
           <div>
