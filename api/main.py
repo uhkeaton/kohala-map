@@ -1,20 +1,13 @@
-# Command to Run the Server: fastapi dev main.py
+import json
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
-from typing import List
-
+from typing import Dict, List
 from pydantic import BaseModel
 
 app = FastAPI()
 
-connections: List[WebSocket] = []
-
 # CORS
-origins = [
-    "*",  
-    "http://localhost:5173/",  
-]
-
+origins = ["*", "http://localhost:5173/"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -23,42 +16,60 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+# --- Room Management ---
 
+class Room:
+    def __init__(self, room_code: str):
+        self.room_code = room_code
+        self.connections: List[WebSocket] = []
 
-class MapState(BaseModel):
-    layers: List[str]
-    
-@app.post("/control")
-async def control(state: MapState):
-    for ws in connections:
-        await ws.send_text(f"{state.layers[0]}")
-    return {"status": "Success"}
+    async def broadcast_text(self, message: str, exclude: WebSocket = None):
+        for ws in self.connections:
+            if ws != exclude:
+                await ws.send_text(message)
 
-@app.post("/zoom-in")
-async def zoom_in():
-    for ws in connections:
-        await ws.send_text(f"zoom-in")
-    return {"status": "Success"}
+    async def broadcast_json(self, data: dict, exclude: WebSocket = None):
+        for ws in self.connections:
+            if ws != exclude:
+                await ws.send_json(data)
 
-@app.post("/zoom-out")
-async def zoom_out():
-    for ws in connections:
-        await ws.send_text(f"zoom-out")
-    return {"status": "Success"}
+rooms: Dict[str, Room] = {}
 
+# --- WebSocket Endpoint ---
 
-
-@app.websocket("/map-ws")
-async def map_ws(ws: WebSocket):
+@app.websocket("/socket")
+async def socket_ws(ws: WebSocket):
     await ws.accept()
-    connections.append(ws)
+
+    # Wait for first message: should contain the room_code
+    init_data = await ws.receive_text()
+    try:
+        payload = json.loads(init_data)
+        room_code = payload.get("room_code")
+        if not room_code:
+            await ws.send_text("Missing room_code in initial message")
+            await ws.close()
+            return
+    except json.JSONDecodeError:
+        await ws.send_text("Invalid JSON in initial message")
+        await ws.close()
+        return
+
+    # Create room if necessary
+    if room_code not in rooms:
+        rooms[room_code] = Room(room_code)
+    room = rooms[room_code]
+    room.connections.append(ws)
+
+    print(f"Client joined room: {room_code}")
+
     try:
         while True:
             data = await ws.receive_text()
-            print("WS received:", data)
-            await ws.send_text(f"Echo: {data}")
+            print(f"[Room {room_code}] Received: {data}")
+            await room.broadcast_text(data, exclude=ws)
     except WebSocketDisconnect:
-        connections.remove(ws)
+        print(f"Client disconnected from {room_code}")
+        room.connections.remove(ws)
+        if not room.connections:
+            rooms.pop(room_code)

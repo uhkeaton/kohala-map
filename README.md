@@ -46,4 +46,4 @@ https://github.com/omarkawach/maps-sdk-react-ts/tree/main
 python -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 controller-app -> npm run dev:host
 system settings -> network -> get your IP address -> put IP:port in phone
-create a .env in the controller-app and map-app. add VITE_API_BASE_URL=http://your-ip-address-and-port to both
+create a .env in the frontend. add VITE_IP=http://your-ip-address
