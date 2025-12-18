@@ -42,6 +42,7 @@ export const knownSpreadsheetKeys = [
   "map_aspect_ratio",
   "map_width_percent",
   "map_img_src",
+  "map_transform",
 ] as const;
 
 export type MapConfig = {
@@ -53,6 +54,7 @@ export type MapConfig = {
   mapAspectRatioY: number;
   mapWidthPercent: number;
   mapImgSrc: string;
+  mapTransform: string;
 };
 
 export const initialMapConfig = {
@@ -64,6 +66,7 @@ export const initialMapConfig = {
   mapAspectRatioY: NaN,
   mapWidthPercent: NaN,
   mapImgSrc: "",
+  mapTransform: "",
 };
 
 export type SpreadsheetRow = Record<
@@ -202,6 +205,7 @@ export function parseSheet(tsv: string) {
         mapAspectRatioY: parseFloat(row.map_aspect_ratio.split(":")[1]),
         mapWidthPercent: parseFloat(row.map_width_percent),
         mapImgSrc: row.map_img_src,
+        mapTransform: row.map_transform,
       };
     }
 
@@ -273,7 +277,7 @@ export function useSpreadsheet() {
   const query = useQuery({
     queryKey: ["spreadsheet", spreadsheetId],
     queryFn: () => fetchSpreadsheet(spreadsheetId),
-    placeholderData: keepPreviousData
+    placeholderData: keepPreviousData,
   });
 
   const features = query.data?.features ?? [];

@@ -6,6 +6,7 @@ import { FeatureDetail } from "../features/FeatureDetail";
 import { MapDrawer } from "../drawer/MapDrawer";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { useSpreadsheet } from "../spreadsheet/spreadsheet";
+import { useState } from "react";
 
 const darkTheme = createTheme({
   palette: {
@@ -38,6 +39,7 @@ function Aspect({
 export function Map() {
   const { displaySettings } = useGlobal();
   const { visibleFeature, mapConfig } = useSpreadsheet();
+  const [lastLoadedImgUrl, setLastLoadedImgUrl] = useState("");
   return (
     <ThemeProvider theme={darkTheme}>
       <div className="bg-black text-white w-screen h-screen flex items-center">
@@ -54,9 +56,11 @@ export function Map() {
           >
             <div
               // map width is a percentage of the table width
-              // this is important for the <Aspect_5_4/> inside to work correctly
+              // this is important for the <Aspect/> to work correctly
               style={{
                 width: `${mapConfig.mapWidthPercent * 100}%`,
+                transform: `${mapConfig.mapTransform}`,
+                height: "fit-content",
               }}
             >
               <Aspect
@@ -68,12 +72,16 @@ export function Map() {
                     className={cx("w-full", {
                       "opacity-100": displaySettings.showMapOutline,
                       "opacity-0": !displaySettings.showMapOutline,
+                      hidden: mapConfig?.mapImgSrc !== lastLoadedImgUrl,
                     })}
+                    onLoad={() => {
+                      setLastLoadedImgUrl(mapConfig?.mapImgSrc);
+                    }}
                     // className={cx("w-full grayscale-100", {
                     //   "opacity-30": displaySettings.showMapOutline,
                     //   "opacity-0": !displaySettings.showMapOutline,
                     // })}
-                    src="5-4-transparent.png"
+                    src={mapConfig?.mapImgSrc}
                     style={{
                       ...(displaySettings.showMapAlignmentMask && {
                         opacity: 1,
@@ -100,10 +108,6 @@ export function Map() {
                     visibleFeature?.points.map((item) => {
                       return <Point coords={item?.coordinates} />;
                     })}
-                  {/* This div is positioned in the blank space at the bottom left of the map */}
-                  <div className="w-1/3 h-1/3 absolute bottom-0 left-0">
-                    {displaySettings.showFeatureList && <FeatureList />}
-                  </div>
                 </div>
               </Aspect>
             </div>
@@ -113,6 +117,11 @@ export function Map() {
             </div>
           </div>
         </Aspect>
+
+        {/* This div is positioned in the blank space at the bottom left of the map */}
+        <div className="w-64 absolute top-0 left-0 mt-4 ml-2 bg-black/40 rounded-md">
+          {displaySettings.showFeatureList && <FeatureList />}
+        </div>
 
         <MapDrawer />
       </div>

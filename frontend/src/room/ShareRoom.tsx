@@ -3,10 +3,12 @@ import { useRoomCode } from "./room";
 import QRCode from "react-qr-code";
 import { Button, Divider } from "@mui/material";
 import { useGlobal } from "../global/useGlobal";
+import { useSearchParams } from "react-router";
 
 export function ShareRoom() {
   const { displaySettings, setDisplaySettings, socketConnected } = useGlobal();
   const { roomCode } = useRoomCode();
+  const [searchParams] = useSearchParams();
 
   const handleClose = () => {
     setDisplaySettings((s) => ({ ...s, showDialogShareRoom: false }));
@@ -16,8 +18,11 @@ export function ShareRoom() {
     setDisplaySettings((s) => ({ ...s, showDialogShareRoom: true }));
   };
 
-  //   const qrCode = window.location.origin + `/controller?code=${data}`;
-  const qrCode = "https://kohala.pages.dev" + `/controller?code=${roomCode}`;
+  const qrCode = (function () {
+    const next = new URLSearchParams(searchParams);
+    next.set("code", roomCode ?? "");
+    return `https://kohala.pages.dev/controller?${next.toString()}`;
+  })();
 
   return (
     <>
