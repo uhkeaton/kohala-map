@@ -47,7 +47,7 @@ export function Map() {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <div className="bg-black text-white w-screen h-screen flex items-center">
+      <div className=" relative bg-black text-white w-screen h-screen flex items-center">
         <Aspect ratioX={16} ratioY={9}>
           <div
             className={cx("w-full h-full flex", {
@@ -73,18 +73,6 @@ export function Map() {
                 ratioY={mapConfig.mapAspectRatioY}
               >
                 <div className={cx("relative w-full h-full")}>
-
-                  {editMode && (
-                    <div
-                      className="absolute w-10 h-10 bg-red-500 rounded-full"
-                      style={{
-                        top: "90%",
-                        right: "115%",
-                        transform: "translate(-50%, -50%)",
-                      }}
-                    />
-                  )}
-
                   <img
                     className={cx("w-full", {
                       "opacity-100": displaySettings.showMapOutline,
@@ -141,6 +129,14 @@ export function Map() {
         </div>
 
         <MapDrawer editMode={editMode} setEditMode={setEditMode}/>
+
+        {/* Edit mode indicator */}
+        {editMode && (
+          <div className="absolute top-4 left-4 px-2 py-1 bg-red-600 text-white rounded-md z-50">
+            EDIT MODE
+          </div>
+        )}
+
       </div>
     </ThemeProvider>
   );
