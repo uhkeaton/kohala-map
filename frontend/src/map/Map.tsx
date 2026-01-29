@@ -39,7 +39,12 @@ function Aspect({
 export function Map() {
   const { displaySettings } = useGlobal();
   const { visibleFeature, mapConfig } = useSpreadsheet();
+  console.log("visibleFeature:", visibleFeature);
   const [lastLoadedImgUrl, setLastLoadedImgUrl] = useState("");
+
+  {/* New state for edit mode */}
+  const [editMode, setEditMode] = useState(false);
+
   return (
     <ThemeProvider theme={darkTheme}>
       <div className="bg-black text-white w-screen h-screen flex items-center">
@@ -68,6 +73,18 @@ export function Map() {
                 ratioY={mapConfig.mapAspectRatioY}
               >
                 <div className={cx("relative w-full h-full")}>
+
+                  {editMode && (
+                    <div
+                      className="absolute w-10 h-10 bg-red-500 rounded-full"
+                      style={{
+                        top: "90%",
+                        right: "115%",
+                        transform: "translate(-50%, -50%)",
+                      }}
+                    />
+                  )}
+
                   <img
                     className={cx("w-full", {
                       "opacity-100": displaySettings.showMapOutline,
@@ -123,7 +140,7 @@ export function Map() {
           {displaySettings.showFeatureList && <FeatureList />}
         </div>
 
-        <MapDrawer />
+        <MapDrawer editMode={editMode} setEditMode={setEditMode}/>
       </div>
     </ThemeProvider>
   );
