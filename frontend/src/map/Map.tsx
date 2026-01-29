@@ -38,8 +38,9 @@ function Aspect({
 
 export function Map() {
   const { displaySettings } = useGlobal();
-  const { visibleFeature, mapConfig } = useSpreadsheet();
-  console.log("visibleFeature:", visibleFeature);
+  const { features, visibleFeature, mapConfig } = useSpreadsheet();
+  console.log("features: ", features)
+  console.log("Visible Feature: ", visibleFeature)
   const [lastLoadedImgUrl, setLastLoadedImgUrl] = useState("");
 
   {/* New state for edit mode */}
