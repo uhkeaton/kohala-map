@@ -1,6 +1,6 @@
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import { useState } from "react";
-import { useSpreadsheet } from "../spreadsheet/spreadsheet";  // Assuming updateFeature function is here
+import { useGlobal } from "../global/useGlobal";
 
 interface EditModeProps {
   editMode: boolean;
@@ -8,7 +8,7 @@ interface EditModeProps {
 }
 
 export function EditMode({ editMode, setEditMode }: EditModeProps) {
-  const { visibleFeature } = useSpreadsheet();
+  const { visibleFeature } = useGlobal();
 
   const [formData, setFormData] = useState({
     title: visibleFeature?.title || "",

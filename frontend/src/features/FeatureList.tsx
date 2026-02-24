@@ -10,11 +10,10 @@ import {
 } from "@mui/material";
 import { useRoomCode } from "../room/room";
 import { useWebSocketConnection } from "../socket";
-import { useSpreadsheet } from "../spreadsheet/spreadsheet";
 
 export function FeatureList() {
   const { displaySettings, setVisibleFeatureId } = useGlobal();
-  const { features, visibleFeature } = useSpreadsheet();
+  const { features, visibleFeature } = useGlobal();
 
   const { roomCode } = useRoomCode();
   const { send } = useWebSocketConnection(roomCode);

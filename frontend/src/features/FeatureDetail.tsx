@@ -6,7 +6,7 @@ import { useSpreadsheet } from "../spreadsheet/spreadsheet";
 
 export function FeatureDetail() {
   const { displaySettings } = useGlobal();
-  const { visibleFeature } = useSpreadsheet();
+  const { visibleFeature } = useGlobal();
   return (
     <AutoScale>
       {(scale) => {

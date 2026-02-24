@@ -5,7 +5,6 @@ import { useGlobal } from "../global/useGlobal";
 import { FeatureDetail } from "../features/FeatureDetail";
 import { MapDrawer } from "../drawer/MapDrawer";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { useSpreadsheet } from "../spreadsheet/spreadsheet";
 import { useState } from "react";
 
 const darkTheme = createTheme({
@@ -37,14 +36,14 @@ function Aspect({
 }
 
 export function Map() {
-  const { displaySettings } = useGlobal();
-  const { features, visibleFeature, mapConfig } = useSpreadsheet();
+  const {displaySettings, features, visibleFeature, mapConfig } = useGlobal();
   console.log("features: ", features)
   console.log("Visible Feature: ", visibleFeature)
   const [lastLoadedImgUrl, setLastLoadedImgUrl] = useState("");
 
   {/* New state for edit mode */}
-  const [editMode, setEditMode] = useState(false);
+  const [editMode, setEditMode] = useState(false); // Probably need to move this to use Spreadsheets
+  // If mapConfig is not null, then already in edit mode, maybe no need.
 
   return (
     <ThemeProvider theme={darkTheme}>
