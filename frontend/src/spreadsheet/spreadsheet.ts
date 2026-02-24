@@ -8,6 +8,7 @@ import { useGlobal } from "../global/useGlobal";
 import { useRoomCode } from "../room/room";
 import { useWebSocketConnection } from "../socket";
 import { useSearchParams } from "react-router";
+import { useState } from "react";
 
 // @ts-expect-error enum
 export enum SpreadSheetItemType {
@@ -182,7 +183,7 @@ export class FeatureNonSerializable {
     };
   }
 }
-
+// Need to create an inverse of this function. Given mapconfig and feature, give a tsv
 export function parseSheet(tsv: string) {
   const features = new Map<string, FeatureNonSerializable>();
 
@@ -268,22 +269,34 @@ export function parseSheet(tsv: string) {
   };
 }
 
-export function useSpreadsheet() {
+export function useGlobal() {
   const [, setSearchParams] = useSearchParams();
   const { visibleFeatureId, spreadsheetId, setSpeadsheetId } = useGlobal();
   const { roomCode } = useRoomCode();
   const { send } = useWebSocketConnection(roomCode);
 
+  // Maybe eve these into global?
   const query = useQuery({
     queryKey: ["spreadsheet", spreadsheetId],
     queryFn: () => fetchSpreadsheet(spreadsheetId),
     placeholderData: keepPreviousData,
   });
 
-  const features = query.data?.features ?? [];
+  const features = query.data?.features ?? []; // Maybe make this into a state?
   const mapConfig = query.data?.mapConfig ?? initialMapConfig;
 
+  // How Keaton would start (Probably move all of these into global haha)
+  const [editedMapConfig, setEditedMapConfig] = useState<MapConfig | null>(null) // when editing, can look if null
+
   const visibleFeature = features.find((item) => item.id === visibleFeatureId);
+
+  const handleEnterEditMapConfig = () => {
+    setEditedMapConfig(mapConfig)
+  };
+
+  const handleExitEditMapConfig = () => {
+    setEditedMapConfig(null)
+  };
 
   const handleChangeSpreadsheetId = (id: string) => {
     setSpeadsheetId(id);
@@ -304,7 +317,10 @@ export function useSpreadsheet() {
     query,
     visibleFeature,
     features,
-    mapConfig,
+    mapConfig: editedMapConfig? editedMapConfig: mapConfig, // when edit mode, take mapConfig, into editedMapConfig
     handleChangeSpreadsheetId,
+    handleEnterEditMapConfig,
+    handleExitEditMapConfig,
+    setEditedMapConfig
   };
 }

@@ -5,7 +5,6 @@ import { useGlobal } from "../global/useGlobal";
 import { FeatureDetail } from "../features/FeatureDetail";
 import { MapDrawer } from "../drawer/MapDrawer";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { useSpreadsheet } from "../spreadsheet/spreadsheet";
 import { useState } from "react";
 
 const darkTheme = createTheme({
@@ -37,12 +36,18 @@ function Aspect({
 }
 
 export function Map() {
-  const { displaySettings } = useGlobal();
-  const { visibleFeature, mapConfig } = useSpreadsheet();
+  const {displaySettings, features, visibleFeature, mapConfig } = useGlobal();
+  console.log("features: ", features)
+  console.log("Visible Feature: ", visibleFeature)
   const [lastLoadedImgUrl, setLastLoadedImgUrl] = useState("");
+
+  {/* New state for edit mode */}
+  const [editMode, setEditMode] = useState(false); // Probably need to move this to use Spreadsheets
+  // If mapConfig is not null, then already in edit mode, maybe no need.
+
   return (
     <ThemeProvider theme={darkTheme}>
-      <div className="bg-black text-white w-screen h-screen flex items-center">
+      <div className=" relative bg-black text-white w-screen h-screen flex items-center">
         <Aspect ratioX={16} ratioY={9}>
           <div
             className={cx("w-full h-full flex", {
@@ -123,7 +128,15 @@ export function Map() {
           {displaySettings.showFeatureList && <FeatureList />}
         </div>
 
-        <MapDrawer />
+        <MapDrawer editMode={editMode} setEditMode={setEditMode}/>
+
+        {/* Edit mode indicator */}
+        {editMode && (
+          <div className="absolute top-4 left-4 px-2 py-1 bg-red-600 text-white rounded-md z-50">
+            EDIT MODE
+          </div>
+        )}
+
       </div>
     </ThemeProvider>
   );

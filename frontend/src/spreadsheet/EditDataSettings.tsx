@@ -88,7 +88,7 @@ export function EditDataSettings() {
 export function DataSelect() {
   const { spreadsheetId } = useGlobal();
 
-  const { handleChangeSpreadsheetId } = useSpreadsheet();
+  const { handleChangeSpreadsheetId } = useGlobal();
 
   const Options = dataSourceOptions.map((item) => {
     return <MenuItem value={item.id}>{item.title}</MenuItem>;

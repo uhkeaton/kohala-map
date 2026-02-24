@@ -36,7 +36,7 @@ function toPercent(
 
 export function Point({ coords }: { coords: Coordinates }) {
   const [long, lat] = coords;
-  const { mapConfig } = useSpreadsheet();
+  const { mapConfig } = useGlobal();
   const [percentY, percentX] = toPercent([long, lat], mapConfig);
   return (
     <div

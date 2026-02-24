@@ -10,11 +10,10 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import { useRoomCode } from "../room/room";
-import { useSpreadsheet } from "../spreadsheet/spreadsheet";
 
 export function ControllerFeatureSelect() {
   const { displaySettings } = useGlobal();
-  const { features, visibleFeature } = useSpreadsheet();
+  const { features, visibleFeature } = useGlobal();
   const { roomCode } = useRoomCode();
 
   //   const socketMutation = useSocketMutation();
