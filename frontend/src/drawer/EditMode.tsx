@@ -2,13 +2,14 @@ import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle } 
 import { useState } from "react";
 import { useGlobal } from "../global/useGlobal";
 
-interface EditModeProps {
-  editMode: boolean;
-  setEditMode: (value: boolean) => void;
-}
-
-export function EditMode({ editMode, setEditMode }: EditModeProps) {
-  const { visibleFeature } = useGlobal();
+export function EditMode() {
+  const { visibleFeature, 
+    mapConfig,
+    features,
+    handleEnterEditMapConfig, 
+    handleExitEditMapConfig } = useGlobal();
+  
+  const[editMode, setEditMode] = useState(false)
 
   const [formData, setFormData] = useState({
     title: visibleFeature?.title || "",
@@ -19,7 +20,15 @@ export function EditMode({ editMode, setEditMode }: EditModeProps) {
   });
 
   const handleClick = () => {
-    setEditMode(!editMode);
+    if(editMode) 
+    {
+      handleEnterEditMapConfig(); // Once in edit mode, will be working on "fake" map settings / features for now.
+    }
+    else
+    {
+      handleExitEditMapConfig()
+    }
+    setEditMode(!editMode)
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,12 +39,12 @@ export function EditMode({ editMode, setEditMode }: EditModeProps) {
   const handleSubmit = () => {
     if (visibleFeature) {
       // TODO: Add something to make it change the feature
-      setEditMode(false); 
+      console.log("Lol")
     }
   };
 
   const handleCancel = () => {
-    setEditMode(false)
+    handleExitEditMapConfig()
   };
 
   return (

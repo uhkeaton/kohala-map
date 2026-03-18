@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { GlobalContext } from "./useGlobal";
-import type { DisplaySettings } from "../types/types";
+import type { DisplaySettings, Feature } from "../types/types";
 import { defaultDisplaySettings } from "../constants";
 import { useRoomCode } from "../room/room";
 import { GenericSocketMessage, useWebSocketConnection } from "../socket";
@@ -44,45 +44,44 @@ function useGlobalContext() {
 
   // Pasting contents of body of useSpreadsheets
   const [, setSearchParams] = useSearchParams();
-    const { send } = useWebSocketConnection(roomCode);
-  
-    // Maybe eve these into global?
-    const query = useQuery({
-      queryKey: ["spreadsheet", spreadsheetId],
-      queryFn: () => fetchSpreadsheet(spreadsheetId),
-      placeholderData: keepPreviousData,
+  const { send } = useWebSocketConnection(roomCode);
+
+  const query = useQuery({
+    queryKey: ["spreadsheet", spreadsheetId],
+    queryFn: () => fetchSpreadsheet(spreadsheetId),
+    placeholderData: keepPreviousData,
+  });
+
+  const features = query.data?.features ?? []; // Maybe make this into a state?
+  const mapConfig = query.data?.mapConfig ?? initialMapConfig;
+
+  const [editedMapConfig, setEditedMapConfig] = useState<MapConfig | null>(null) // when editing, can look if null
+  const [editingFeatures, setEditingFeatures] = useState<Feature | null>(null) // When editing, will use "fake" features that are a copy
+
+  const visibleFeature = features.find((item) => item.id === visibleFeatureId);
+
+  const handleEnterEditMapConfig = () => {
+    setEditedMapConfig(mapConfig)
+  };
+
+  const handleExitEditMapConfig = () => {
+    setEditedMapConfig(null)
+  };
+
+  const handleChangeSpreadsheetId = (id: string) => {
+    setSpeadsheetId(id);
+    send?.({
+      action: "selectSpreadsheetId",
+      payload: {
+        id: id,
+      },
     });
-  
-    const features = query.data?.features ?? []; // Maybe make this into a state?
-    const mapConfig = query.data?.mapConfig ?? initialMapConfig;
-  
-    // How Keaton would start (Probably move all of these into global haha)
-    const [editedMapConfig, setEditedMapConfig] = useState<MapConfig | null>(null) // when editing, can look if null
-  
-    const visibleFeature = features.find((item) => item.id === visibleFeatureId);
-  
-    const handleEnterEditMapConfig = () => {
-      setEditedMapConfig(mapConfig)
-    };
-  
-    const handleExitEditMapConfig = () => {
-      setEditedMapConfig(null)
-    };
-  
-    const handleChangeSpreadsheetId = (id: string) => {
-      setSpeadsheetId(id);
-      send?.({
-        action: "selectSpreadsheetId",
-        payload: {
-          id: id,
-        },
-      });
-      setSearchParams((prev) => {
-        const next = new URLSearchParams(prev);
-        next.set("sheet_id", String(id));
-        return next;
-      });
-    };
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.set("sheet_id", String(id));
+      return next;
+    });
+  };
 
   return {
     visibleFeatureId,
@@ -94,7 +93,7 @@ function useGlobalContext() {
     setSpeadsheetId,
     query,
     visibleFeature,
-    features,
+    features: editingFeatures? editingFeatures : features,
     mapConfig: editedMapConfig? editedMapConfig: mapConfig, // when edit mode, take mapConfig, into editedMapConfig
     handleChangeSpreadsheetId,
     handleEnterEditMapConfig,

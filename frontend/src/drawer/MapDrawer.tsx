@@ -6,14 +6,9 @@ import { LanguageSelect } from "./LanguageSelect";
 import { RoomSettings } from "../room/RoomSettings";
 import { DataSettings } from "../spreadsheet/DataSettings";
 import { EditMode } from "./EditMode";
-import { EditMapConfig } from "./EditMapConfig";
+// import { EditMapConfig } from "./EditMapConfig";
 
-interface MapDrawerProps {
-  editMode: boolean;
-  setEditMode: (value: boolean) => void;
-}
-
-export function MapDrawer({ editMode, setEditMode } : MapDrawerProps) {
+export function MapDrawer() {
   const [open, setOpen] = useState(false);
 
   return (
@@ -41,12 +36,12 @@ export function MapDrawer({ editMode, setEditMode } : MapDrawerProps) {
           <RoomSettings />
           {/* Adding edit mode to display*/}
           <div className="text-xl mb-4">Edit Mode</div>
-          <EditMode editMode={editMode} setEditMode={setEditMode} />
+          {/* <EditMode/> */}
           <Divider sx={{ my: 4 }} />
           {/* margin */}
-          <div className="text-xl mb-4">Something Edit</div>
+          {/* <div className="text-xl mb-4">Something Edit</div>
           <EditMapConfig />
-          <div className="my-12"/>
+          <div className="my-12"/> */}
 
         </div>
       </Drawer>

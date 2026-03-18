@@ -39,10 +39,10 @@ export function Map() {
   const {displaySettings, features, visibleFeature, mapConfig } = useGlobal();
   console.log("features: ", features)
   console.log("Visible Feature: ", visibleFeature)
+  console.log("Map Config: ", mapConfig)
   const [lastLoadedImgUrl, setLastLoadedImgUrl] = useState("");
 
   {/* New state for edit mode */}
-  const [editMode, setEditMode] = useState(false); // Probably need to move this to use Spreadsheets
   // If mapConfig is not null, then already in edit mode, maybe no need.
 
   return (
@@ -128,14 +128,7 @@ export function Map() {
           {displaySettings.showFeatureList && <FeatureList />}
         </div>
 
-        <MapDrawer editMode={editMode} setEditMode={setEditMode}/>
-
-        {/* Edit mode indicator */}
-        {editMode && (
-          <div className="absolute top-4 left-4 px-2 py-1 bg-red-600 text-white rounded-md z-50">
-            EDIT MODE
-          </div>
-        )}
+        <MapDrawer/>
 
       </div>
     </ThemeProvider>

@@ -1,7 +1,7 @@
 import "./point.css";
 import type { Coordinates } from "../types/types";
-import { MapConfig, useSpreadsheet } from "../spreadsheet/spreadsheet";
-
+import { MapConfig } from "../spreadsheet/spreadsheet";
+import { useGlobal } from "../global/useGlobal";
 /**
  * @param lat real latitude of point
  * @param long real longitude of point

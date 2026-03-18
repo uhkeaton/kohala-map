@@ -186,7 +186,7 @@ export class FeatureNonSerializable {
 // Need to create an inverse of this function. Given mapconfig and feature, give a tsv
 export function parseSheet(tsv: string) {
   const features = new Map<string, FeatureNonSerializable>();
-
+  // console.log("In Spradsheet:", tsv)
   const db = new Database<SpreadsheetRow>(tsv, knownSpreadsheetKeys);
 
   let mapConfig: MapConfig = initialMapConfig;
@@ -220,7 +220,7 @@ export function parseSheet(tsv: string) {
     }
   });
 
-  db.forEachItem((row) => {
+db.forEachItem((row) => {
     const index = row.row_index;
     const type = row.type;
     const featureId = row.feature_id;
@@ -266,61 +266,5 @@ export function parseSheet(tsv: string) {
   return {
     mapConfig: mapConfig,
     features: [...features.values()],
-  };
-}
-
-export function useGlobal() {
-  const [, setSearchParams] = useSearchParams();
-  const { visibleFeatureId, spreadsheetId, setSpeadsheetId } = useGlobal();
-  const { roomCode } = useRoomCode();
-  const { send } = useWebSocketConnection(roomCode);
-
-  // Maybe eve these into global?
-  const query = useQuery({
-    queryKey: ["spreadsheet", spreadsheetId],
-    queryFn: () => fetchSpreadsheet(spreadsheetId),
-    placeholderData: keepPreviousData,
-  });
-
-  const features = query.data?.features ?? []; // Maybe make this into a state?
-  const mapConfig = query.data?.mapConfig ?? initialMapConfig;
-
-  // How Keaton would start (Probably move all of these into global haha)
-  const [editedMapConfig, setEditedMapConfig] = useState<MapConfig | null>(null) // when editing, can look if null
-
-  const visibleFeature = features.find((item) => item.id === visibleFeatureId);
-
-  const handleEnterEditMapConfig = () => {
-    setEditedMapConfig(mapConfig)
-  };
-
-  const handleExitEditMapConfig = () => {
-    setEditedMapConfig(null)
-  };
-
-  const handleChangeSpreadsheetId = (id: string) => {
-    setSpeadsheetId(id);
-    send?.({
-      action: "selectSpreadsheetId",
-      payload: {
-        id: id,
-      },
-    });
-    setSearchParams((prev) => {
-      const next = new URLSearchParams(prev);
-      next.set("sheet_id", String(id));
-      return next;
-    });
-  };
-
-  return {
-    query,
-    visibleFeature,
-    features,
-    mapConfig: editedMapConfig? editedMapConfig: mapConfig, // when edit mode, take mapConfig, into editedMapConfig
-    handleChangeSpreadsheetId,
-    handleEnterEditMapConfig,
-    handleExitEditMapConfig,
-    setEditedMapConfig
   };
 }
