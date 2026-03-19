@@ -7,10 +7,11 @@ export function EditMode() {
   const { visibleFeature, 
     mapConfig,
     features,
+    editMode,
+    setEditMode,
     handleEnterEditMapConfig, 
     handleExitEditMapConfig } = useGlobal();
   
-  const[editMode, setEditMode] = useState(false)
   const[formOpen, setFormOpen] = useState(false)
 
   const [formData, setFormData] = useState({
@@ -45,11 +46,8 @@ export function EditMode() {
 
   const handleCancel = () => {
     handleExitEditMapConfig()
-    setEditMode(false)
     setFormOpen(false)
   };
-
-
 
   return (
     <div className="my-2">
@@ -57,9 +55,10 @@ export function EditMode() {
         control={
           <Switch
             checked={editMode}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setEditMode(event.target.checked);
-              console.log("Edit mode is now", event.target.checked);
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setEditMode(e.target.checked);
+              console.log("Edit mode is now", e.target.checked);
+              handleEnterEditMapConfig();
             }}
           />
         }

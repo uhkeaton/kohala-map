@@ -55,6 +55,7 @@ function useGlobalContext() {
   const features = query.data?.features ?? []; // Maybe make this into a state?
   const mapConfig = query.data?.mapConfig ?? initialMapConfig;
 
+  const[editMode, setEditMode] = useState(false)
   const [editedMapConfig, setEditedMapConfig] = useState<MapConfig | null>(null) // when editing, can look if null
   const [editingFeatures, setEditingFeatures] = useState<Feature | null>(null) // When editing, will use "fake" features that are a copy
 
@@ -98,7 +99,9 @@ function useGlobalContext() {
     handleChangeSpreadsheetId,
     handleEnterEditMapConfig,
     handleExitEditMapConfig,
-    setEditedMapConfig
+    setEditedMapConfig,
+    editMode,
+    setEditMode
   };
 }
 
