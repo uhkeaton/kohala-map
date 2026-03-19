@@ -117,8 +117,10 @@ export class FeatureNonSerializable {
   imgSrc: string;
   points: Point[] = [];
   layers: ImageLayer[] = [];
+  rowData: SpreadsheetRow;
 
   constructor(row: SpreadsheetRow) {
+    
     const index = row.row_index;
     this.type = row.type;
     assert(
@@ -132,6 +134,18 @@ export class FeatureNonSerializable {
     this.titleHawaiian = row.title_hawaiian;
     this.descriptionHawaiian = row.description_hawaiian;
     this.imgSrc = row.img_src;
+    this.rowData = row;
+  }
+
+  public clone(): FeatureNonSerializable {
+    // Create a "dummy" SpreadsheetRow for constructor
+    
+    const copy = new FeatureNonSerializable(this.rowData);
+    // Copy points and layers
+    copy.points = [...this.points];
+    copy.layers = [...this.layers];
+
+    return copy;
   }
 
   public addPoint(row: SpreadsheetRow) {

@@ -39,3 +39,12 @@ export type Feature = {
   points: Point[];
   layers?: ImageLayer[];
 };
+
+export type FormData = {
+  title: string;
+  description: string;
+  titleHawaiian: string;
+  descriptionHawaiian: string;
+  imgSrc: string;
+  id: string;
+};

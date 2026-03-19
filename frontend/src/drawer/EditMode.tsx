@@ -2,6 +2,7 @@ import { Button, FormControlLabel, Switch } from "@mui/material";
 import { useState } from "react";
 import { useGlobal } from "../global/useGlobal";
 import  { EditFeatureDialog }  from "./EditFeature"
+import { FormData } from "../types/types"
 
 export function EditMode() {
   const { visibleFeature, 
@@ -10,17 +11,18 @@ export function EditMode() {
     editMode,
     setEditMode,
     handleEnterEditMapConfig, 
-    handleExitEditMapConfig } = useGlobal();
+    handleExitEditMapConfig,
+    changeFeature } = useGlobal();
   
   const[formOpen, setFormOpen] = useState(false)
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     title: visibleFeature?.title || "",
     description: visibleFeature?.description || "",
     titleHawaiian: visibleFeature?.titleHawaiian || "",
     descriptionHawaiian: visibleFeature?.descriptionHawaiian || "",
     imgSrc: visibleFeature?.imgSrc || "",
-    id: visibleFeature?.id || ""
+    id: visibleFeature?.id || "" // Should always stay the same
   });
 
   const handleClick = () => {
@@ -33,14 +35,14 @@ export function EditMode() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    
   };
 
   const handleSubmit = () => {
     if (visibleFeature) {
-      // TODO: Add something to make it change the feature
-      console.log("This is what formdata looks like: ", formData);
-      console.log(features)
-      setFormOpen(false)
+      setFormOpen(false);
+      console.log(features);
+      changeFeature(formData);
     }
   };
 

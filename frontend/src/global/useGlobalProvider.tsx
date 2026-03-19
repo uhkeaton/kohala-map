@@ -1,12 +1,12 @@
 import React, { useCallback, useState } from "react";
 import { GlobalContext } from "./useGlobal";
-import type { DisplaySettings, Feature } from "../types/types";
+import type { DisplaySettings, FormData} from "../types/types";
 import { defaultDisplaySettings } from "../constants";
 import { useRoomCode } from "../room/room";
 import { GenericSocketMessage, useWebSocketConnection } from "../socket";
 import { dataSourceOptions } from "../spreadsheet/dataSourceOptions";
 import { useSearchParams } from "react-router";
-import { initialMapConfig, MapConfig } from "../spreadsheet/spreadsheet";
+import { FeatureNonSerializable, initialMapConfig, MapConfig } from "../spreadsheet/spreadsheet";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchSpreadsheet } from "../api";
 
@@ -52,21 +52,47 @@ function useGlobalContext() {
     placeholderData: keepPreviousData,
   });
 
-  const features = query.data?.features ?? []; // Maybe make this into a state?
+  const features = query.data?.features ?? [];
   const mapConfig = query.data?.mapConfig ?? initialMapConfig;
 
   const[editMode, setEditMode] = useState(false)
   const [editedMapConfig, setEditedMapConfig] = useState<MapConfig | null>(null) // when editing, can look if null
-  const [editingFeatures, setEditingFeatures] = useState<Feature | null>(null) // When editing, will use "fake" features that are a copy
+  const [editiedFeatures, setEditingFeatures] = useState<FeatureNonSerializable[] | null>(null) // When editing, will use "fake" features that are a copy
+  let visibleFeature;
 
-  const visibleFeature = features.find((item) => item.id === visibleFeatureId);
+  if (editiedFeatures)
+  {
+    visibleFeature = editiedFeatures.find((item) => item.id === visibleFeatureId);
+  }
+  else
+  {
+    visibleFeature = features.find((item) => item.id === visibleFeatureId);
+  }
+    
 
   const handleEnterEditMapConfig = () => {
-    setEditedMapConfig(mapConfig)
+    setEditedMapConfig(mapConfig);
+    setEditingFeatures(features.map(f => f.clone()));
   };
 
   const handleExitEditMapConfig = () => {
-    setEditedMapConfig(null)
+    setEditedMapConfig(null);
+    setEditingFeatures(null);
+  };
+
+  const changeFeature = (formData: FormData) => {
+    if (editiedFeatures) {
+      let targetFeature = editiedFeatures.find((item) => item.id === formData.id);
+      if (targetFeature)
+      {
+        targetFeature.title = formData.title;
+        targetFeature.description = formData.description;
+        targetFeature.titleHawaiian = formData.titleHawaiian;
+        targetFeature.descriptionHawaiian = formData.descriptionHawaiian;
+        targetFeature.imgSrc = formData.imgSrc;
+      }
+    };
+    
   };
 
   const handleChangeSpreadsheetId = (id: string) => {
@@ -94,14 +120,15 @@ function useGlobalContext() {
     setSpeadsheetId,
     query,
     visibleFeature,
-    features: editingFeatures? editingFeatures : features,
+    features: editiedFeatures? editiedFeatures : features,
     mapConfig: editedMapConfig? editedMapConfig: mapConfig, // when edit mode, take mapConfig, into editedMapConfig
     handleChangeSpreadsheetId,
     handleEnterEditMapConfig,
     handleExitEditMapConfig,
     setEditedMapConfig,
     editMode,
-    setEditMode
+    setEditMode,
+    changeFeature
   };
 }
 
