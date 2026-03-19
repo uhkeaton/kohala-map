@@ -37,9 +37,6 @@ function Aspect({
 
 export function Map() {
   const {displaySettings, features, visibleFeature, mapConfig } = useGlobal();
-  console.log("features: ", features)
-  console.log("Visible Feature: ", visibleFeature)
-  console.log("Map Config: ", mapConfig)
   const [lastLoadedImgUrl, setLastLoadedImgUrl] = useState("");
 
   {/* New state for edit mode */}

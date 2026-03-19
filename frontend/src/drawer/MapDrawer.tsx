@@ -36,7 +36,7 @@ export function MapDrawer() {
           <RoomSettings />
           {/* Adding edit mode to display*/}
           <div className="text-xl mb-4">Edit Mode</div>
-          {/* <EditMode/> */}
+          <EditMode/>
           <Divider sx={{ my: 4 }} />
           {/* margin */}
           {/* <div className="text-xl mb-4">Something Edit</div>
