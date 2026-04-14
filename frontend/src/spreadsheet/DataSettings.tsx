@@ -23,7 +23,7 @@ export function DataSourceSelect() {
   };
 
   return (
-    <div className="w-full h-full">
+    <div>
       <Box sx={{ minWidth: 120 }}>
         <FormControl fullWidth>
           <InputLabel>Source</InputLabel>

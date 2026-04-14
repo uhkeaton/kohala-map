@@ -5,7 +5,7 @@ import { ControllerFeatureSelect } from "./features/ControllerFeatureSelect";
 import { ManualJoinRoom } from "./room/ManualJoinRoom";
 import { ConnectedStatus } from "./room/ConnectedStatus";
 import { Button } from "@mui/material";
-import { IPad } from "./IPadList";
+// import { IPad } from "./IPadList";
 
 export function IPadPage() {
   const navigate = useNavigate();
@@ -35,7 +35,7 @@ export function IPadPage() {
     }
   }, [mutate, location.pathname, location.search, navigate]);
 
-  return <IPad />;
+  // return <IPad />;
 
   return (
     <div className="h-[100dvh] w-[100dvw] bg-white overflow-hidden p-4">
