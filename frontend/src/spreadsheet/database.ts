@@ -21,6 +21,7 @@ export class Database<TRow extends { [key: string]: string }> {
         toast.error(`Unknown column (${key})`);
       }
     });
+
     knownKeys.forEach((key) => {
       if (!headers.includes(key)) {
         toast.error(`Missing column (${key})`);
@@ -29,7 +30,7 @@ export class Database<TRow extends { [key: string]: string }> {
 
     this.columnIndexMap = Object.fromEntries(
       // header row
-      headers.map((key, index) => [key, index])
+      headers.map((key, index) => [key, index]),
     );
 
     // remove header row
@@ -46,7 +47,7 @@ export class Database<TRow extends { [key: string]: string }> {
     });
   }
 
-  public forEachItem(callback: (row: TRow) => void) {
+  public forEachItem(callback: (row: TRow, i: number) => void) {
     this.data.forEach(callback);
   }
 }

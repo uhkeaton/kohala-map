@@ -2,7 +2,7 @@ import Dialog from "@mui/material/Dialog";
 import { useRoomCode } from "./room";
 import QRCode from "react-qr-code";
 import { Button, Divider } from "@mui/material";
-import { useGlobal } from "../global/useGlobal";
+import { useGlobal } from "../useGlobal";
 import { useSearchParams } from "react-router";
 
 export function ShareRoom() {

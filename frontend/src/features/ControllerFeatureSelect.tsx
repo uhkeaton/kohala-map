@@ -1,6 +1,5 @@
-import { useGlobal } from "../global/useGlobal";
+import { useGlobal } from "../useGlobal";
 import { useWebSocketConnection } from "../socket";
-import { renderFeatureTitle } from "./feature";
 import {
   Box,
   FormControl,
@@ -12,24 +11,18 @@ import {
 import { useRoomCode } from "../room/room";
 
 export function ControllerFeatureSelect() {
-  const { displaySettings } = useGlobal();
   const { features, visibleFeature } = useGlobal();
   const { roomCode } = useRoomCode();
 
-  //   const socketMutation = useSocketMutation();
   const { send } = useWebSocketConnection(roomCode);
 
   const Options = features.map((item) => {
-    return (
-      <MenuItem value={item.id}>
-        {renderFeatureTitle(item, displaySettings)}
-      </MenuItem>
-    );
+    return <MenuItem value={item.id}>{item.description}</MenuItem>;
   });
 
   const handleChange = (event: SelectChangeEvent) => {
     const feature = features.find(
-      (item) => item.id === (event.target.value as string)
+      (item) => item.id === (event.target.value as string),
     );
     if (feature) {
       send?.({

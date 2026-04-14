@@ -1,17 +1,14 @@
 import { AutoScale } from "../ui/AutoScale";
 import { FadeIn } from "../ui/FadeIn";
-import { useGlobal } from "../global/useGlobal";
-import { renderFeatureDescription, renderFeatureTitle } from "./feature";
-import { useSpreadsheet } from "../spreadsheet/spreadsheet";
+import { useGlobal } from "../useGlobal";
 
 export function FeatureDetail() {
-  const { displaySettings } = useGlobal();
   const { visibleFeature } = useGlobal();
   return (
     <AutoScale>
       {(scale) => {
         return (
-          <FadeIn id={visibleFeature?.id}>
+          <FadeIn id={String(visibleFeature?.id)}>
             <div
               style={{
                 padding: 16 * scale,
@@ -26,16 +23,14 @@ export function FeatureDetail() {
                   }}
                   className="mb-2 font-bold"
                 >
-                  {visibleFeature &&
-                    renderFeatureTitle(visibleFeature, displaySettings)}
+                  {visibleFeature && visibleFeature.title}
                 </div>
                 <div
                   style={{
                     fontSize: 16 * scale,
                   }}
                 >
-                  {visibleFeature &&
-                    renderFeatureDescription(visibleFeature, displaySettings)}
+                  {visibleFeature && visibleFeature.description}
                 </div>
               </div>
 

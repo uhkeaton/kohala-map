@@ -1,6 +1,6 @@
 import Dialog from "@mui/material/Dialog";
 import { Button, Divider, TextField } from "@mui/material";
-import { useGlobal } from "../global/useGlobal";
+import { useGlobal } from "../useGlobal";
 import { useState } from "react";
 import { useRoomCode } from "./room";
 

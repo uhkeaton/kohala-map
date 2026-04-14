@@ -1,15 +1,37 @@
-import { EditDataSettings } from "./EditDataSettings";
+import { useGlobal } from "../useGlobal";
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from "@mui/material";
+import { dataSourceOptions } from "./dataSourceOptions";
 
+export function DataSourceSelect() {
+  const { spreadsheetId } = useGlobal();
 
-export function DataSettings() {
+  const { handleChangeSpreadsheetId } = useGlobal();
+
+  const Options = dataSourceOptions.map((item) => {
+    return <MenuItem value={item.id}>{item.title}</MenuItem>;
+  });
+
+  const handleChange = (event: SelectChangeEvent) => {
+    handleChangeSpreadsheetId(event.target.value);
+  };
+
   return (
-    <>
-      <div className="my-4">{/* <ShareRoom /> */}</div>
-      <div className="my-4">{/* <ManualJoinRoom /> */}</div>
-      <div className="my-4">{/* <CreateRoom /> */}</div>
-      <div>
-        <EditDataSettings />
-      </div>
-    </>
+    <div className="w-full h-full">
+      <Box sx={{ minWidth: 120 }}>
+        <FormControl fullWidth>
+          <InputLabel>Source</InputLabel>
+          <Select value={spreadsheetId} label="Feature" onChange={handleChange}>
+            {Options}
+          </Select>
+        </FormControl>
+      </Box>
+    </div>
   );
 }

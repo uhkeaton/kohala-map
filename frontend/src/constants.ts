@@ -1,4 +1,4 @@
-import type { DisplaySettings } from "./types/types";
+import type { DisplaySettings } from "./types";
 
 // real latitude coordinate range
 export const mapMinX = -155.905;
@@ -13,9 +13,6 @@ export const mapRealWidthInches = 29.5;
 export const tableRealWidthInches = 42.666;
 
 export const defaultDisplaySettings: DisplaySettings = {
-  language: "eng",
-  showMapOutline: true,
-  showMapAlignmentMask: false,
   showFeatureList: true,
   //
   showDialogShareRoom: false,

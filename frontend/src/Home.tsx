@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router";
-import { Map } from "./map/Map";
+import { Map } from "./Map";
 
 export function Home() {
   const navigate = useNavigate();

@@ -1,7 +1,7 @@
 import Dialog from "@mui/material/Dialog";
 import { useRoomCode } from "./room";
 import { Button, Divider } from "@mui/material";
-import { useGlobal } from "../global/useGlobal";
+import { useGlobal } from "../useGlobal";
 
 export function CreateRoom() {
   const { displaySettings, setDisplaySettings } = useGlobal();

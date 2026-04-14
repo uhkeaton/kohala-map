@@ -1,5 +1,5 @@
 import { useRoomCode } from "./room";
-import { useGlobal } from "../global/useGlobal";
+import { useGlobal } from "../useGlobal";
 import cx from "classnames";
 
 export function ConnectedStatus() {

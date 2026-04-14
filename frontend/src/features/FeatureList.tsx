@@ -1,5 +1,4 @@
-import { useGlobal } from "../global/useGlobal";
-import { renderFeatureTitle } from "./feature";
+import { useGlobal } from "../useGlobal";
 import {
   Box,
   FormControl,
@@ -12,7 +11,7 @@ import { useRoomCode } from "../room/room";
 import { useWebSocketConnection } from "../socket";
 
 export function FeatureList() {
-  const { displaySettings, setVisibleFeatureId } = useGlobal();
+  const { setVisibleFeatureId } = useGlobal();
   const { features, visibleFeature } = useGlobal();
 
   const { roomCode } = useRoomCode();
@@ -21,7 +20,7 @@ export function FeatureList() {
   const Options = features.map((item) => {
     return (
       <MenuItem key={item.id} value={item.id}>
-        {renderFeatureTitle(item, displaySettings)}
+        {item.title}
       </MenuItem>
     );
   });
@@ -38,7 +37,7 @@ export function FeatureList() {
 
     //
     const feature = features.find(
-      (item) => item.id === (event.target.value as string)
+      (item) => item.id === (event.target.value as string),
     );
 
     //

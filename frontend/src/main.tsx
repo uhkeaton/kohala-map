@@ -3,10 +3,10 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
-import { Controller } from "./controller/Controller.tsx";
-import { GlobalProvider } from "./global/useGlobalProvider.tsx";
+import { IPadPage } from "./IPadPage.tsx";
+import { GlobalProvider } from "./useGlobalProvider.tsx";
 import { Toaster } from "react-hot-toast";
-import { Map } from "./map/Map.tsx";
+import { Map } from "./Map.tsx";
 
 const queryClient = new QueryClient();
 
@@ -29,7 +29,7 @@ createRoot(document.getElementById("root")!).render(
         <GlobalProvider>
           <Routes>
             <Route index path="/" element={<Map />} />
-            <Route path="/controller" element={<Controller />} />
+            <Route path="/controller" element={<IPadPage />} />
             {/* <Route path="/map" element={<MapApp />} /> */}
             {/* <Route path="/scan" element={<Scan />} /> */}
             {/* Redirect all others to home */}
