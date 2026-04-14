@@ -5,6 +5,7 @@ import { ControllerFeatureSelect } from "../features/ControllerFeatureSelect";
 import { ManualJoinRoom } from "../room/ManualJoinRoom";
 import { ConnectedStatus } from "../room/ConnectedStatus";
 import { Button } from "@mui/material";
+import { IPad } from "./IPad";
 
 export function Controller() {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ export function Controller() {
           search: newSearch ? `?${newSearch}` : "",
         },
         // replace: true prevents adding a new history entry
-        { replace: true }
+        { replace: true },
       );
       mutate(code);
     }
@@ -40,6 +41,8 @@ export function Controller() {
   // const mutationZoomOut = useMutation({
   //   mutationFn: zoomOut,
   // });
+
+  return <IPad />;
 
   return (
     <div className="h-[100dvh] w-[100dvw] bg-white overflow-hidden p-4">
