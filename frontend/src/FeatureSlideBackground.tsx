@@ -1,7 +1,7 @@
 import cx from "classnames";
 import { Feature, toCssFilter } from "./types";
 import { useGlobal } from "./useGlobal";
-import { ID_EDITED_FEATURE } from "./FeatureEditSidebar";
+import { ID_EDITED_FEATURE } from "./featureEditDefault";
 
 export function FeatureSlideBackground({ feature }: { feature: Feature }) {
   const { visibleFeatureId, isEditingRow } = useGlobal();

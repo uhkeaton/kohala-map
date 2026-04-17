@@ -39,10 +39,10 @@ export type Feature = {
   id: string;
   title: string;
   description: string;
-  titleHawaiian?: string;
-  descriptionHawaiian?: string;
-  imgSrc?: string;
-  videoSrc?: string;
+  titleHawaiian: string;
+  descriptionHawaiian: string;
+  imgSrc: string;
+  videoSrc: string;
   point: Point | null;
   mapLayer: MapLayer | null;
 };

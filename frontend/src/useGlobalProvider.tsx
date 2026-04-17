@@ -9,12 +9,15 @@ import { initialMapConfig } from "./spreadsheet/spreadsheet";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchSpreadsheet } from "./api";
 import { dataSourceOptions } from "./drawerDataSourceSelectOptions";
+import { defaultInitialFeature } from "./featureEditDefault";
 
 export type GlobalContextValue = ReturnType<typeof useGlobalContext>;
 
 function useGlobalContext() {
   const [isEditingRow, setIsEditingRow] = useState(false);
-  const [editedFeature, setEditedFeature] = useState<Feature | null>(null);
+  const [editedFeature, setEditedFeature] = useState<Feature>(
+    defaultInitialFeature(),
+  );
   const [visibleFeatureId, setVisibleFeatureId] = useState<string | null>(null);
 
   const [searchParams] = useSearchParams();

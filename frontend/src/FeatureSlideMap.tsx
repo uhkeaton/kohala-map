@@ -2,7 +2,7 @@ import cx from "classnames";
 import { Point } from "./Point";
 import { useGlobal } from "./useGlobal";
 import { Feature, toCssFilter } from "./types";
-import { ID_EDITED_FEATURE } from "./FeatureEditSidebar";
+import { ID_EDITED_FEATURE } from "./featureEditDefault";
 
 export function FeatureSlideMap({ feature }: { feature: Feature }) {
   const { mapConfig, visibleFeatureId, isEditingRow } = useGlobal();

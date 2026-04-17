@@ -2,7 +2,7 @@ import { Feature } from "./types";
 import { AutoScale } from "./AutoScale";
 import { useGlobal } from "./useGlobal";
 import cx from "classnames";
-import { ID_EDITED_FEATURE } from "./FeatureEditSidebar";
+import { ID_EDITED_FEATURE } from "./featureEditDefault";
 
 export function FeatureSlideInfo({ feature }: { feature: Feature }) {
   const { visibleFeatureId, isEditingRow } = useGlobal();
