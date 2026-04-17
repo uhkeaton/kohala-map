@@ -6,7 +6,7 @@ import { ID_EDITED_FEATURE } from "./FeatureEditSidebar";
 export function FeatureSlideBackground({ feature }: { feature: Feature }) {
   const { visibleFeatureId, isEditingRow } = useGlobal();
   const filterNegative = toCssFilter(
-    feature?.imgLayer?.featureMaskFilterNegative,
+    feature?.mapLayer?.featureMaskFilterNegative,
   );
 
   const visible = (function () {

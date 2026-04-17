@@ -26,7 +26,7 @@ export type Point = {
   pointFilter?: string;
 };
 
-export type ImageLayer = {
+export type MapLayer = {
   featureImgSrc?: string;
   featureImgFilter?: string;
   featureVideoSrc?: string;
@@ -44,7 +44,7 @@ export type Feature = {
   imgSrc?: string;
   videoSrc?: string;
   point: Point | null;
-  imgLayer: ImageLayer | null;
+  mapLayer: MapLayer | null;
 };
 
 export type FilterValue =

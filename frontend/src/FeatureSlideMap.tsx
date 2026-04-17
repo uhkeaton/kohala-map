@@ -7,17 +7,17 @@ import { ID_EDITED_FEATURE } from "./FeatureEditSidebar";
 export function FeatureSlideMap({ feature }: { feature: Feature }) {
   const { mapConfig, visibleFeatureId, isEditingRow } = useGlobal();
 
-  const filterImg = toCssFilter(feature?.imgLayer?.featureImgFilter);
-  const filterVideo = toCssFilter(feature?.imgLayer?.featureVideoFilter);
+  const filterImg = toCssFilter(feature?.mapLayer?.featureImgFilter);
+  const filterVideo = toCssFilter(feature?.mapLayer?.featureVideoFilter);
   const filterPositive = toCssFilter(
-    feature?.imgLayer?.featureMaskFilterPositive,
+    feature?.mapLayer?.featureMaskFilterPositive,
   );
   const filterNegative = toCssFilter(
-    feature?.imgLayer?.featureMaskFilterNegative,
+    feature?.mapLayer?.featureMaskFilterNegative,
   );
 
-  const videoSrc = feature?.imgLayer?.featureVideoSrc;
-  const imgSrc = feature?.imgLayer?.featureImgSrc;
+  const videoSrc = feature?.mapLayer?.featureVideoSrc;
+  const imgSrc = feature?.mapLayer?.featureImgSrc;
   const point = feature?.point;
 
   const visible = (function () {

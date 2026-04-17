@@ -5,6 +5,9 @@ import { ButtonClose } from "./ButtonClose";
 
 export const ID_EDITED_FEATURE = "editedFeature";
 
+const filterLimeGreen = "hue-rotate(90deg) saturate(300%) brightness(150%)";
+const filterBlue = "hue-rotate(222deg)";
+
 function defaultInitialFeature(): Feature {
   return {
     id: ID_EDITED_FEATURE,
@@ -17,13 +20,13 @@ function defaultInitialFeature(): Feature {
       coordinates: [0, 0],
       pointFilter: "",
     },
-    imgLayer: {
+    mapLayer: {
       featureImgSrc: "",
       featureImgFilter: "",
       featureVideoSrc: "",
       featureVideoFilter: "",
-      featureMaskFilterPositive: "",
-      featureMaskFilterNegative: "",
+      featureMaskFilterPositive: filterLimeGreen,
+      featureMaskFilterNegative: filterBlue,
     },
   };
 }
@@ -41,7 +44,7 @@ export function ButtonCreateFeature() {
             ...s,
             showMainDrawer: false,
           }));
-          setIsEditingRow(true)
+          setIsEditingRow(true);
         }}
         variant="contained"
       >

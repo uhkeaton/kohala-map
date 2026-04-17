@@ -91,7 +91,7 @@ function rowToFeature(row: SpreadsheetRow, id: string): Feature {
       coordinates: [parseFloat(row.point_lon), parseFloat(row.point_lat)],
       pointFilter: removeSemicolon(row.point_filter),
     },
-    imgLayer: {
+    mapLayer: {
       featureImgSrc: row.feature_img_src,
       featureImgFilter: removeSemicolon(row.feature_img_filter),
       featureVideoSrc: row.feature_video_src,
