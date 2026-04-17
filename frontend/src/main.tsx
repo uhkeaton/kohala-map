@@ -22,7 +22,6 @@ createRoot(document.getElementById("root")!).render(
           color: "#fff",
         },
       }}
-      // position="bottom-center"
     />
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
@@ -30,13 +29,11 @@ createRoot(document.getElementById("root")!).render(
           <Routes>
             <Route index path="/" element={<Map />} />
             <Route path="/controller" element={<IPadPage />} />
-            {/* <Route path="/map" element={<MapApp />} /> */}
-            {/* <Route path="/scan" element={<Scan />} /> */}
             {/* Redirect all others to home */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </GlobalProvider>
       </QueryClientProvider>
     </BrowserRouter>
-  </StrictMode>
+  </StrictMode>,
 );

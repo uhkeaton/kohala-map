@@ -5,7 +5,7 @@ import { useGlobal } from "./useGlobal";
 import { FeatureDetail } from "./features/FeatureDetail";
 import { MapDrawer } from "./drawer/Drawer";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { useState } from "react";
+import { Feature } from "./types";
 
 const darkTheme = createTheme({
   palette: {
@@ -35,28 +35,16 @@ function Aspect({
 }
 
 export function Map() {
-  const { displaySettings, visibleFeature, mapConfig } = useGlobal();
-  const [lastLoadedImgUrl, setLastLoadedImgUrl] = useState("");
-
-  const filterImg = visibleFeature?.imgLayer?.featureImgFilter;
-  const filterVideo = visibleFeature?.imgLayer?.featureVideoFilter;
-  const filterPositive = visibleFeature?.imgLayer?.featureMaskFilterPositive;
-  const filterNegative = visibleFeature?.imgLayer?.featureMaskFilterNegative;
-
+  const { features, displaySettings, mapConfig } = useGlobal();
   return (
     <ThemeProvider theme={darkTheme}>
       <div className="relative bg-black text-white w-screen h-screen flex items-center">
         <Aspect ratioX={16} ratioY={9}>
           <div className={cx("w-full h-full flex relative")}>
             {/* Background */}
-            <div
-              className="w-full absolute inset-0"
-              style={{
-                // the negative mask image should also be solid red, so they change together
-                background: "red",
-                ...(filterNegative && { filter: filterNegative }),
-              }}
-            />
+            {features?.map((item) => {
+              return <BackgroundLayer feature={item} />;
+            })}
             <div
               // map width is a percentage of the table width
               // this is important for the <Aspect/> to work correctly
@@ -70,73 +58,15 @@ export function Map() {
                 ratioX={mapConfig.mapAspectRatioX}
                 ratioY={mapConfig.mapAspectRatioY}
               >
-                <div className={cx("relative w-full h-full")}>
-                  {mapConfig?.mapImgSrc && (
-                    <img
-                      className={cx("w-full absolute inset-0", {
-                        hidden: mapConfig?.mapImgSrc !== lastLoadedImgUrl,
-                      })}
-                      onLoad={() => {
-                        setLastLoadedImgUrl(mapConfig?.mapImgSrc);
-                      }}
-                      src={mapConfig?.mapImgSrc}
-                    />
-                  )}
-
-                  {mapConfig?.mapRedMaskPositiveSrc && (
-                    <img
-                      className={cx("w-full absolute inset-0")}
-                      src={mapConfig?.mapRedMaskPositiveSrc}
-                      style={{
-                        ...(filterPositive && { filter: filterPositive }),
-                      }}
-                    />
-                  )}
-                  {/* https://videos.pexels.com/video-files/34971834/14814314_1440_2560_30fps.mp4 */}
-
-                  {visibleFeature?.imgLayer?.featureVideoSrc && (
-                    <video
-                      className={cx(
-                        "absolute inset-0 w-full h-full object-cover",
-                      )}
-                      src={visibleFeature?.imgLayer?.featureVideoSrc}
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      style={{
-                        ...(filterVideo && { filter: filterVideo }),
-                      }}
-                    />
-                  )}
-                  {mapConfig?.mapRedMaskNegativeSrc && (
-                    <img
-                      className={cx("w-full absolute inset-0")}
-                      src={mapConfig?.mapRedMaskNegativeSrc}
-                      style={{
-                        ...(filterNegative && { filter: filterNegative }),
-                      }}
-                    />
-                  )}
-                  {visibleFeature?.imgLayer?.featureImgSrc && (
-                    <img
-                      style={{
-                        ...(filterImg && {
-                          filter: filterImg,
-                        }),
-                      }}
-                      className={cx("w-full absolute inset-0")}
-                      src={visibleFeature?.imgLayer?.featureImgSrc}
-                    />
-                  )}
-                  {visibleFeature?.point && (
-                    <Point point={visibleFeature?.point} />
-                  )}
-                </div>
+                {features?.map((item) => {
+                  return <FeatureLayer feature={item} />;
+                })}
               </Aspect>
             </div>
-            <div className="flex-1 flex flex-col justify-center items-center overflow-hidden">
-              <FeatureDetail />
+            <div className="flex-1 relative">
+              {features?.map((feature) => (
+                <FeatureDetail feature={feature} />
+              ))}
             </div>
           </div>
         </Aspect>
@@ -148,5 +78,95 @@ export function Map() {
         <MapDrawer />
       </div>
     </ThemeProvider>
+  );
+}
+
+function BackgroundLayer({ feature }: { feature: Feature }) {
+  const { visibleFeatureId } = useGlobal();
+  const filterNegative = feature?.imgLayer?.featureMaskFilterNegative;
+  return (
+    <div
+      className={cx("w-full absolute inset-0", {
+        hidden: visibleFeatureId !== feature.id,
+      })}
+      style={{
+        // the negative mask image should also be solid red, so they change together
+        background: "red",
+        ...(filterNegative && { filter: filterNegative }),
+      }}
+    />
+  );
+}
+
+function FeatureLayer({ feature }: { feature: Feature }) {
+  const { mapConfig, visibleFeatureId } = useGlobal();
+
+  const filterImg = feature?.imgLayer?.featureImgFilter;
+  const filterVideo = feature?.imgLayer?.featureVideoFilter;
+  const filterPositive = feature?.imgLayer?.featureMaskFilterPositive;
+  const filterNegative = feature?.imgLayer?.featureMaskFilterNegative;
+
+  const videoSrc = feature?.imgLayer?.featureVideoSrc;
+  const imgSrc = feature?.imgLayer?.featureImgSrc;
+  const point = feature?.point;
+
+  return (
+    <div
+      className={cx("relative w-full h-full", {
+        // only show the visible feature
+        hidden: visibleFeatureId !== feature.id,
+      })}
+    >
+      {mapConfig?.mapImgSrc && (
+        <img
+          className={cx("w-full absolute inset-0")}
+          src={mapConfig?.mapImgSrc}
+        />
+      )}
+
+      {mapConfig?.mapRedMaskPositiveSrc && (
+        <img
+          className={cx("w-full absolute inset-0")}
+          src={mapConfig?.mapRedMaskPositiveSrc}
+          style={{
+            ...(filterPositive && { filter: filterPositive }),
+          }}
+        />
+      )}
+      {videoSrc && (
+        <video
+          className={cx("absolute inset-0 w-full h-full object-cover")}
+          src={videoSrc}
+          autoPlay
+          loop
+          muted
+          playsInline
+          style={{
+            ...(filterVideo && { filter: filterVideo }),
+          }}
+        />
+      )}
+      {mapConfig?.mapRedMaskNegativeSrc && (
+        <img
+          className={cx("w-full absolute inset-0")}
+          src={mapConfig?.mapRedMaskNegativeSrc}
+          style={{
+            ...(filterNegative && { filter: filterNegative }),
+          }}
+        />
+      )}
+      {imgSrc && (
+        <img
+          style={{
+            ...(filterImg && {
+              filter: filterImg,
+            }),
+          }}
+          className={cx("w-full absolute inset-0")}
+          src={imgSrc}
+        />
+      )}
+      {point && <Point point={point} />}
+    </div>
   );
 }

@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-import { Feature, ImageLayer, Point } from "../types";
+import { Feature } from "../types";
 import { Database } from "./database";
 
 // @ts-expect-error enum
@@ -106,54 +106,6 @@ function rowToFeature(row: SpreadsheetRow, id: string): Feature {
   };
 }
 
-export class FeatureNonSerializable {
-  id: string;
-  title: string;
-  description: string;
-  titleHawaiian: string;
-  descriptionHawaiian: string;
-  imgSrc: string;
-  mapRedMaskPositiveSrc: string;
-  mapRedMaskNegativeSrc: string;
-  point: Point | null;
-  imgLayer: ImageLayer | null;
-
-  constructor(row: SpreadsheetRow, id: string) {
-    this.id = id;
-    this.title = row.info_title;
-    this.description = row.info_description;
-    this.titleHawaiian = row.info_title_hawaiian;
-    this.descriptionHawaiian = row.info_description_hawaiian;
-    this.imgSrc = row.info_img_src;
-    this.mapRedMaskPositiveSrc = row.world_red_mask_positive_src;
-    this.mapRedMaskNegativeSrc = row.world_red_mask_negative_src;
-
-    // Point
-    const point: Point = {
-      coordinates: [parseFloat(row.point_lon), parseFloat(row.point_lat)],
-      pointFilter: removeSemicolon(row.point_filter),
-    };
-
-    this.point = point;
-
-    // Image Layer
-    const imageLayer: ImageLayer = {
-      featureImgSrc: row.feature_img_src,
-      featureImgFilter: removeSemicolon(row.feature_img_filter),
-      featureVideoSrc: row.feature_video_src,
-      featureVideoFilter: removeSemicolon(row.feature_video_filter),
-      featureMaskFilterPositive: removeSemicolon(
-        row.feature_mask_filter_positive,
-      ),
-      featureMaskFilterNegative: removeSemicolon(
-        row.feature_mask_filter_negative,
-      ),
-    };
-
-    this.imgLayer = imageLayer;
-  }
-}
-
 export function parseSheet(tsv: string) {
   const features: Feature[] = [];
 
@@ -213,6 +165,6 @@ export function parseSheet(tsv: string) {
   };
 }
 
-export function removeSemicolon(str: string) {
+function removeSemicolon(str: string) {
   return str.replace(/;/g, "");
 }

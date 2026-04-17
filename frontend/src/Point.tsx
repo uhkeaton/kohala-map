@@ -25,13 +25,6 @@ function toPercent(
   // measuring percent from left
   const percentX = (lat - minX) / rangeX;
 
-  // (REMOVED)
-  // because the map is flipped upside down
-  // with North Kohala facing the viewer,
-  // we must rotate the coords 180 degrees.
-  // const flippedX = 1 - percentX;
-  // const flippedY = 1 - percentY;
-
   return [percentY, percentX];
 }
 
