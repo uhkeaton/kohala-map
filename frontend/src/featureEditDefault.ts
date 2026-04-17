@@ -5,6 +5,8 @@ export const ID_EDITED_FEATURE = "editedFeature";
 const filterLimeGreen = "hue-rotate(90deg) saturate(300%) brightness(150%)";
 const filterBlue = "hue-rotate(222deg)";
 
+const hawaiianVideoSrc =
+  "https://videos.pexels.com/video-files/28828609/12487971_1920_1080_60fps.mp4";
 const hawaiianChainImgSrc =
   "https://upload.wikimedia.org/wikipedia/commons/1/1b/ISS-38_Hawaiian_Island_chain.jpg";
 
@@ -16,7 +18,7 @@ export function defaultInitialFeature(): Feature {
     titleHawaiian: "",
     descriptionHawaiian: "",
     imgSrc: hawaiianChainImgSrc,
-    videoSrc: "",
+    videoSrc: hawaiianVideoSrc,
     point: {
       coordinates: [0, 0],
       pointFilter: "",

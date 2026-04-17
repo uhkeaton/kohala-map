@@ -91,10 +91,12 @@ export function FeatureEditSidebar() {
             }}
           />
         </div>
+        <Divider sx={{ my: 4 }} />
+        <div className="text-xl mb-4">Media</div>
         <div className="mb-4">
           <TextField
             id="info-img-src"
-            label="Image Src"
+            label="Image Link"
             variant="outlined"
             fullWidth
             value={editedFeature?.imgSrc || ""}
@@ -107,7 +109,7 @@ export function FeatureEditSidebar() {
         <div className="mb-4">
           <TextField
             id="info-video-src"
-            label="Video Src"
+            label="Video Link"
             variant="outlined"
             fullWidth
             value={editedFeature?.videoSrc || ""}
@@ -117,6 +119,9 @@ export function FeatureEditSidebar() {
             }}
           />
         </div>
+        {editedFeature?.videoSrc && (
+          <div className="mb-4 opacity-70">* video will override image</div>
+        )}
         {/*  */}
         <Divider sx={{ my: 4 }} />
         <div className="text-xl mb-4">Point</div>
