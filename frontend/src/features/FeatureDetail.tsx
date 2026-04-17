@@ -43,7 +43,7 @@ export function FeatureDetail({ feature }: { feature: Feature }) {
                     marginTop: 16 * scale,
                     marginBottom: 16 * scale,
                   }}
-                  className="w-full"
+                  className="w-full rounded-lg"
                   src={feature?.imgSrc}
                 />
               )}

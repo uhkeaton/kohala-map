@@ -85,8 +85,6 @@ function rowToFeature(row: SpreadsheetRow, id: string): Feature {
     titleHawaiian: row.info_title_hawaiian,
     descriptionHawaiian: row.info_description_hawaiian,
     imgSrc: row.info_img_src,
-    mapRedMaskPositiveSrc: row.world_red_mask_positive_src,
-    mapRedMaskNegativeSrc: row.world_red_mask_negative_src,
     point: {
       coordinates: [parseFloat(row.point_lon), parseFloat(row.point_lat)],
       pointFilter: removeSemicolon(row.point_filter),

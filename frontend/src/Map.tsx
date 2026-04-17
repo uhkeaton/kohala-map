@@ -5,7 +5,7 @@ import { useGlobal } from "./useGlobal";
 import { FeatureDetail } from "./features/FeatureDetail";
 import { MapDrawer } from "./drawer/Drawer";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { Feature } from "./types";
+import { Feature, toCssFilter } from "./types";
 
 const darkTheme = createTheme({
   palette: {
@@ -50,7 +50,7 @@ export function Map() {
               // this is important for the <Aspect/> to work correctly
               style={{
                 width: `${mapConfig.mapWidthPercent * 100}%`,
-                transform: `${mapConfig.mapTransform}`,
+                // transform: `${mapConfig.mapTransform}`,
                 height: "fit-content",
               }}
             >
@@ -83,7 +83,9 @@ export function Map() {
 
 function BackgroundLayer({ feature }: { feature: Feature }) {
   const { visibleFeatureId } = useGlobal();
-  const filterNegative = feature?.imgLayer?.featureMaskFilterNegative;
+  const filterNegative = toCssFilter(
+    feature?.imgLayer?.featureMaskFilterNegative,
+  );
   return (
     <div
       className={cx("w-full absolute inset-0", {
@@ -101,10 +103,14 @@ function BackgroundLayer({ feature }: { feature: Feature }) {
 function FeatureLayer({ feature }: { feature: Feature }) {
   const { mapConfig, visibleFeatureId } = useGlobal();
 
-  const filterImg = feature?.imgLayer?.featureImgFilter;
-  const filterVideo = feature?.imgLayer?.featureVideoFilter;
-  const filterPositive = feature?.imgLayer?.featureMaskFilterPositive;
-  const filterNegative = feature?.imgLayer?.featureMaskFilterNegative;
+  const filterImg = toCssFilter(feature?.imgLayer?.featureImgFilter);
+  const filterVideo = toCssFilter(feature?.imgLayer?.featureVideoFilter);
+  const filterPositive = toCssFilter(
+    feature?.imgLayer?.featureMaskFilterPositive,
+  );
+  const filterNegative = toCssFilter(
+    feature?.imgLayer?.featureMaskFilterNegative,
+  );
 
   const videoSrc = feature?.imgLayer?.featureVideoSrc;
   const imgSrc = feature?.imgLayer?.featureImgSrc;
@@ -117,10 +123,14 @@ function FeatureLayer({ feature }: { feature: Feature }) {
         hidden: visibleFeatureId !== feature.id,
       })}
     >
+      {/*  */}
       {mapConfig?.mapImgSrc && (
         <img
           className={cx("w-full absolute inset-0")}
           src={mapConfig?.mapImgSrc}
+          style={{
+            transform: `${mapConfig.mapTransform}`,
+          }}
         />
       )}
 
@@ -129,10 +139,12 @@ function FeatureLayer({ feature }: { feature: Feature }) {
           className={cx("w-full absolute inset-0")}
           src={mapConfig?.mapRedMaskPositiveSrc}
           style={{
+            transform: `${mapConfig.mapTransform}`,
             ...(filterPositive && { filter: filterPositive }),
           }}
         />
       )}
+      {/* Video does not receive map transform.*/}
       {videoSrc && (
         <video
           className={cx("absolute inset-0 w-full h-full object-cover")}
@@ -146,11 +158,13 @@ function FeatureLayer({ feature }: { feature: Feature }) {
           }}
         />
       )}
+      {/*  */}
       {mapConfig?.mapRedMaskNegativeSrc && (
         <img
           className={cx("w-full absolute inset-0")}
           src={mapConfig?.mapRedMaskNegativeSrc}
           style={{
+            transform: `${mapConfig.mapTransform}`,
             ...(filterNegative && { filter: filterNegative }),
           }}
         />
@@ -158,6 +172,7 @@ function FeatureLayer({ feature }: { feature: Feature }) {
       {imgSrc && (
         <img
           style={{
+            transform: `${mapConfig.mapTransform}`,
             ...(filterImg && {
               filter: filterImg,
             }),
@@ -166,7 +181,16 @@ function FeatureLayer({ feature }: { feature: Feature }) {
           src={imgSrc}
         />
       )}
-      {point && <Point point={point} />}
+      {point && (
+        <div
+          className={cx("w-full absolute inset-0")}
+          style={{
+            transform: `${mapConfig.mapTransform}`,
+          }}
+        >
+          <Point point={point} />
+        </div>
+      )}
     </div>
   );
 }
