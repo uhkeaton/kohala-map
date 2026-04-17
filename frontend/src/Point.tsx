@@ -1,5 +1,5 @@
 import "./point.css";
-import type { Coordinates } from "./types";
+import type { Coordinates, Point } from "./types";
 import { MapConfig } from "./spreadsheet/spreadsheet";
 import { useGlobal } from "./useGlobal";
 
@@ -35,8 +35,9 @@ function toPercent(
   return [percentY, percentX];
 }
 
-export function Point({ coords }: { coords: Coordinates }) {
-  const [long, lat] = coords;
+export function Point({ point }: { point: Point }) {
+  const [long, lat] = point.coordinates;
+  const filter = point.pointFilter;
   const { mapConfig } = useGlobal();
   const [percentY, percentX] = toPercent([long, lat], mapConfig);
   return (
@@ -46,6 +47,7 @@ export function Point({ coords }: { coords: Coordinates }) {
         position: "absolute",
         top: `${percentY * 100}%`,
         left: `${percentX * 100}%`,
+        ...(filter && { filter: filter }),
       }}
     >
       <div className="point" />

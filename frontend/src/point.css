@@ -1,9 +1,9 @@
 .point {
   width: 16px;
   height: 16px;
-  background-color: limegreen;
-  box-shadow: 0 0 3px 3px limegreen;
-  border: 2px solid limegreen;
+  background-color: red;
+  box-shadow: 0 0 3px 3px red;
+  border: 2px solid red;
   border-width: 2px;
   border-radius: 50%;
   opacity: 0;
@@ -16,7 +16,7 @@
   width: 100%;
   height: 100%;
   background-color: white;
-   box-shadow: 0 0 1px 1px white;
+  box-shadow: 0 0 1px 1px white;
   border-radius: 50%;
   animation: pulse 6s infinite ease-in-out;
 }

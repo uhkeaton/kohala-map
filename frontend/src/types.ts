@@ -16,19 +16,27 @@ export type Coordinates = [Longitude, Latitude];
 
 export type Point = {
   coordinates: Coordinates;
+  pointFilter?: string;
 };
 
 export type ImageLayer = {
-  imgSrc: string;
-  filter?: string;
+  featureImgSrc?: string;
+  featureImgFilter?: string;
+  featureVideoSrc?: string;
+  featureVideoFilter?: string;
+  featureMaskFilterPositive?: string;
+  featureMaskFilterNegative?: string;
 };
 
 export type Feature = {
+  id: string;
   title: string;
   description: string;
   titleHawaiian: string;
   descriptionHawaiian: string;
   imgSrc: string;
+  mapRedMaskPositiveSrc: string;
+  mapRedMaskNegativeSrc: string;
   point: Point | null;
-  layer: ImageLayer | null;
+  imgLayer: ImageLayer | null;
 };

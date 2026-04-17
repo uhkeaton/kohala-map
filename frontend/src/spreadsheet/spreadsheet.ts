@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-import { ImageLayer, Feature, Point } from "../types";
+import { Feature, ImageLayer, Point } from "../types";
 import { Database } from "./database";
 
 // @ts-expect-error enum
@@ -14,26 +14,34 @@ export const knownSpreadsheetKeys = [
   // added in code
   "row_index",
   // features
-  "group",
-  "title",
-  "description",
-  "title_hawaiian",
-  "description_hawaiian",
-  "img_src",
-  // points and img layers
-  "lat",
-  "lon",
-  "layer_img_src",
-  "layer_img_filter",
+  "info_group",
+  "info_title",
+  "info_description",
+  "info_title_hawaiian",
+  "info_description_hawaiian",
+  "info_img_src",
+  // points
+  "point_lat",
+  "point_lon",
+  "point_filter",
+  // featured map image
+  "feature_img_src",
+  "feature_img_filter",
+  "feature_video_src",
+  "feature_video_filter",
+  "feature_mask_filter_positive",
+  "feature_mask_filter_negative",
   // map
-  "min_lon",
-  "min_lat",
-  "max_lat",
-  "max_lon",
-  "map_aspect_ratio",
-  "map_width_percent",
-  "map_img_src",
-  "map_transform",
+  "world_min_lon",
+  "world_min_lat",
+  "world_max_lat",
+  "world_max_lon",
+  "world_aspect_ratio",
+  "world_width_percent",
+  "world_img_src",
+  "world_red_mask_positive_src",
+  "world_red_mask_negative_src",
+  "world_transform",
 ] as const;
 
 export type MapConfig = {
@@ -45,6 +53,8 @@ export type MapConfig = {
   mapAspectRatioY: number;
   mapWidthPercent: number;
   mapImgSrc: string;
+  mapRedMaskPositiveSrc: string;
+  mapRedMaskNegativeSrc: string;
   mapTransform: string;
 };
 
@@ -57,6 +67,8 @@ export const initialMapConfig = {
   mapAspectRatioY: NaN,
   mapWidthPercent: NaN,
   mapImgSrc: "",
+  mapRedMaskPositiveSrc: "",
+  mapRedMaskNegativeSrc: "",
   mapTransform: "",
 };
 
@@ -65,6 +77,35 @@ export type SpreadsheetRow = Record<
   string
 >;
 
+function rowToFeature(row: SpreadsheetRow, id: string): Feature {
+  return {
+    id: id,
+    title: row.info_title,
+    description: row.info_description,
+    titleHawaiian: row.info_title_hawaiian,
+    descriptionHawaiian: row.info_description_hawaiian,
+    imgSrc: row.info_img_src,
+    mapRedMaskPositiveSrc: row.world_red_mask_positive_src,
+    mapRedMaskNegativeSrc: row.world_red_mask_negative_src,
+    point: {
+      coordinates: [parseFloat(row.point_lon), parseFloat(row.point_lat)],
+      pointFilter: removeSemicolon(row.point_filter),
+    },
+    imgLayer: {
+      featureImgSrc: row.feature_img_src,
+      featureImgFilter: removeSemicolon(row.feature_img_filter),
+      featureVideoSrc: row.feature_video_src,
+      featureVideoFilter: removeSemicolon(row.feature_video_filter),
+      featureMaskFilterPositive: removeSemicolon(
+        row.feature_mask_filter_positive,
+      ),
+      featureMaskFilterNegative: removeSemicolon(
+        row.feature_mask_filter_negative,
+      ),
+    },
+  };
+}
+
 export class FeatureNonSerializable {
   id: string;
   title: string;
@@ -72,48 +113,49 @@ export class FeatureNonSerializable {
   titleHawaiian: string;
   descriptionHawaiian: string;
   imgSrc: string;
+  mapRedMaskPositiveSrc: string;
+  mapRedMaskNegativeSrc: string;
   point: Point | null;
   imgLayer: ImageLayer | null;
 
   constructor(row: SpreadsheetRow, id: string) {
     this.id = id;
-    this.title = row.title;
-    this.description = row.description;
-    this.titleHawaiian = row.title_hawaiian;
-    this.descriptionHawaiian = row.description_hawaiian;
-    this.imgSrc = row.img_src;
+    this.title = row.info_title;
+    this.description = row.info_description;
+    this.titleHawaiian = row.info_title_hawaiian;
+    this.descriptionHawaiian = row.info_description_hawaiian;
+    this.imgSrc = row.info_img_src;
+    this.mapRedMaskPositiveSrc = row.world_red_mask_positive_src;
+    this.mapRedMaskNegativeSrc = row.world_red_mask_negative_src;
 
     // Point
     const point: Point = {
-      coordinates: [parseFloat(row.lon), parseFloat(row.lat)],
+      coordinates: [parseFloat(row.point_lon), parseFloat(row.point_lat)],
+      pointFilter: removeSemicolon(row.point_filter),
     };
+
     this.point = point;
 
     // Image Layer
     const imageLayer: ImageLayer = {
-      imgSrc: row.layer_img_src,
-      filter: row.layer_img_filter,
+      featureImgSrc: row.feature_img_src,
+      featureImgFilter: removeSemicolon(row.feature_img_filter),
+      featureVideoSrc: row.feature_video_src,
+      featureVideoFilter: removeSemicolon(row.feature_video_filter),
+      featureMaskFilterPositive: removeSemicolon(
+        row.feature_mask_filter_positive,
+      ),
+      featureMaskFilterNegative: removeSemicolon(
+        row.feature_mask_filter_negative,
+      ),
     };
-    this.imgLayer = imageLayer;
-  }
 
-  /** React state should be serializable, not a class like this */
-  public toSerializable(): Feature {
-    return {
-      title: this.title,
-      description: this.description,
-      titleHawaiian: this.titleHawaiian,
-      descriptionHawaiian: this.descriptionHawaiian,
-      point: this.point,
-      layer: this.imgLayer,
-      imgSrc: this.imgSrc,
-    };
+    this.imgLayer = imageLayer;
   }
 }
 
-// Need to create an inverse of this function. Given mapconfig and feature, give a tsv
 export function parseSheet(tsv: string) {
-  const features: FeatureNonSerializable[] = [];
+  const features: Feature[] = [];
 
   const db = new Database<SpreadsheetRow>(tsv, knownSpreadsheetKeys);
 
@@ -124,23 +166,27 @@ export function parseSheet(tsv: string) {
     if (i === 0) {
       return;
     }
+
     // The Map Config should be the first row in the sheet under the header
     else if (i === 1) {
       mapConfig = {
-        minLon: parseFloat(row.min_lon),
-        minLat: parseFloat(row.min_lat),
-        maxLon: parseFloat(row.max_lon),
-        maxLat: parseFloat(row.max_lat),
-        mapAspectRatioX: parseFloat(row.map_aspect_ratio.split(":")[0]),
-        mapAspectRatioY: parseFloat(row.map_aspect_ratio.split(":")[1]),
-        mapWidthPercent: parseFloat(row.map_width_percent),
-        mapImgSrc: row.map_img_src,
-        mapTransform: row.map_transform,
+        minLon: parseFloat(row.world_min_lon),
+        minLat: parseFloat(row.world_min_lat),
+        maxLon: parseFloat(row.world_max_lon),
+        maxLat: parseFloat(row.world_max_lat),
+        mapAspectRatioX: parseFloat(row.world_aspect_ratio.split(":")[0]),
+        mapAspectRatioY: parseFloat(row.world_aspect_ratio.split(":")[1]),
+        mapWidthPercent: parseFloat(row.world_width_percent),
+        mapImgSrc: row.world_img_src,
+        mapRedMaskPositiveSrc: row.world_red_mask_positive_src,
+        mapRedMaskNegativeSrc: row.world_red_mask_negative_src,
+        mapTransform: row.world_transform,
       };
     }
+
     // All other rows are features
     else {
-      features.push(new FeatureNonSerializable(row, String(i)));
+      features.push(rowToFeature(row, String(i)));
     }
   });
 
@@ -165,4 +211,8 @@ export function parseSheet(tsv: string) {
     mapConfig: mapConfig,
     features: features,
   };
+}
+
+export function removeSemicolon(str: string) {
+  return str.replace(/;/g, "");
 }

@@ -6,7 +6,7 @@ import { useRoomCode } from "./room/room";
 import { GenericSocketMessage, useWebSocketConnection } from "./socket";
 import { dataSourceOptions } from "./spreadsheet/dataSourceOptions";
 import { useSearchParams } from "react-router";
-import { initialMapConfig, MapConfig } from "./spreadsheet/spreadsheet";
+import { initialMapConfig } from "./spreadsheet/spreadsheet";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchSpreadsheet } from "./api";
 
@@ -18,11 +18,11 @@ function useGlobalContext() {
   const [searchParams] = useSearchParams();
   const urlSheetId = searchParams.get("sheet_id");
   const [spreadsheetId, setSpeadsheetId] = useState(
-    urlSheetId ?? dataSourceOptions[0].id
+    urlSheetId ?? dataSourceOptions[0].id,
   );
 
   const [displaySettings, setDisplaySettings] = useState<DisplaySettings>(
-    defaultDisplaySettings
+    defaultDisplaySettings,
   );
 
   const { roomCode } = useRoomCode();
@@ -44,45 +44,34 @@ function useGlobalContext() {
 
   // Pasting contents of body of useSpreadsheets
   const [, setSearchParams] = useSearchParams();
-    const { send } = useWebSocketConnection(roomCode);
-  
-    // Maybe eve these into global?
-    const query = useQuery({
-      queryKey: ["spreadsheet", spreadsheetId],
-      queryFn: () => fetchSpreadsheet(spreadsheetId),
-      placeholderData: keepPreviousData,
+  const { send } = useWebSocketConnection(roomCode);
+
+  // Maybe eve these into global?
+  const query = useQuery({
+    queryKey: ["spreadsheet", spreadsheetId],
+    queryFn: () => fetchSpreadsheet(spreadsheetId),
+    placeholderData: keepPreviousData,
+  });
+
+  const features = query.data?.features ?? [];
+  const mapConfig = query.data?.mapConfig ?? initialMapConfig;
+
+  const visibleFeature = features.find((item) => item.id === visibleFeatureId);
+
+  const handleChangeSpreadsheetId = (id: string) => {
+    setSpeadsheetId(id);
+    send?.({
+      action: "selectSpreadsheetId",
+      payload: {
+        id: id,
+      },
     });
-  
-    const features = query.data?.features ?? []; // Maybe make this into a state?
-    const mapConfig = query.data?.mapConfig ?? initialMapConfig;
-  
-    // How Keaton would start (Probably move all of these into global haha)
-    const [editedMapConfig, setEditedMapConfig] = useState<MapConfig | null>(null) // when editing, can look if null
-  
-    const visibleFeature = features.find((item) => item.id === visibleFeatureId);
-  
-    const handleEnterEditMapConfig = () => {
-      setEditedMapConfig(mapConfig)
-    };
-  
-    const handleExitEditMapConfig = () => {
-      setEditedMapConfig(null)
-    };
-  
-    const handleChangeSpreadsheetId = (id: string) => {
-      setSpeadsheetId(id);
-      send?.({
-        action: "selectSpreadsheetId",
-        payload: {
-          id: id,
-        },
-      });
-      setSearchParams((prev) => {
-        const next = new URLSearchParams(prev);
-        next.set("sheet_id", String(id));
-        return next;
-      });
-    };
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.set("sheet_id", String(id));
+      return next;
+    });
+  };
 
   return {
     visibleFeatureId,
@@ -95,11 +84,8 @@ function useGlobalContext() {
     query,
     visibleFeature,
     features,
-    mapConfig: editedMapConfig? editedMapConfig: mapConfig, // when edit mode, take mapConfig, into editedMapConfig
+    mapConfig: mapConfig, // when edit mode, take mapConfig, into editedMapConfig
     handleChangeSpreadsheetId,
-    handleEnterEditMapConfig,
-    handleExitEditMapConfig,
-    setEditedMapConfig
   };
 }
 

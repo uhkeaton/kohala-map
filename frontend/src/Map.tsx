@@ -38,11 +38,25 @@ export function Map() {
   const { displaySettings, visibleFeature, mapConfig } = useGlobal();
   const [lastLoadedImgUrl, setLastLoadedImgUrl] = useState("");
 
+  const filterImg = visibleFeature?.imgLayer?.featureImgFilter;
+  const filterVideo = visibleFeature?.imgLayer?.featureVideoFilter;
+  const filterPositive = visibleFeature?.imgLayer?.featureMaskFilterPositive;
+  const filterNegative = visibleFeature?.imgLayer?.featureMaskFilterNegative;
+
   return (
     <ThemeProvider theme={darkTheme}>
-      <div className=" relative bg-black text-white w-screen h-screen flex items-center">
+      <div className="relative bg-black text-white w-screen h-screen flex items-center">
         <Aspect ratioX={16} ratioY={9}>
-          <div className={cx("w-full h-full flex bg-blue-500/30")}>
+          <div className={cx("w-full h-full flex relative")}>
+            {/* Background */}
+            <div
+              className="w-full absolute inset-0"
+              style={{
+                // the negative mask image should also be solid red, so they change together
+                background: "red",
+                ...(filterNegative && { filter: filterNegative }),
+              }}
+            />
             <div
               // map width is a percentage of the table width
               // this is important for the <Aspect/> to work correctly
@@ -59,8 +73,7 @@ export function Map() {
                 <div className={cx("relative w-full h-full")}>
                   {mapConfig?.mapImgSrc && (
                     <img
-                      className={cx("w-full", {
-                        "opacity-100": displaySettings,
+                      className={cx("w-full absolute inset-0", {
                         hidden: mapConfig?.mapImgSrc !== lastLoadedImgUrl,
                       })}
                       onLoad={() => {
@@ -69,19 +82,55 @@ export function Map() {
                       src={mapConfig?.mapImgSrc}
                     />
                   )}
-                  {visibleFeature?.imgLayer?.imgSrc && (
+
+                  {mapConfig?.mapRedMaskPositiveSrc && (
+                    <img
+                      className={cx("w-full absolute inset-0")}
+                      src={mapConfig?.mapRedMaskPositiveSrc}
+                      style={{
+                        ...(filterPositive && { filter: filterPositive }),
+                      }}
+                    />
+                  )}
+                  {/* https://videos.pexels.com/video-files/34971834/14814314_1440_2560_30fps.mp4 */}
+
+                  {visibleFeature?.imgLayer?.featureVideoSrc && (
+                    <video
+                      className={cx(
+                        "absolute inset-0 w-full h-full object-cover",
+                      )}
+                      src={visibleFeature?.imgLayer?.featureVideoSrc}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      style={{
+                        ...(filterVideo && { filter: filterVideo }),
+                      }}
+                    />
+                  )}
+                  {mapConfig?.mapRedMaskNegativeSrc && (
+                    <img
+                      className={cx("w-full absolute inset-0")}
+                      src={mapConfig?.mapRedMaskNegativeSrc}
+                      style={{
+                        ...(filterNegative && { filter: filterNegative }),
+                      }}
+                    />
+                  )}
+                  {visibleFeature?.imgLayer?.featureImgSrc && (
                     <img
                       style={{
-                        ...(visibleFeature?.imgLayer?.filter && {
-                          filter: visibleFeature?.imgLayer?.filter,
+                        ...(filterImg && {
+                          filter: filterImg,
                         }),
                       }}
                       className={cx("w-full absolute inset-0")}
-                      src={visibleFeature?.imgLayer?.imgSrc}
+                      src={visibleFeature?.imgLayer?.featureImgSrc}
                     />
                   )}
                   {visibleFeature?.point && (
-                    <Point coords={visibleFeature?.point?.coordinates} />
+                    <Point point={visibleFeature?.point} />
                   )}
                 </div>
               </Aspect>
