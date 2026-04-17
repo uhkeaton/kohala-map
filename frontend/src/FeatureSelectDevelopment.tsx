@@ -1,4 +1,4 @@
-import { useGlobal } from "../useGlobal";
+import { useGlobal } from "./useGlobal";
 import {
   Box,
   FormControl,
@@ -7,12 +7,12 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import { useRoomCode } from "../room/room";
-import { useWebSocketConnection } from "../socket";
+import { useRoomCode } from "./room/room";
+import { useWebSocketConnection } from "./socket";
 
-export function FeatureList() {
-  const { setVisibleFeatureId } = useGlobal();
-  const { features, visibleFeature } = useGlobal();
+export function FeatureSelectDevelopment() {
+  const { features, visibleFeatureId, setVisibleFeatureId, isEditingRow } =
+    useGlobal();
 
   const { roomCode } = useRoomCode();
   const { send } = useWebSocketConnection(roomCode);
@@ -31,7 +31,7 @@ export function FeatureList() {
     }
 
     //
-    if (visibleFeature?.id == event.target.value) {
+    if (visibleFeatureId == event.target.value) {
       return;
     }
 
@@ -51,13 +51,15 @@ export function FeatureList() {
     }
   };
 
+  if (isEditingRow) return <></>;
+
   return (
     <div className="w-full h-full p-4">
       <Box sx={{ minWidth: 120 }}>
         <FormControl fullWidth>
           <InputLabel>Feature</InputLabel>
           <Select
-            value={visibleFeature?.id ?? ""}
+            value={visibleFeatureId || ""}
             label="Feature"
             onChange={handleChange}
           >

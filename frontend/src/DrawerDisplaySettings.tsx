@@ -1,7 +1,7 @@
 import { FormControlLabel, FormGroup, Switch } from "@mui/material";
-import { useGlobal } from "../useGlobal";
+import { useGlobal } from "./useGlobal";
 
-export function DisplaySettings() {
+export function DrawerDisplaySettings() {
   const { displaySettings, setDisplaySettings } = useGlobal();
   return (
     <div>

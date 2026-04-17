@@ -1,7 +1,8 @@
 import { IconButton } from "@mui/material";
 import type { MouseEventHandler } from "react";
+import { IconClose } from "./icons";
 
-export function CloseButton({
+export function ButtonClose({
   onClick,
 }: {
   onClick: MouseEventHandler<HTMLButtonElement>;
@@ -12,7 +13,7 @@ export function CloseButton({
       aria-label="Close"
       size="large" // small | medium | large
     >
-      <span className="material-symbols-outlined">close</span>
+      <IconClose className="w-8" />
     </IconButton>
   );
 }

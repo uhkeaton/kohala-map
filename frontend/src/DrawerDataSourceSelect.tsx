@@ -1,4 +1,5 @@
-import { useGlobal } from "../useGlobal";
+import { dataSourceOptions } from "./drawerDataSourceSelectOptions";
+import { useGlobal } from "./useGlobal";
 import {
   Box,
   FormControl,
@@ -7,9 +8,8 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import { dataSourceOptions } from "./dataSourceOptions";
 
-export function DataSourceSelect() {
+export function DrawerDataSourceSelect() {
   const { spreadsheetId } = useGlobal();
 
   const { handleChangeSpreadsheetId } = useGlobal();

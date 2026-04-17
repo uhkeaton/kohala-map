@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router";
 import { useEffect } from "react";
 import { useRoomCode } from "./room/room";
-import { ControllerFeatureSelect } from "./features/ControllerFeatureSelect";
+import { VisitorFeatureSelect } from "./VisitorFeatureSelect";
 import { ManualJoinRoom } from "./room/ManualJoinRoom";
 import { ConnectedStatus } from "./room/ConnectedStatus";
 import { Button } from "@mui/material";
@@ -41,7 +41,7 @@ export function IPadPage() {
           <div className="px-4 mb-8 text-2xl">Controller</div>
 
           <div className="px-4 mb-4">
-            <ControllerFeatureSelect />
+            <VisitorFeatureSelect />
           </div>
         </div>
         <div>

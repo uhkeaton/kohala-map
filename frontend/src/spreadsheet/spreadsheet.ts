@@ -20,6 +20,7 @@ export const knownSpreadsheetKeys = [
   "info_title_hawaiian",
   "info_description_hawaiian",
   "info_img_src",
+  "info_video_src",
   // points
   "point_lat",
   "point_lon",
@@ -85,6 +86,7 @@ function rowToFeature(row: SpreadsheetRow, id: string): Feature {
     titleHawaiian: row.info_title_hawaiian,
     descriptionHawaiian: row.info_description_hawaiian,
     imgSrc: row.info_img_src,
+    videoSrc: row.info_video_src,
     point: {
       coordinates: [parseFloat(row.point_lon), parseFloat(row.point_lat)],
       pointFilter: removeSemicolon(row.point_filter),

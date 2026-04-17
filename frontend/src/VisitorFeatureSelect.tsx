@@ -1,5 +1,5 @@
-import { useGlobal } from "../useGlobal";
-import { useWebSocketConnection } from "../socket";
+import { useGlobal } from "./useGlobal";
+import { useWebSocketConnection } from "./socket";
 import {
   Box,
   FormControl,
@@ -8,10 +8,10 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import { useRoomCode } from "../room/room";
+import { useRoomCode } from "./room/room";
 
-export function ControllerFeatureSelect() {
-  const { features, visibleFeature } = useGlobal();
+export function VisitorFeatureSelect() {
+  const { features, visibleFeatureId } = useGlobal();
   const { roomCode } = useRoomCode();
 
   const { send } = useWebSocketConnection(roomCode);
@@ -40,7 +40,7 @@ export function ControllerFeatureSelect() {
         <FormControl fullWidth>
           <InputLabel>Feature</InputLabel>
           <Select
-            value={visibleFeature?.id}
+            value={visibleFeatureId || ""}
             label="Feature"
             onChange={handleChange}
           >

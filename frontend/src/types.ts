@@ -1,5 +1,12 @@
 export type DisplaySettings = {
+  /**
+   * Map Display
+   */
   showFeatureList: boolean;
+  /**
+   * Drawer
+   */
+  showMainDrawer: boolean;
   /**
    * Dialogs
    */
@@ -32,9 +39,10 @@ export type Feature = {
   id: string;
   title: string;
   description: string;
-  titleHawaiian: string;
-  descriptionHawaiian: string;
-  imgSrc: string;
+  titleHawaiian?: string;
+  descriptionHawaiian?: string;
+  imgSrc?: string;
+  videoSrc?: string;
   point: Point | null;
   imgLayer: ImageLayer | null;
 };

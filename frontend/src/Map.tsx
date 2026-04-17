@@ -1,11 +1,12 @@
 import cx from "classnames";
-import { Point } from "./Point";
-import { FeatureList } from "./features/FeatureList";
+import { FeatureSelectDevelopment } from "./FeatureSelectDevelopment";
 import { useGlobal } from "./useGlobal";
-import { FeatureDetail } from "./features/FeatureDetail";
-import { MapDrawer } from "./drawer/Drawer";
+import { FeatureSlideInfo } from "./FeatureSlideInfo";
+import { MapDrawer } from "./Drawer";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { Feature, toCssFilter } from "./types";
+import { SidebarLayout } from "./Sidebar";
+import { FeatureSlideMap } from "./FeatureSlideMap";
+import { FeatureSlideBackground } from "./FeatureSlideBackground";
 
 const darkTheme = createTheme({
   palette: {
@@ -35,162 +36,55 @@ function Aspect({
 }
 
 export function Map() {
-  const { features, displaySettings, mapConfig } = useGlobal();
+  const { features, displaySettings, mapConfig, editedFeature } = useGlobal();
+
+  const withEditedFeature = [
+    ...features,
+    ...(editedFeature != null ? [editedFeature] : []),
+  ];
   return (
     <ThemeProvider theme={darkTheme}>
-      <div className="relative bg-black text-white w-screen h-screen flex items-center">
-        <Aspect ratioX={16} ratioY={9}>
-          <div className={cx("w-full h-full flex relative")}>
-            {/* Background */}
-            {features?.map((item) => {
-              return <BackgroundLayer feature={item} />;
-            })}
-            <div
-              // map width is a percentage of the table width
-              // this is important for the <Aspect/> to work correctly
-              style={{
-                width: `${mapConfig.mapWidthPercent * 100}%`,
-                // transform: `${mapConfig.mapTransform}`,
-                height: "fit-content",
-              }}
-            >
-              <Aspect
-                ratioX={mapConfig.mapAspectRatioX}
-                ratioY={mapConfig.mapAspectRatioY}
+      <SidebarLayout>
+        <div className="relative bg-black text-white w-full h-full flex items-center">
+          <Aspect ratioX={16} ratioY={9}>
+            <div className={cx("w-full h-full flex relative")}>
+              {/* Background */}
+              {withEditedFeature.map((item) => {
+                return <FeatureSlideBackground feature={item} />;
+              })}
+              <div
+                // map width is a percentage of the table width
+                // this is important for the <Aspect/> to work correctly
+                style={{
+                  width: `${mapConfig.mapWidthPercent * 100}%`,
+                  // transform: `${mapConfig.mapTransform}`,
+                  height: "fit-content",
+                }}
               >
-                {features?.map((item) => {
-                  return <FeatureLayer feature={item} />;
-                })}
-              </Aspect>
+                <Aspect
+                  ratioX={mapConfig.mapAspectRatioX}
+                  ratioY={mapConfig.mapAspectRatioY}
+                >
+                  {withEditedFeature.map((item) => {
+                    return <FeatureSlideMap feature={item} />;
+                  })}
+                </Aspect>
+              </div>
+              <div className="flex-1 relative">
+                {withEditedFeature.map((feature) => (
+                  <FeatureSlideInfo feature={feature} />
+                ))}
+              </div>
             </div>
-            <div className="flex-1 relative">
-              {features?.map((feature) => (
-                <FeatureDetail feature={feature} />
-              ))}
-            </div>
+          </Aspect>
+
+          {/* Positioned Top Left */}
+          <div className="w-64 absolute top-0 left-0 mt-4 ml-2 bg-black/40 rounded-md">
+            {displaySettings.showFeatureList && <FeatureSelectDevelopment />}
           </div>
-        </Aspect>
-
-        {/* Positioned Top Left */}
-        <div className="w-64 absolute top-0 left-0 mt-4 ml-2 bg-black/40 rounded-md">
-          {displaySettings.showFeatureList && <FeatureList />}
+          <MapDrawer />
         </div>
-        <MapDrawer />
-      </div>
+      </SidebarLayout>
     </ThemeProvider>
-  );
-}
-
-function BackgroundLayer({ feature }: { feature: Feature }) {
-  const { visibleFeatureId } = useGlobal();
-  const filterNegative = toCssFilter(
-    feature?.imgLayer?.featureMaskFilterNegative,
-  );
-  return (
-    <div
-      className={cx("w-full absolute inset-0", {
-        hidden: visibleFeatureId !== feature.id,
-      })}
-      style={{
-        // the negative mask image should also be solid red, so they change together
-        background: "red",
-        ...(filterNegative && { filter: filterNegative }),
-      }}
-    />
-  );
-}
-
-function FeatureLayer({ feature }: { feature: Feature }) {
-  const { mapConfig, visibleFeatureId } = useGlobal();
-
-  const filterImg = toCssFilter(feature?.imgLayer?.featureImgFilter);
-  const filterVideo = toCssFilter(feature?.imgLayer?.featureVideoFilter);
-  const filterPositive = toCssFilter(
-    feature?.imgLayer?.featureMaskFilterPositive,
-  );
-  const filterNegative = toCssFilter(
-    feature?.imgLayer?.featureMaskFilterNegative,
-  );
-
-  const videoSrc = feature?.imgLayer?.featureVideoSrc;
-  const imgSrc = feature?.imgLayer?.featureImgSrc;
-  const point = feature?.point;
-
-  return (
-    <div
-      className={cx("relative w-full h-full", {
-        // only show the visible feature
-        hidden: visibleFeatureId !== feature.id,
-      })}
-    >
-      {/*  */}
-      {mapConfig?.mapImgSrc && (
-        <img
-          className={cx("w-full absolute inset-0")}
-          src={mapConfig?.mapImgSrc}
-          style={{
-            transform: `${mapConfig.mapTransform}`,
-          }}
-        />
-      )}
-
-      {mapConfig?.mapRedMaskPositiveSrc && (
-        <img
-          className={cx("w-full absolute inset-0")}
-          src={mapConfig?.mapRedMaskPositiveSrc}
-          style={{
-            transform: `${mapConfig.mapTransform}`,
-            ...(filterPositive && { filter: filterPositive }),
-          }}
-        />
-      )}
-      {/* Video does not receive map transform.*/}
-      {videoSrc && (
-        <video
-          className={cx("absolute inset-0 w-full h-full object-cover")}
-          src={videoSrc}
-          autoPlay
-          loop
-          muted
-          playsInline
-          style={{
-            ...(filterVideo && { filter: filterVideo }),
-          }}
-        />
-      )}
-      {/*  */}
-      {mapConfig?.mapRedMaskNegativeSrc && (
-        <img
-          className={cx("w-full absolute inset-0")}
-          src={mapConfig?.mapRedMaskNegativeSrc}
-          style={{
-            transform: `${mapConfig.mapTransform}`,
-            ...(filterNegative && { filter: filterNegative }),
-          }}
-        />
-      )}
-      {imgSrc && (
-        <img
-          style={{
-            transform: `${mapConfig.mapTransform}`,
-            ...(filterImg && {
-              filter: filterImg,
-            }),
-          }}
-          className={cx("w-full absolute inset-0")}
-          src={imgSrc}
-        />
-      )}
-      {point && (
-        <div
-          className={cx("w-full absolute inset-0")}
-          style={{
-            transform: `${mapConfig.mapTransform}`,
-          }}
-        >
-          <Point point={point} />
-        </div>
-      )}
-    </div>
   );
 }

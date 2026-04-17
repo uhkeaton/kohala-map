@@ -1,18 +1,20 @@
 import React, { useCallback, useState } from "react";
 import { GlobalContext } from "./useGlobal";
-import type { DisplaySettings } from "./types";
+import type { DisplaySettings, Feature } from "./types";
 import { defaultDisplaySettings } from "./constants";
 import { useRoomCode } from "./room/room";
 import { GenericSocketMessage, useWebSocketConnection } from "./socket";
-import { dataSourceOptions } from "./spreadsheet/dataSourceOptions";
 import { useSearchParams } from "react-router";
 import { initialMapConfig } from "./spreadsheet/spreadsheet";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchSpreadsheet } from "./api";
+import { dataSourceOptions } from "./drawerDataSourceSelectOptions";
 
 export type GlobalContextValue = ReturnType<typeof useGlobalContext>;
 
 function useGlobalContext() {
+  const [isEditingRow, setIsEditingRow] = useState(false);
+  const [editedFeature, setEditedFeature] = useState<Feature | null>(null);
   const [visibleFeatureId, setVisibleFeatureId] = useState<string | null>(null);
 
   const [searchParams] = useSearchParams();
@@ -56,8 +58,6 @@ function useGlobalContext() {
   const features = query.data?.features ?? [];
   const mapConfig = query.data?.mapConfig ?? initialMapConfig;
 
-  const visibleFeature = features.find((item) => item.id === visibleFeatureId);
-
   const handleChangeSpreadsheetId = (id: string) => {
     setSpeadsheetId(id);
     send?.({
@@ -82,10 +82,13 @@ function useGlobalContext() {
     spreadsheetId,
     setSpeadsheetId,
     query,
-    visibleFeature,
     features,
     mapConfig: mapConfig, // when edit mode, take mapConfig, into editedMapConfig
     handleChangeSpreadsheetId,
+    editedFeature,
+    setEditedFeature,
+    isEditingRow,
+    setIsEditingRow,
   };
 }
 
