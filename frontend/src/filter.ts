@@ -5,13 +5,6 @@ export type CssFilter = {
   opacity?: number; // 0–1
 };
 
-export const IDENTITY_FILTER: Required<CssFilter> = {
-  hueRotate: 0, // no rotation
-  saturate: 1, // 100%
-  brightness: 1, // 100%
-  opacity: 1, // fully visible
-};
-
 export type FilterProperty =
   | "hue-rotate"
   | "saturate"
@@ -57,13 +50,21 @@ export function toCssFilterString(
   return parts.length ? parts.join(" ") : undefined;
 }
 
-export function fromCssFilterString(
-  input?: string | CssFilter,
-): CssFilter | undefined {
-  if (!input) return undefined;
-  if (typeof input !== "string") return input;
+export const IDENTITY_FILTER: Required<CssFilter> = {
+  hueRotate: 0, // no rotation
+  saturate: 1, // 100%
+  brightness: 1, // 100%
+  opacity: 1, // fully visible
+};
 
-  const result: CssFilter = {};
+export function fromCssFilterString(input?: string | CssFilter): CssFilter {
+  if (!input) return IDENTITY_FILTER;
+
+  if (typeof input !== "string") {
+    return { ...IDENTITY_FILTER, ...input };
+  }
+
+  const result: CssFilter = { ...IDENTITY_FILTER };
 
   const regex = /(\w+-?\w*)\(([^)]+)\)/g;
   let match: RegExpExecArray | null;
@@ -84,6 +85,7 @@ export function fromCssFilterString(
       case "brightness":
         result.brightness = parseFloat(value);
         break;
+
       case "opacity":
         result.opacity = parseFloat(value);
         break;

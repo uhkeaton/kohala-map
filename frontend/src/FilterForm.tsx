@@ -1,35 +1,77 @@
-import { Box, Slider, Typography } from "@mui/material";
-import { FilterProperty } from "./filter";
+import { Box, Slider } from "@mui/material";
+import {
+  CssFilter,
+  fromCssFilterString,
+  IDENTITY_FILTER,
+  toCssFilterString,
+} from "./filter";
 
-export type CssFilter = {
-  hueRotate?: number; // deg
-  saturate?: number;
-  brightness?: number;
-  contrast?: number;
-  grayscale?: number; // 0–1
-  sepia?: number; // 0–1
-  invert?: number; // 0–1
-  opacity?: number; // 0–1
-};
+const NUM_SAMPLES = 32;
+const HUE_MIN = -180;
+const HUE_MAX = 180;
+const SAT_MIN = 0;
+const SAT_MAX = 3;
+const BRIGHT_MIN = 0;
+const BRIGHT_MAX = 3;
 
-const IDENTITY: Required<CssFilter> = {
-  hueRotate: 0,
-  saturate: 1,
-  brightness: 1,
-  contrast: 1,
-  grayscale: 0,
-  sepia: 0,
-  invert: 0,
-  opacity: 1,
-};
+// linear interpolation
+function lerp(percent: number, min: number, max: number): number {
+  return min + (max - min) * percent;
+}
+
+function Samples({
+  filter,
+  override,
+}: {
+  filter: CssFilter;
+  override: (percent: number) => Partial<CssFilter>;
+}) {
+  return (
+    <div className="flex absolute inset-0 w-full h-full rounded-lg overflow-hidden">
+      {new Array(NUM_SAMPLES).fill(0).map((_, i) => {
+        const percent = i / (NUM_SAMPLES - 1);
+
+        const filterString = toCssFilterString({
+          brightness: filter.brightness,
+          hueRotate: filter.hueRotate,
+          saturate: filter.saturate,
+          ...override(percent),
+        });
+
+        return (
+          <div
+            style={{
+              background: "red",
+              filter: filterString,
+            }}
+            className="flex-1"
+          />
+        );
+      })}
+    </div>
+  );
+}
 
 type Props = {
   value: CssFilter;
   onChange: (next: CssFilter) => void;
-  allow: FilterProperty[];
+  type: "hsb" | "hsbo";
 };
 
-export function FilterForm({ value, onChange, allow }: Props) {
+const sliderStyles = {
+  color: "white", // affects track + thumb by default
+  "& .MuiSlider-thumb": {
+    backgroundColor: "white",
+  },
+  "& .MuiSlider-track": {
+    backgroundColor: "white",
+  },
+  "& .MuiSlider-rail": {
+    backgroundColor: "#ccc", // optional contrast
+  },
+};
+
+export function FilterForm({ value, onChange, type }: Props) {
   const set = (key: keyof CssFilter, v: number) => {
     onChange({
       ...value,
@@ -37,80 +79,74 @@ export function FilterForm({ value, onChange, allow }: Props) {
     });
   };
 
+  //
+  const curr = fromCssFilterString(value);
+
+  //
+
   return (
-    <Box display="flex" flexDirection="column" gap={3} width={320}>
-      {allow?.includes("hue-rotate") && (
-        <FilterSlider
-          label="Hue Rotate"
-          value={value.hueRotate ?? IDENTITY.hueRotate}
-          min={-180}
-          max={180}
+    <div className="grid grid-cols-[max-content_1fr] gap-4">
+      <div className="">Hue</div>
+      <div className="relative w-full">
+        <Samples
+          filter={curr}
+          override={(percent) => ({
+            hueRotate: lerp(percent, HUE_MIN, HUE_MAX),
+          })}
+        />
+        <Slider
+          sx={sliderStyles}
+          value={value.hueRotate ?? IDENTITY_FILTER.hueRotate}
+          min={HUE_MIN}
+          max={HUE_MAX}
           step={1}
-          onChange={(v) => set("hueRotate", v)}
+          onChange={(_, v) => set("hueRotate", v)}
         />
-      )}
-      {allow?.includes("saturate") && (
-        <FilterSlider
-          label="Saturate"
-          value={value.saturate ?? IDENTITY.saturate}
-          min={0}
-          max={3}
+      </div>
+      <div className="">Saturate</div>
+      <div className="relative w-full">
+        <Samples
+          filter={curr}
+          override={(percent) => ({
+            saturate: lerp(percent, SAT_MIN, SAT_MAX),
+          })}
+        />
+        <Slider
+          sx={sliderStyles}
+          value={value.saturate ?? IDENTITY_FILTER.saturate}
+          min={SAT_MIN}
+          max={SAT_MAX}
           step={0.01}
-          onChange={(v) => set("saturate", v)}
+          onChange={(_, v) => set("saturate", v)}
         />
-      )}
-      {allow?.includes("brightness") && (
-        <FilterSlider
-          label="Brightness"
-          value={value.brightness ?? IDENTITY.brightness}
-          min={0}
-          max={3}
+      </div>
+      <div className="">Brightness</div>
+      <div className="relative w-full">
+        <Samples
+          filter={curr}
+          override={(percent) => ({
+            brightness: lerp(percent, BRIGHT_MIN, BRIGHT_MAX),
+          })}
+        />
+        <Slider
+          sx={sliderStyles}
+          value={value.brightness ?? IDENTITY_FILTER.brightness}
+          min={BRIGHT_MIN}
+          max={BRIGHT_MAX}
           step={0.01}
-          onChange={(v) => set("brightness", v)}
+          onChange={(_, v) => set("brightness", v)}
         />
-      )}
-      {allow?.includes("opacity") && (
-        <FilterSlider
-          label="Opacity"
-          value={value.opacity ?? IDENTITY.opacity}
+      </div>
+      {type == "hsbo" && (
+        <Slider
+          //   label="Opacity"
+          //   value={value.opacity ?? IDENTITY.opacity}
           min={0}
           max={1}
           step={0.01}
-          onChange={(v) => set("opacity", v)}
+          onChange={(_, v) => set("opacity", v)}
         />
       )}
-    </Box>
-  );
-}
-
-function FilterSlider({
-  label,
-  value,
-  min,
-  max,
-  step,
-  onChange,
-}: {
-  label: string;
-  value: number;
-  min: number;
-  max: number;
-  step: number;
-  onChange: (v: number) => void;
-}) {
-  return (
-    <Box>
-      <Typography gutterBottom>
-        {label}: {value.toFixed(2)}
-      </Typography>
-
-      <Slider
-        value={value}
-        min={min}
-        max={max}
-        step={step}
-        onChange={(_, v) => onChange(v as number)}
-      />
-    </Box>
+    </div>
   );
 }
