@@ -6,7 +6,7 @@ export const ID_EDITED_FEATURE = "editedFeature";
 
 const filterLimeGreen = "hue-rotate(90deg) saturate(2.5) brightness(2)";
 const filterBlue = "hue-rotate(-132deg)";
-const filterWheat = "hue-rotate(54deg) saturate(0.59) brightness(2.37)";
+const filterWheat = "hue-rotate(54deg) saturate(0.59) brightness(2.37) opacity(0.7)";
 
 const hawaiianVideoSrc =
   "https://videos.pexels.com/video-files/28828609/12487971_1920_1080_60fps.mp4";
@@ -34,8 +34,9 @@ export function defaultInitialFeature(worldConfig: WorldConfig): Feature {
     mapImgFilter: filterWheat,
     mapVideoSrc:
       "https://videos.pexels.com/video-files/10470719/10470719-hd_1920_1080_24fps.mp4",
-    mapVideoFilter: "opacity(0.78)",
+    mapVideoFilter: "opacity(0.3)",
     mapMaskFilterPositive: filterLimeGreen,
     mapMaskFilterNegative: filterBlue,
+    mapTerrainFilter: "saturate(2.0)",
   };
 }

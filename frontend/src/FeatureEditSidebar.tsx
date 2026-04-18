@@ -36,9 +36,11 @@ export function FeatureEditSidebar() {
         <Divider sx={{ my: 4 }} />
         <SectionMapColor />
         <Divider sx={{ my: 4 }} />
-        <SectionMapImage />
+        <SectionTerrainFilter />
         <Divider sx={{ my: 4 }} />
-        <SectionMapVideo />
+        <SectionMapOverlayVideo />
+        <Divider sx={{ my: 4 }} />
+        <SectionMapOverlayImage />
         <Divider sx={{ my: 4 }} />
       </div>
     </div>
@@ -178,7 +180,7 @@ function SectionMapColor() {
   return (
     <>
       <div className="flex justify-between">
-        <div className="text-xl mb-4">Map Color</div>
+        <div className="text-xl mb-4">Map Base Color</div>
         <div>
           <ButtonCopyValue
             value={
@@ -200,52 +202,37 @@ function SectionMapColor() {
   );
 }
 
-function SectionMapImage() {
+function SectionTerrainFilter() {
   const { editedFeature, setEditedFeature } = useGlobal();
   return (
     <>
       <div className="flex justify-between">
-        <div className="text-xl mb-4">Map Image</div>
+        <div className="text-xl mb-4">Terrain Filter</div>
         <div>
           <ButtonCopyValue
-            value={toCssFilterString(editedFeature?.mapImgFilter) || ""}
+            value={toCssFilterString(editedFeature?.mapTerrainFilter) || ""}
           />
         </div>
       </div>
-      <div className="mb-4">
-        <FilterForm
-          type={"hsbo"}
-          value={fromCssFilterString(editedFeature?.mapImgFilter)}
-          onChange={(value) => {
-            setEditedFeature((s) => {
-              return { ...s, mapImgFilter: value };
-            });
-          }}
-        />
-      </div>
-      <div className="mb-4">
-        <TextField
-          id="info-img-src"
-          label="Map Image Link"
-          variant="outlined"
-          fullWidth
-          value={editedFeature?.mapImgSrc || ""}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            const val = event.target.value;
-            setEditedFeature((s) => ({ ...s, mapImgSrc: val }));
-          }}
-        />
-      </div>
+      <FilterForm
+        type={"hsbo"}
+        value={fromCssFilterString(editedFeature?.mapTerrainFilter)}
+        onChange={(value) => {
+          setEditedFeature((s) => {
+            return { ...s, mapTerrainFilter: value };
+          });
+        }}
+      />
     </>
   );
 }
 
-function SectionMapVideo() {
+function SectionMapOverlayVideo() {
   const { editedFeature, setEditedFeature } = useGlobal();
   return (
     <>
       <div className="flex justify-between">
-        <div className="text-xl mb-4">Map Video</div>
+        <div className="text-xl mb-4">Map Overlay Video</div>
         <div>
           <ButtonCopyValue
             value={toCssFilterString(editedFeature?.mapVideoFilter) || ""}
@@ -273,6 +260,46 @@ function SectionMapVideo() {
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             const val = event.target.value;
             setEditedFeature((s) => ({ ...s, mapVideoSrc: val }));
+          }}
+        />
+      </div>
+    </>
+  );
+}
+
+function SectionMapOverlayImage() {
+  const { editedFeature, setEditedFeature } = useGlobal();
+  return (
+    <>
+      <div className="flex justify-between">
+        <div className="text-xl mb-4">Map Overlay Image</div>
+        <div>
+          <ButtonCopyValue
+            value={toCssFilterString(editedFeature?.mapImgFilter) || ""}
+          />
+        </div>
+      </div>
+      <div className="mb-4">
+        <FilterForm
+          type={"hsbo"}
+          value={fromCssFilterString(editedFeature?.mapImgFilter)}
+          onChange={(value) => {
+            setEditedFeature((s) => {
+              return { ...s, mapImgFilter: value };
+            });
+          }}
+        />
+      </div>
+      <div className="mb-4">
+        <TextField
+          id="info-img-src"
+          label="Map Image Link"
+          variant="outlined"
+          fullWidth
+          value={editedFeature?.mapImgSrc || ""}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            const val = event.target.value;
+            setEditedFeature((s) => ({ ...s, mapImgSrc: val }));
           }}
         />
       </div>

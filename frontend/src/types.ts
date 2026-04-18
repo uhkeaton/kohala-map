@@ -40,12 +40,13 @@ type FeatureInfoProperties = {
 };
 
 type FeatureMapProperties = {
-  mapImgSrc?: string;
-  mapImgFilter?: CssFilter | string;
-  mapVideoSrc?: string;
-  mapVideoFilter?: CssFilter | string;
-  mapMaskFilterPositive?: CssFilter | string;
-  mapMaskFilterNegative?: CssFilter | string;
+  mapImgSrc: string;
+  mapImgFilter: CssFilter | string;
+  mapVideoSrc: string;
+  mapVideoFilter: CssFilter | string;
+  mapMaskFilterPositive: CssFilter | string;
+  mapMaskFilterNegative: CssFilter | string;
+  mapTerrainFilter: CssFilter | string;
 };
 
 export type Feature = {

@@ -23,6 +23,7 @@ export const knownSpreadsheetKeys = [
   "feature_video_filter",
   "feature_mask_filter_positive",
   "feature_mask_filter_negative",
+  "feature_terrain_filter",
   // map
   "world_min_lon",
   "world_min_lat",
@@ -30,7 +31,7 @@ export const knownSpreadsheetKeys = [
   "world_max_lon",
   "world_aspect_ratio",
   "world_width_percent",
-  "world_img_src",
+  "world_terrain_img_src",
   "world_red_mask_positive_src",
   "world_red_mask_negative_src",
   "world_transform",
@@ -46,13 +47,13 @@ export type WorldConfig = {
   mapAspectRatioX: number;
   mapAspectRatioY: number;
   mapWidthPercent: number;
-  mapImgSrc: string;
+  mapTerrainImgSrc: string;
   mapRedMaskPositiveSrc: string;
   mapRedMaskNegativeSrc: string;
   mapTransform: string;
 };
 
-export const initialWorldConfig = {
+export const initialWorldConfig: WorldConfig = {
   minLon: NaN,
   minLat: NaN,
   maxLon: NaN,
@@ -60,7 +61,7 @@ export const initialWorldConfig = {
   mapAspectRatioX: NaN,
   mapAspectRatioY: NaN,
   mapWidthPercent: NaN,
-  mapImgSrc: "",
+  mapTerrainImgSrc: "",
   mapRedMaskPositiveSrc: "",
   mapRedMaskNegativeSrc: "",
   mapTransform: "",
@@ -91,6 +92,7 @@ function rowToFeature(row: SpreadsheetRow, id: string): Feature {
     mapVideoFilter: removeSemicolon(row.feature_video_filter),
     mapMaskFilterPositive: removeSemicolon(row.feature_mask_filter_positive),
     mapMaskFilterNegative: removeSemicolon(row.feature_mask_filter_negative),
+    mapTerrainFilter: removeSemicolon(row.feature_terrain_filter),
   };
 }
 
@@ -114,6 +116,7 @@ export function featureToRow(feature: Feature, headers: string[]): string {
       toCssFilterString(feature?.mapMaskFilterPositive) || "",
     feature_mask_filter_negative:
       toCssFilterString(feature?.mapMaskFilterNegative) || "",
+    feature_terrain_filter: toCssFilterString(feature?.mapTerrainFilter) || "",
     // world config properties
     world_min_lon: "",
     world_min_lat: "",
@@ -121,7 +124,7 @@ export function featureToRow(feature: Feature, headers: string[]): string {
     world_max_lon: "",
     world_aspect_ratio: "",
     world_width_percent: "",
-    world_img_src: "",
+    world_terrain_img_src: "",
     world_red_mask_positive_src: "",
     world_red_mask_negative_src: "",
     world_transform: "",
@@ -149,7 +152,6 @@ export function parseSheet(tsv: string) {
   db.forEachItem((row, i) => {
     // Skip the Header
     if (i === 0) {
-      console.log({ row });
       return;
     }
 
@@ -163,7 +165,7 @@ export function parseSheet(tsv: string) {
         mapAspectRatioX: parseFloat(row.world_aspect_ratio.split(":")[0]),
         mapAspectRatioY: parseFloat(row.world_aspect_ratio.split(":")[1]),
         mapWidthPercent: parseFloat(row.world_width_percent),
-        mapImgSrc: row.world_img_src,
+        mapTerrainImgSrc: row.world_terrain_img_src,
         mapRedMaskPositiveSrc: row.world_red_mask_positive_src,
         mapRedMaskNegativeSrc: row.world_red_mask_negative_src,
         mapTransform: row.world_transform,

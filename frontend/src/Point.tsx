@@ -34,7 +34,6 @@ export function Point({ point }: { point: Feature }) {
   const filter = toCssFilterString(point.pointFilter);
   const { worldConfig } = useGlobal();
   const [percentY, percentX] = toPercent([long, lat], worldConfig);
-  console.log(point.id, long, lat);
   if (!long || !lat) return <></>;
   return (
     <div

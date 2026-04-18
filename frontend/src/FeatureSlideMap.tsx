@@ -12,6 +12,7 @@ export function FeatureSlideMap({ feature }: { feature: Feature }) {
   const filterVideo = toCssFilterString(feature?.mapVideoFilter);
   const filterPositive = toCssFilterString(feature?.mapMaskFilterPositive);
   const filterNegative = toCssFilterString(feature?.mapMaskFilterNegative);
+  const filterTerrain = toCssFilterString(feature?.mapTerrainFilter);
 
   const videoSrc = feature?.mapVideoSrc;
   const imgSrc = feature?.mapImgSrc;
@@ -29,15 +30,6 @@ export function FeatureSlideMap({ feature }: { feature: Feature }) {
       })}
     >
       {/*  */}
-      {worldConfig?.mapImgSrc && (
-        <img
-          className={cx("w-full absolute inset-0")}
-          src={worldConfig?.mapImgSrc}
-          style={{
-            transform: `${worldConfig.mapTransform}`,
-          }}
-        />
-      )}
 
       {worldConfig?.mapRedMaskPositiveSrc && (
         <img
@@ -46,6 +38,16 @@ export function FeatureSlideMap({ feature }: { feature: Feature }) {
           style={{
             transform: `${worldConfig.mapTransform}`,
             ...(filterPositive && { filter: filterPositive }),
+          }}
+        />
+      )}
+      {worldConfig?.mapTerrainImgSrc && (
+        <img
+          className={cx("w-full absolute inset-0")}
+          src={worldConfig?.mapTerrainImgSrc}
+          style={{
+            transform: `${worldConfig.mapTransform}`,
+            ...(filterTerrain && { filter: filterTerrain }),
           }}
         />
       )}
