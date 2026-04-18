@@ -2,10 +2,11 @@ import toast from "react-hot-toast";
 import { IconContentCopy } from "./icons";
 import { IconButton } from "@mui/material";
 import { useGlobal } from "./useGlobal";
-import { featureToRow } from "./spreadsheet/spreadsheet";
+import { featureToRow } from "./data/spreadsheet";
 
 export function ButtonCopyEditedFeatureRow() {
   const { editedFeature, headers } = useGlobal();
+
   const handleClick = () => {
     const row = featureToRow(editedFeature, headers);
     copyToClipboard(row);

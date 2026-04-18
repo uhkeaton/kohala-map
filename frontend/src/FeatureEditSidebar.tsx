@@ -1,4 +1,4 @@
-import { Divider, TextField } from "@mui/material";
+import { Divider, Slider, TextField } from "@mui/material";
 import { useGlobal } from "./useGlobal";
 import { ButtonClose } from "./ButtonClose";
 import { ButtonCopyEditedFeatureRow, ButtonCopyValue } from "./ButtonCopy";
@@ -25,14 +25,21 @@ export function FeatureEditSidebar() {
         <SectionInfoForm />
         <Divider sx={{ my: 4 }} />
         <SectionMediaForm />
+        <Divider sx={{ my: 4 }} />
         {/*  */}
+        <div className="mb-8">
+          <SectionPointColor />
+        </div>
+        <SectionPointCoordinatesForm />
         <Divider sx={{ my: 4 }} />
         <SectionBackgroundColor />
         <Divider sx={{ my: 4 }} />
         <SectionMapColor />
         <Divider sx={{ my: 4 }} />
-        <div className="text-xl mb-4">Map</div>
-        {/**/}
+        <SectionMapImage />
+        <Divider sx={{ my: 4 }} />
+        <SectionMapVideo />
+        <Divider sx={{ my: 4 }} />
       </div>
     </div>
   );
@@ -190,5 +197,153 @@ function SectionMapColor() {
         }}
       />
     </>
+  );
+}
+
+function SectionMapImage() {
+  const { editedFeature, setEditedFeature } = useGlobal();
+  return (
+    <>
+      <div className="flex justify-between">
+        <div className="text-xl mb-4">Map Image</div>
+        <div>
+          <ButtonCopyValue
+            value={toCssFilterString(editedFeature?.mapImgFilter) || ""}
+          />
+        </div>
+      </div>
+      <div className="mb-4">
+        <FilterForm
+          type={"hsbo"}
+          value={fromCssFilterString(editedFeature?.mapImgFilter)}
+          onChange={(value) => {
+            setEditedFeature((s) => {
+              return { ...s, mapImgFilter: value };
+            });
+          }}
+        />
+      </div>
+      <div className="mb-4">
+        <TextField
+          id="info-img-src"
+          label="Map Image Link"
+          variant="outlined"
+          fullWidth
+          value={editedFeature?.mapImgSrc || ""}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            const val = event.target.value;
+            setEditedFeature((s) => ({ ...s, mapImgSrc: val }));
+          }}
+        />
+      </div>
+    </>
+  );
+}
+
+function SectionMapVideo() {
+  const { editedFeature, setEditedFeature } = useGlobal();
+  return (
+    <>
+      <div className="flex justify-between">
+        <div className="text-xl mb-4">Map Video</div>
+        <div>
+          <ButtonCopyValue
+            value={toCssFilterString(editedFeature?.mapVideoFilter) || ""}
+          />
+        </div>
+      </div>
+      <div className="mb-4">
+        <FilterForm
+          type={"hsbo"}
+          value={fromCssFilterString(editedFeature?.mapVideoFilter)}
+          onChange={(value) => {
+            setEditedFeature((s) => {
+              return { ...s, mapVideoFilter: value };
+            });
+          }}
+        />
+      </div>
+      <div className="mb-4">
+        <TextField
+          id="info-img-src"
+          label="Map Image Link"
+          variant="outlined"
+          fullWidth
+          value={editedFeature?.mapVideoSrc || ""}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            const val = event.target.value;
+            setEditedFeature((s) => ({ ...s, mapVideoSrc: val }));
+          }}
+        />
+      </div>
+    </>
+  );
+}
+
+const sliderStyles = {
+  color: "white", // affects track + thumb by default
+  "& .MuiSlider-thumb": {
+    backgroundColor: "white",
+  },
+  "& .MuiSlider-track": {
+    backgroundColor: "white",
+  },
+  "& .MuiSlider-rail": {
+    backgroundColor: "#ccc", // optional contrast
+  },
+};
+
+function SectionPointColor() {
+  const { editedFeature, setEditedFeature } = useGlobal();
+  return (
+    <>
+      <div className="flex justify-between">
+        <div className="text-xl mb-4">Point</div>
+        <div>
+          <ButtonCopyValue
+            value={toCssFilterString(editedFeature?.pointFilter) || ""}
+          />
+        </div>
+      </div>
+      <FilterForm
+        type={"hsb"}
+        value={fromCssFilterString(editedFeature?.pointFilter)}
+        onChange={(value) => {
+          setEditedFeature((s) => {
+            return { ...s, pointFilter: value };
+          });
+        }}
+      />
+    </>
+  );
+}
+
+export function SectionPointCoordinatesForm() {
+  const { editedFeature, setEditedFeature, worldConfig } = useGlobal();
+  return (
+    <div className="grid grid-cols-[max-content_1fr] gap-4">
+      <div className="w-36">{`Longitude: ${editedFeature?.pointLon?.toFixed(2)}`}</div>
+      <div className="relative w-full">
+        <Slider
+          sx={sliderStyles}
+          value={editedFeature?.pointLon}
+          min={worldConfig?.minLon}
+          max={worldConfig?.maxLon}
+          step={0.001}
+          onChange={(_, v) => setEditedFeature((s) => ({ ...s, pointLon: v }))}
+        />
+      </div>
+      <div className="w-36">{`Latitude: ${editedFeature?.pointLat?.toFixed(2)}`}</div>
+      <div className="relative w-full">
+        <Slider
+          sx={sliderStyles}
+          value={editedFeature?.pointLat}
+          min={worldConfig?.minLat}
+          max={worldConfig?.maxLat}
+          step={0.001}
+          onChange={(_, v) => setEditedFeature((s) => ({ ...s, pointLat: v }))}
+        />
+      </div>
+    </div>
   );
 }

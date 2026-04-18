@@ -3,20 +3,20 @@ import { GlobalContext } from "./useGlobal";
 import type { DisplaySettings, Feature } from "./types";
 import { defaultDisplaySettings } from "./constants";
 import { useRoomCode } from "./room/room";
-import { GenericSocketMessage, useWebSocketConnection } from "./socket";
+import { GenericSocketMessage, useWebSocketConnection } from "./room/socket";
 import { useSearchParams } from "react-router";
-import { initialMapConfig } from "./spreadsheet/spreadsheet";
+import { initialWorldConfig } from "./data/spreadsheet";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchSpreadsheet } from "./api";
 import { dataSourceOptions } from "./drawerDataSourceSelectOptions";
-import { defaultInitialFeature } from "./featureEditDefault";
+import { defaultInitialFeature } from "./feature";
 
 export type GlobalContextValue = ReturnType<typeof useGlobalContext>;
 
 function useGlobalContext() {
   const [isEditingRow, setIsEditingRow] = useState(false);
   const [editedFeature, setEditedFeature] = useState<Feature>(
-    defaultInitialFeature(),
+    defaultInitialFeature(initialWorldConfig),
   );
   const [visibleFeatureId, setVisibleFeatureId] = useState<string | null>(null);
 
@@ -59,7 +59,7 @@ function useGlobalContext() {
   });
 
   const headers = query.data?.headers ?? [];
-  const mapConfig = query.data?.mapConfig ?? initialMapConfig;
+  const worldConfig = query.data?.worldConfig ?? initialWorldConfig;
   const features = query.data?.features ?? [];
 
   const handleChangeSpreadsheetId = (id: string) => {
@@ -88,7 +88,7 @@ function useGlobalContext() {
     query,
     //
     features,
-    mapConfig,
+    worldConfig,
     headers,
     //
     handleChangeSpreadsheetId,

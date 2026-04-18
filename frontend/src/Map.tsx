@@ -36,7 +36,7 @@ function Aspect({
 }
 
 export function Map() {
-  const { features, displaySettings, mapConfig, editedFeature } = useGlobal();
+  const { features, displaySettings, worldConfig, editedFeature } = useGlobal();
 
   const withEditedFeature = [
     ...features,
@@ -56,14 +56,14 @@ export function Map() {
                 // map width is a percentage of the table width
                 // this is important for the <Aspect/> to work correctly
                 style={{
-                  width: `${mapConfig.mapWidthPercent * 100}%`,
-                  // transform: `${mapConfig.mapTransform}`,
+                  width: `${worldConfig.mapWidthPercent * 100}%`,
+                  // transform: `${worldConfig.mapTransform}`,
                   height: "fit-content",
                 }}
               >
                 <Aspect
-                  ratioX={mapConfig.mapAspectRatioX}
-                  ratioY={mapConfig.mapAspectRatioY}
+                  ratioX={worldConfig.mapAspectRatioX}
+                  ratioY={worldConfig.mapAspectRatioY}
                 >
                   {withEditedFeature.map((item) => {
                     return <FeatureSlideMap feature={item} />;

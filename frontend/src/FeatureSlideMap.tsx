@@ -2,11 +2,11 @@ import cx from "classnames";
 import { useGlobal } from "./useGlobal";
 import { Feature } from "./types";
 import { toCssFilterString } from "./filter";
-import { ID_EDITED_FEATURE } from "./featureEditDefault";
+import { ID_EDITED_FEATURE } from "./feature";
 import { Point } from "./Point";
 
 export function FeatureSlideMap({ feature }: { feature: Feature }) {
-  const { mapConfig, visibleFeatureId, isEditingRow } = useGlobal();
+  const { worldConfig, visibleFeatureId, isEditingRow } = useGlobal();
 
   const filterImg = toCssFilterString(feature?.mapImgFilter);
   const filterVideo = toCssFilterString(feature?.mapVideoFilter);
@@ -29,22 +29,22 @@ export function FeatureSlideMap({ feature }: { feature: Feature }) {
       })}
     >
       {/*  */}
-      {mapConfig?.mapImgSrc && (
+      {worldConfig?.mapImgSrc && (
         <img
           className={cx("w-full absolute inset-0")}
-          src={mapConfig?.mapImgSrc}
+          src={worldConfig?.mapImgSrc}
           style={{
-            transform: `${mapConfig.mapTransform}`,
+            transform: `${worldConfig.mapTransform}`,
           }}
         />
       )}
 
-      {mapConfig?.mapRedMaskPositiveSrc && (
+      {worldConfig?.mapRedMaskPositiveSrc && (
         <img
           className={cx("w-full absolute inset-0")}
-          src={mapConfig?.mapRedMaskPositiveSrc}
+          src={worldConfig?.mapRedMaskPositiveSrc}
           style={{
-            transform: `${mapConfig.mapTransform}`,
+            transform: `${worldConfig.mapTransform}`,
             ...(filterPositive && { filter: filterPositive }),
           }}
         />
@@ -64,12 +64,12 @@ export function FeatureSlideMap({ feature }: { feature: Feature }) {
         />
       )}
       {/*  */}
-      {mapConfig?.mapRedMaskNegativeSrc && (
+      {worldConfig?.mapRedMaskNegativeSrc && (
         <img
           className={cx("w-full absolute inset-0")}
-          src={mapConfig?.mapRedMaskNegativeSrc}
+          src={worldConfig?.mapRedMaskNegativeSrc}
           style={{
-            transform: `${mapConfig.mapTransform}`,
+            transform: `${worldConfig.mapTransform}`,
             ...(filterNegative && { filter: filterNegative }),
           }}
         />
@@ -77,7 +77,7 @@ export function FeatureSlideMap({ feature }: { feature: Feature }) {
       {imgSrc && (
         <img
           style={{
-            transform: `${mapConfig.mapTransform}`,
+            transform: `${worldConfig.mapTransform}`,
             ...(filterImg && {
               filter: filterImg,
             }),
@@ -89,7 +89,7 @@ export function FeatureSlideMap({ feature }: { feature: Feature }) {
       <div
         className={cx("w-full absolute inset-0")}
         style={{
-          transform: `${mapConfig.mapTransform}`,
+          transform: `${worldConfig.mapTransform}`,
         }}
       >
         <Point point={feature} />

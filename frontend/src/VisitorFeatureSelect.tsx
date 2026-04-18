@@ -1,5 +1,5 @@
 import { useGlobal } from "./useGlobal";
-import { useWebSocketConnection } from "./socket";
+import { useWebSocketConnection } from "./room/socket";
 import {
   Box,
   FormControl,

@@ -3,6 +3,7 @@ import {
   CssFilter,
   fromCssFilterString,
   IDENTITY_FILTER,
+  lerp,
   toCssFilterString,
 } from "./filter";
 
@@ -13,11 +14,10 @@ const SAT_MIN = 0;
 const SAT_MAX = 3;
 const BRIGHT_MIN = 0;
 const BRIGHT_MAX = 3;
+const OPACITY_MIN = 0;
+const OPACITY_MAX = 1;
 
-// linear interpolation
-function lerp(percent: number, min: number, max: number): number {
-  return min + (max - min) * percent;
-}
+
 
 function Samples({
   filter,
@@ -138,14 +138,26 @@ export function FilterForm({ value, onChange, type }: Props) {
         />
       </div>
       {type == "hsbo" && (
-        <Slider
-          //   label="Opacity"
-          //   value={value.opacity ?? IDENTITY.opacity}
-          min={0}
-          max={1}
-          step={0.01}
-          onChange={(_, v) => set("opacity", v)}
-        />
+        <>
+          <div className="">Opacity</div>
+          <div className="relative w-full">
+            <Samples
+              filter={curr}
+              override={(percent) => ({
+                opacity: lerp(percent, OPACITY_MIN, OPACITY_MAX),
+              })}
+            />
+
+            <Slider
+              sx={sliderStyles}
+              value={value.opacity ?? IDENTITY_FILTER.opacity}
+              min={OPACITY_MIN}
+              max={OPACITY_MAX}
+              step={0.01}
+              onChange={(_, v) => set("opacity", v)}
+            />
+          </div>
+        </>
       )}
     </div>
   );

@@ -8,7 +8,7 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import { useRoomCode } from "./room/room";
-import { useWebSocketConnection } from "./socket";
+import { useWebSocketConnection } from "./room/socket";
 
 export function FeatureSelectDevelopment() {
   const { features, visibleFeatureId, setVisibleFeatureId, isEditingRow } =

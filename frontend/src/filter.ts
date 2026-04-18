@@ -94,3 +94,8 @@ export function fromCssFilterString(input?: string | CssFilter): CssFilter {
 
   return result;
 }
+
+// linear interpolation
+export function lerp(percent: number, min: number, max: number): number {
+  return min + (max - min) * percent;
+}

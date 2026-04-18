@@ -1,16 +1,17 @@
 import { Button } from "@mui/material";
 import { useGlobal } from "./useGlobal";
-import { defaultInitialFeature } from "./featureEditDefault";
+import { defaultInitialFeature } from "./feature";
 
 export function FeatureCreateButton() {
-  const { setEditedFeature, setDisplaySettings, setIsEditingRow } = useGlobal();
+  const { setEditedFeature, setDisplaySettings, setIsEditingRow, worldConfig } =
+    useGlobal();
   return (
     <div>
       <Button
         className="w-full"
         onClick={() => {
           // initialize edited feature if there is none already
-          setEditedFeature((s) => (s ? s : defaultInitialFeature()));
+          setEditedFeature((s) => (s ? s : defaultInitialFeature(worldConfig)));
           setDisplaySettings((s) => ({
             ...s,
             showMainDrawer: false,

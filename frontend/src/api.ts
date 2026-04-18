@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-import { parseSheet } from "./spreadsheet/spreadsheet";
+import { parseSheet } from "./data/spreadsheet";
 
 // export const WS_URL = "http://localhost:54410/ws";
 export const WS_URL = "https://sockets-api.georgekwilliamson.workers.dev/ws";
@@ -19,10 +19,10 @@ export async function fetchSpreadsheet(id: string) {
     throw new Error(`Error: ${res.status}`);
   }
 
-  const { mapConfig, features, headers } = parseSheet(await res.text());
+  const { worldConfig, features, headers } = parseSheet(await res.text());
 
   return {
-    mapConfig,
+    worldConfig,
     features,
     headers,
   };
