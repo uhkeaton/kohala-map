@@ -2,6 +2,10 @@ import { Button, Divider, TextField } from "@mui/material";
 import { useGlobal } from "./useGlobal";
 import { ButtonClose } from "./ButtonClose";
 import { defaultInitialFeature } from "./featureEditDefault";
+import { ButtonCopy } from "./ButtonCopy";
+import toast from "react-hot-toast";
+import { FilterForm } from "./FilterForm";
+import { colorFilters, fromCssFilterString, IDENTITY_FILTER } from "./filter";
 
 export function ButtonCreateFeature() {
   const { setEditedFeature, setDisplaySettings, setIsEditingRow } = useGlobal();
@@ -29,12 +33,25 @@ export function ButtonCreateFeature() {
 export function FeatureEditSidebar() {
   const { editedFeature, setIsEditingRow, setEditedFeature } = useGlobal();
   return (
-    <div className="text-white">
-      <ButtonClose
-        onClick={() => {
-          setIsEditingRow(false);
-        }}
-      />
+    <div className="text-white w-full h-full overflow-y-scroll">
+      <div className="flex sticky top-0 bg-[#3d3d3d] z-10 w-full justify-between">
+        <div>
+          <ButtonClose
+            onClick={() => {
+              setIsEditingRow(false);
+            }}
+          />
+        </div>
+        <div>
+          <ButtonCopy
+            onClick={() => {
+              toast.success(
+                "Copied row to clipboard! Paste the new row in Google Sheets.",
+              );
+            }}
+          />
+        </div>
+      </div>
       <div className="m-4 mt-8">
         <div className="text-xl mb-4">Feature Info</div>
         <div className="mb-4">
@@ -43,10 +60,10 @@ export function FeatureEditSidebar() {
             label="Title"
             variant="outlined"
             fullWidth
-            value={editedFeature?.title || ""}
+            value={editedFeature?.infoTitle || ""}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               const val = event.target.value;
-              setEditedFeature((s) => ({ ...s, title: val }));
+              setEditedFeature((s) => ({ ...s, infoTitle: val }));
             }}
           />
         </div>
@@ -57,10 +74,10 @@ export function FeatureEditSidebar() {
             variant="outlined"
             fullWidth
             multiline
-            value={editedFeature?.description || ""}
+            value={editedFeature?.infoDescription || ""}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               const val = event.target.value;
-              setEditedFeature((s) => ({ ...s, description: val }));
+              setEditedFeature((s) => ({ ...s, infoDescription: val }));
             }}
           />
         </div>
@@ -70,10 +87,10 @@ export function FeatureEditSidebar() {
             label="ʻŌlelo Title"
             variant="outlined"
             fullWidth
-            value={editedFeature?.titleHawaiian || ""}
+            value={editedFeature?.infoTitleHawaiian || ""}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               const val = event.target.value;
-              setEditedFeature((s) => ({ ...s, titleHawaiian: val }));
+              setEditedFeature((s) => ({ ...s, infoTitleHawaiian: val }));
             }}
           />
         </div>
@@ -84,10 +101,10 @@ export function FeatureEditSidebar() {
             variant="outlined"
             fullWidth
             multiline
-            value={editedFeature?.descriptionHawaiian || ""}
+            value={editedFeature?.infoDescriptionHawaiian || ""}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               const val = event.target.value;
-              setEditedFeature((s) => ({ ...s, descriptionHawaiian: val }));
+              setEditedFeature((s) => ({ ...s, infoDescriptionHawaiian: val }));
             }}
           />
         </div>
@@ -99,10 +116,10 @@ export function FeatureEditSidebar() {
             label="Image Link"
             variant="outlined"
             fullWidth
-            value={editedFeature?.imgSrc || ""}
+            value={editedFeature?.mediaImgSrc || ""}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               const val = event.target.value;
-              setEditedFeature((s) => ({ ...s, imgSrc: val }));
+              setEditedFeature((s) => ({ ...s, mediaImgSrc: val }));
             }}
           />
         </div>
@@ -112,19 +129,32 @@ export function FeatureEditSidebar() {
             label="Video Link"
             variant="outlined"
             fullWidth
-            value={editedFeature?.videoSrc || ""}
+            value={editedFeature?.mediaVideoSrc || ""}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               const val = event.target.value;
-              setEditedFeature((s) => ({ ...s, videoSrc: val }));
+              setEditedFeature((s) => ({ ...s, mediaVideoSrc: val }));
             }}
           />
         </div>
-        {editedFeature?.videoSrc && (
+        {editedFeature?.mediaVideoSrc && (
           <div className="mb-4 opacity-70">* video will override image</div>
         )}
         {/*  */}
         <Divider sx={{ my: 4 }} />
         <div className="text-xl mb-4">Point</div>
+        <FilterForm
+          allow={colorFilters}
+          value={
+            fromCssFilterString(editedFeature?.mapMaskFilterNegative) ||
+            IDENTITY_FILTER
+          }
+          onChange={(value) => {
+            setEditedFeature((s) => {
+              return { ...s, mapMaskFilterNegative: value };
+            });
+            console.log("");
+          }}
+        />
         {/* */}
         <Divider sx={{ my: 4 }} />
         <div className="text-xl mb-4">Map</div>

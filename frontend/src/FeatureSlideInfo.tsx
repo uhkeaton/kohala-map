@@ -34,14 +34,14 @@ export function FeatureSlideInfo({ feature }: { feature: Feature }) {
                   }}
                   className="mb-2 font-bold"
                 >
-                  {feature && feature.title}
+                  {feature && feature.infoTitle}
                 </div>
                 <div
                   style={{
                     fontSize: 16 * scale,
                   }}
                 >
-                  {feature && feature.description}
+                  {feature && feature.infoDescription}
                 </div>
               </div>
               <Media feature={feature} scale={scale} />
@@ -54,13 +54,13 @@ export function FeatureSlideInfo({ feature }: { feature: Feature }) {
 }
 
 function Media({ feature, scale }: { feature: Feature; scale: number }) {
-  if (feature?.videoSrc) {
+  if (feature?.mediaVideoSrc) {
     return (
       <>
-        {feature?.videoSrc && (
+        {feature?.mediaVideoSrc && (
           <video
             className={cx("w-full rounded-lg")}
-            src={feature?.videoSrc}
+            src={feature?.mediaVideoSrc}
             autoPlay
             loop
             muted
@@ -70,17 +70,17 @@ function Media({ feature, scale }: { feature: Feature; scale: number }) {
       </>
     );
   }
-  if (feature?.imgSrc) {
+  if (feature?.mediaImgSrc) {
     return (
       <>
-        {feature?.imgSrc && (
+        {feature?.mediaImgSrc && (
           <img
             style={{
               marginTop: 16 * scale,
               marginBottom: 16 * scale,
             }}
             className="w-full rounded-lg"
-            src={feature?.imgSrc}
+            src={feature?.mediaImgSrc}
           />
         )}
       </>

@@ -1,24 +1,20 @@
 import cx from "classnames";
-import { Point } from "./Point";
 import { useGlobal } from "./useGlobal";
-import { Feature, toCssFilter } from "./types";
+import { Feature } from "./types";
+import { toCssFilterString } from "./filter";
 import { ID_EDITED_FEATURE } from "./featureEditDefault";
+import { Point } from "./Point";
 
 export function FeatureSlideMap({ feature }: { feature: Feature }) {
   const { mapConfig, visibleFeatureId, isEditingRow } = useGlobal();
 
-  const filterImg = toCssFilter(feature?.mapLayer?.featureImgFilter);
-  const filterVideo = toCssFilter(feature?.mapLayer?.featureVideoFilter);
-  const filterPositive = toCssFilter(
-    feature?.mapLayer?.featureMaskFilterPositive,
-  );
-  const filterNegative = toCssFilter(
-    feature?.mapLayer?.featureMaskFilterNegative,
-  );
+  const filterImg = toCssFilterString(feature?.mapImgFilter);
+  const filterVideo = toCssFilterString(feature?.mapVideoFilter);
+  const filterPositive = toCssFilterString(feature?.mapMaskFilterPositive);
+  const filterNegative = toCssFilterString(feature?.mapMaskFilterNegative);
 
-  const videoSrc = feature?.mapLayer?.featureVideoSrc;
-  const imgSrc = feature?.mapLayer?.featureImgSrc;
-  const point = feature?.point;
+  const videoSrc = feature?.mapVideoSrc;
+  const imgSrc = feature?.mapImgSrc;
 
   const visible = (function () {
     if (isEditingRow) return feature.id === ID_EDITED_FEATURE;
@@ -90,16 +86,14 @@ export function FeatureSlideMap({ feature }: { feature: Feature }) {
           src={imgSrc}
         />
       )}
-      {point && (
-        <div
-          className={cx("w-full absolute inset-0")}
-          style={{
-            transform: `${mapConfig.mapTransform}`,
-          }}
-        >
-          <Point point={point} />
-        </div>
-      )}
+      <div
+        className={cx("w-full absolute inset-0")}
+        style={{
+          transform: `${mapConfig.mapTransform}`,
+        }}
+      >
+        <Point point={feature} />
+      </div>
     </div>
   );
 }

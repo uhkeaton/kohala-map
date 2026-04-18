@@ -17,7 +17,7 @@ export function VisitorFeatureSelect() {
   const { send } = useWebSocketConnection(roomCode);
 
   const Options = features.map((item) => {
-    return <MenuItem value={item.id}>{item.description}</MenuItem>;
+    return <MenuItem value={item.id}>{item.infoDescription}</MenuItem>;
   });
 
   const handleChange = (event: SelectChangeEvent) => {

@@ -1,5 +1,6 @@
 import "./point.css";
-import { toCssFilter, type Coordinates, type Point } from "./types";
+import { FeaturePointProperties, type Coordinates } from "./types";
+import { toCssFilterString } from "./filter";
 import { MapConfig } from "./spreadsheet/spreadsheet";
 import { useGlobal } from "./useGlobal";
 
@@ -28,11 +29,12 @@ function toPercent(
   return [percentY, percentX];
 }
 
-export function Point({ point }: { point: Point }) {
-  const [long, lat] = point.coordinates;
-  const filter = toCssFilter(point.pointFilter);
+export function Point({ point }: { point: FeaturePointProperties }) {
+  const [long, lat] = point.pointCoordinates;
+  const filter = toCssFilterString(point.pointFilter);
   const { mapConfig } = useGlobal();
   const [percentY, percentX] = toPercent([long, lat], mapConfig);
+  if (!long || !lat) return <></>;
   return (
     <div
       style={{

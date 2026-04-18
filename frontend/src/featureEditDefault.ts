@@ -13,23 +13,22 @@ const hawaiianChainImgSrc =
 export function defaultInitialFeature(): Feature {
   return {
     id: ID_EDITED_FEATURE,
-    title: "Untitled",
-    description: "This is a new feature.",
-    titleHawaiian: "",
-    descriptionHawaiian: "",
-    imgSrc: hawaiianChainImgSrc,
-    videoSrc: hawaiianVideoSrc,
-    point: {
-      coordinates: [0, 0],
-      pointFilter: "",
-    },
-    mapLayer: {
-      featureImgSrc: "",
-      featureImgFilter: "",
-      featureVideoSrc: "",
-      featureVideoFilter: "",
-      featureMaskFilterPositive: filterLimeGreen,
-      featureMaskFilterNegative: filterBlue,
-    },
+    // info properties
+    infoTitle: "Untitled",
+    infoDescription: "This is a new feature.",
+    infoTitleHawaiian: "",
+    infoDescriptionHawaiian: "",
+    mediaImgSrc: hawaiianChainImgSrc,
+    mediaVideoSrc: hawaiianVideoSrc,
+    // point properties
+    pointCoordinates: [0, 0],
+    pointFilter: "",
+    // map properties
+    mapImgSrc: "",
+    mapImgFilter: "",
+    mapVideoSrc: "",
+    mapVideoFilter: "",
+    mapMaskFilterPositive: filterLimeGreen,
+    mapMaskFilterNegative: filterBlue,
   };
 }

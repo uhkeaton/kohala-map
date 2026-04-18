@@ -81,28 +81,23 @@ export type SpreadsheetRow = Record<
 function rowToFeature(row: SpreadsheetRow, id: string): Feature {
   return {
     id: id,
-    title: row.info_title,
-    description: row.info_description,
-    titleHawaiian: row.info_title_hawaiian,
-    descriptionHawaiian: row.info_description_hawaiian,
-    imgSrc: row.info_img_src,
-    videoSrc: row.info_video_src,
-    point: {
-      coordinates: [parseFloat(row.point_lon), parseFloat(row.point_lat)],
-      pointFilter: removeSemicolon(row.point_filter),
-    },
-    mapLayer: {
-      featureImgSrc: row.feature_img_src,
-      featureImgFilter: removeSemicolon(row.feature_img_filter),
-      featureVideoSrc: row.feature_video_src,
-      featureVideoFilter: removeSemicolon(row.feature_video_filter),
-      featureMaskFilterPositive: removeSemicolon(
-        row.feature_mask_filter_positive,
-      ),
-      featureMaskFilterNegative: removeSemicolon(
-        row.feature_mask_filter_negative,
-      ),
-    },
+    // info properties
+    infoTitle: row.info_title,
+    infoDescription: row.info_description,
+    infoTitleHawaiian: row.info_title_hawaiian,
+    infoDescriptionHawaiian: row.info_description_hawaiian,
+    mediaImgSrc: row.info_img_src,
+    mediaVideoSrc: row.info_video_src,
+    // point properties
+    pointCoordinates: [parseFloat(row.point_lon), parseFloat(row.point_lat)],
+    pointFilter: removeSemicolon(row.point_filter),
+    // map properties
+    mapImgSrc: row.feature_img_src,
+    mapImgFilter: removeSemicolon(row.feature_img_filter),
+    mapVideoSrc: row.feature_video_src,
+    mapVideoFilter: removeSemicolon(row.feature_video_filter),
+    mapMaskFilterPositive: removeSemicolon(row.feature_mask_filter_positive),
+    mapMaskFilterNegative: removeSemicolon(row.feature_mask_filter_negative),
   };
 }
 
