@@ -30,7 +30,7 @@ function toPercent(
 }
 
 export function Point({ point }: { point: FeaturePointProperties }) {
-  const [long, lat] = point.pointCoordinates;
+  const [long, lat] = [point.pointLon, point.pointLat];
   const filter = toCssFilterString(point.pointFilter);
   const { mapConfig } = useGlobal();
   const [percentY, percentX] = toPercent([long, lat], mapConfig);

@@ -1,4 +1,4 @@
-import { Box, Slider } from "@mui/material";
+import { Slider } from "@mui/material";
 import {
   CssFilter,
   fromCssFilterString,

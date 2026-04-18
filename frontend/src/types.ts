@@ -24,11 +24,13 @@ type Latitude = number;
 export type Coordinates = [Longitude, Latitude];
 
 export type FeaturePointProperties = {
-  pointCoordinates: Coordinates;
+  pointLon: number;
+  pointLat: number;
   pointFilter?: CssFilter | string;
 };
 
 type FeatureInfoProperties = {
+  infoGroup: string;
   infoTitle: string;
   infoDescription: string;
   infoTitleHawaiian: string;

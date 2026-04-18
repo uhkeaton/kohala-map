@@ -2,8 +2,8 @@ import { Feature } from "./types";
 
 export const ID_EDITED_FEATURE = "editedFeature";
 
-const filterLimeGreen = "hue-rotate(90deg) saturate(300%) brightness(150%)";
-const filterBlue = "hue-rotate(222deg)";
+const filterLimeGreen = "hue-rotate(90deg) saturate(2.5) brightness(2)";
+const filterBlue = "hue-rotate(-132deg)";
 
 const hawaiianVideoSrc =
   "https://videos.pexels.com/video-files/28828609/12487971_1920_1080_60fps.mp4";
@@ -13,6 +13,7 @@ const hawaiianChainImgSrc =
 export function defaultInitialFeature(): Feature {
   return {
     id: ID_EDITED_FEATURE,
+    infoGroup: "",
     // info properties
     infoTitle: "Untitled",
     infoDescription: "This is a new feature.",
@@ -21,7 +22,8 @@ export function defaultInitialFeature(): Feature {
     mediaImgSrc: hawaiianChainImgSrc,
     mediaVideoSrc: hawaiianVideoSrc,
     // point properties
-    pointCoordinates: [0, 0],
+    pointLat: 0,
+    pointLon: 0,
     pointFilter: "",
     // map properties
     mapImgSrc: "",

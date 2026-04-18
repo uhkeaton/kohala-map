@@ -1,18 +1,9 @@
 import toast from "react-hot-toast";
 import { Feature } from "../types";
 import { Database } from "./database";
-
-// @ts-expect-error enum
-export enum SpreadSheetItemType {
-  config = "config",
-  feature = "feature",
-  point = "point",
-  layer_img = "layer_img",
-}
+import { toCssFilterString } from "../filter";
 
 export const knownSpreadsheetKeys = [
-  // added in code
-  "row_index",
   // features
   "info_group",
   "info_title",
@@ -45,6 +36,8 @@ export const knownSpreadsheetKeys = [
   "world_transform",
 ] as const;
 
+export type SpreadsheetKey = (typeof knownSpreadsheetKeys)[number];
+
 export type MapConfig = {
   minLon: number;
   minLat: number;
@@ -73,15 +66,14 @@ export const initialMapConfig = {
   mapTransform: "",
 };
 
-export type SpreadsheetRow = Record<
-  (typeof knownSpreadsheetKeys)[number],
-  string
->;
+export type SpreadsheetRow = Record<SpreadsheetKey, string>;
 
 function rowToFeature(row: SpreadsheetRow, id: string): Feature {
   return {
     id: id,
+
     // info properties
+    infoGroup: row.info_group,
     infoTitle: row.info_title,
     infoDescription: row.info_description,
     infoTitleHawaiian: row.info_title_hawaiian,
@@ -89,7 +81,8 @@ function rowToFeature(row: SpreadsheetRow, id: string): Feature {
     mediaImgSrc: row.info_img_src,
     mediaVideoSrc: row.info_video_src,
     // point properties
-    pointCoordinates: [parseFloat(row.point_lon), parseFloat(row.point_lat)],
+    pointLat: parseFloat(row.point_lat),
+    pointLon: parseFloat(row.point_lon),
     pointFilter: removeSemicolon(row.point_filter),
     // map properties
     mapImgSrc: row.feature_img_src,
@@ -99,6 +92,51 @@ function rowToFeature(row: SpreadsheetRow, id: string): Feature {
     mapMaskFilterPositive: removeSemicolon(row.feature_mask_filter_positive),
     mapMaskFilterNegative: removeSemicolon(row.feature_mask_filter_negative),
   };
+}
+
+export function featureToRow(feature: Feature, headers: string[]): string {
+  const row: SpreadsheetRow = {
+    info_group: feature?.infoGroup || "",
+    info_title: feature?.infoTitle || "",
+    info_description: feature?.infoDescription || "",
+    info_title_hawaiian: feature?.infoTitleHawaiian || "",
+    info_description_hawaiian: feature?.infoDescriptionHawaiian || "",
+    info_img_src: feature?.mediaImgSrc || "",
+    info_video_src: feature?.mediaVideoSrc || "",
+    point_lat: String(feature?.pointLat),
+    point_lon: String(feature?.pointLon),
+    point_filter: toCssFilterString(feature?.pointFilter) || "",
+    feature_img_src: feature?.mapImgSrc || "",
+    feature_img_filter: toCssFilterString(feature?.mapImgFilter) || "",
+    feature_video_src: feature?.mapVideoSrc || "",
+    feature_video_filter: toCssFilterString(feature?.mapVideoFilter) || "",
+    feature_mask_filter_positive:
+      toCssFilterString(feature?.mapMaskFilterPositive) || "",
+    feature_mask_filter_negative:
+      toCssFilterString(feature?.mapMaskFilterNegative) || "",
+    // world config properties
+    world_min_lon: "",
+    world_min_lat: "",
+    world_max_lat: "",
+    world_max_lon: "",
+    world_aspect_ratio: "",
+    world_width_percent: "",
+    world_img_src: "",
+    world_red_mask_positive_src: "",
+    world_red_mask_negative_src: "",
+    world_transform: "",
+  };
+
+  return headers
+    .map((h) => {
+      const header = h as SpreadsheetKey;
+      if (!knownSpreadsheetKeys.includes(header)) {
+        toast.error(`Unkown header (${header}) during copy.`);
+      }
+      const val = row[header] || "";
+      return val;
+    })
+    .join("\t");
 }
 
 export function parseSheet(tsv: string) {
@@ -111,6 +149,7 @@ export function parseSheet(tsv: string) {
   db.forEachItem((row, i) => {
     // Skip the Header
     if (i === 0) {
+      console.log({ row });
       return;
     }
 
@@ -157,6 +196,7 @@ export function parseSheet(tsv: string) {
   return {
     mapConfig: mapConfig,
     features: features,
+    headers: db.headers,
   };
 }
 

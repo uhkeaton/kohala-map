@@ -3,8 +3,8 @@ import { DrawerDisplaySettings } from "./DrawerDisplaySettings";
 import { RoomSettings } from "./room/RoomSettings";
 import { DrawerDataSourceSelect } from "./DrawerDataSourceSelect";
 import { IconMenu } from "./icons";
-import { ButtonCreateFeature } from "./FeatureEditSidebar";
 import { useGlobal } from "./useGlobal";
+import { FeatureCreateButton } from "./FeatureCreateButton";
 
 export function MapDrawer() {
   const { displaySettings, setDisplaySettings } = useGlobal();
@@ -30,7 +30,7 @@ export function MapDrawer() {
       >
         <div className="m-4 mt-8">
           <div className="text-xl mb-4">Create</div>
-          <ButtonCreateFeature />
+          <FeatureCreateButton />
           <Divider sx={{ my: 4 }} />
           <div className="text-xl mb-4">Data Source</div>
           <DrawerDataSourceSelect />

@@ -58,8 +58,9 @@ function useGlobalContext() {
     placeholderData: keepPreviousData,
   });
 
-  const features = query.data?.features ?? [];
+  const headers = query.data?.headers ?? [];
   const mapConfig = query.data?.mapConfig ?? initialMapConfig;
+  const features = query.data?.features ?? [];
 
   const handleChangeSpreadsheetId = (id: string) => {
     setSpeadsheetId(id);
@@ -85,8 +86,11 @@ function useGlobalContext() {
     spreadsheetId,
     setSpeadsheetId,
     query,
+    //
     features,
-    mapConfig: mapConfig, // when edit mode, take mapConfig, into editedMapConfig
+    mapConfig,
+    headers,
+    //
     handleChangeSpreadsheetId,
     editedFeature,
     setEditedFeature,

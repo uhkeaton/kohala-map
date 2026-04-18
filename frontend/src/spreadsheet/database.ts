@@ -4,33 +4,31 @@ export class Database<TRow extends { [key: string]: string }> {
   rows: string[][];
   data: TRow[];
   columnIndexMap: Record<string, number>;
+  headers: string[];
 
   constructor(tsv: string, knownKeys: readonly string[]) {
-    const rows = tsv.split("\n").map((row, i) => {
-      // add index as first column
-      const firstCol = i == 0 ? "row_index" : (i + 1).toString();
-      // split rest on tabs
-      return [firstCol, ...row.split("\t")];
+    const rows = tsv.split("\n").map((row) => {
+      return row.split("\t");
     });
 
     // remove extra space or \r
-    const headers = rows[0].map((h) => h.trim());
+    this.headers = rows[0].map((h) => h.trim());
 
-    headers.forEach((key) => {
+    this.headers.forEach((key) => {
       if (!knownKeys.includes(key)) {
         toast.error(`Unknown column (${key})`);
       }
     });
 
     knownKeys.forEach((key) => {
-      if (!headers.includes(key)) {
+      if (!this.headers.includes(key)) {
         toast.error(`Missing column (${key})`);
       }
     });
 
     this.columnIndexMap = Object.fromEntries(
       // header row
-      headers.map((key, index) => [key, index]),
+      this.headers.map((key, index) => [key, index]),
     );
 
     // remove header row

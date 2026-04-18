@@ -11,7 +11,7 @@ export async function fetchSpreadsheet(id: string) {
     `https://docs.google.com/spreadsheets/d/${id}/export?format=tsv&gid=0`,
     {
       method: "GET",
-    }
+    },
   );
 
   if (!res.ok) {
@@ -19,10 +19,11 @@ export async function fetchSpreadsheet(id: string) {
     throw new Error(`Error: ${res.status}`);
   }
 
-  const { mapConfig, features } = parseSheet(await res.text());
+  const { mapConfig, features, headers } = parseSheet(await res.text());
 
   return {
     mapConfig,
     features,
+    headers,
   };
 }
