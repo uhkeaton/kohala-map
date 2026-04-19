@@ -39,7 +39,7 @@ export function FeatureSlideInfo({ feature }: { feature: Feature }) {
                     style={{
                       fontSize: 32 * scale,
                     }}
-                    className="mb-2 font-bold"
+                    className="lexend-600 mb-2 font-bold"
                   >
                     {feature && feature.infoTitle}
                   </div>

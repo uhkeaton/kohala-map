@@ -1,17 +1,17 @@
 import { useLocation, useNavigate } from "react-router";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useRoomCode } from "./room/room";
 import { VisitorFeatureSelect } from "./VisitorFeatureSelect";
-import { ManualJoinRoom } from "./room/ManualJoinRoom";
-import { ConnectedStatus } from "./room/ConnectedStatus";
-import { Button } from "@mui/material";
+import { useGlobal } from "./useGlobal";
+import { useWebSocketConnection } from "./room/socket";
+import debounce from "lodash.debounce";
 
 export function IPadPage() {
   const navigate = useNavigate();
-
   const location = useLocation();
-
-  const { joinRoomMutation } = useRoomCode();
+  const { features, setVisibleFeatureId } = useGlobal();
+  const { roomCode, joinRoomMutation } = useRoomCode();
+  const { send } = useWebSocketConnection(roomCode);
   const { mutate } = joinRoomMutation;
 
   //  check url for room code
@@ -34,36 +34,57 @@ export function IPadPage() {
     }
   }, [mutate, location.pathname, location.search, navigate]);
 
-  return (
-    <div className="h-[100dvh] w-[100dvw] bg-white overflow-hidden p-4">
-      <div className="max-w-sm m-auto flex flex-col justify-between w-full h-full">
-        <div>
-          <div className="px-4 mb-8 text-2xl">Controller</div>
+  const handleChange = useMemo(
+    () =>
+      debounce((id: string) => {
+        if (!id) return;
 
-          <div className="px-4 mb-4">
-            <VisitorFeatureSelect />
-          </div>
-        </div>
-        <div>
-          <div className="px-4 mb-4">
-            <ConnectedStatus />
-          </div>
-          <div className="px-4 mb-4">
-            <ManualJoinRoom />
-          </div>
-          <div>
-            <Button
-              className="w-full"
-              onClick={() => {
-                navigate("/");
-              }}
-              variant="text"
-            >
-              Map View
-            </Button>
-          </div>
-        </div>
-      </div>
-    </div>
+        const feature = features.find((item) => item.id === id);
+        if (!feature) return;
+
+        setVisibleFeatureId(id);
+
+        send?.({
+          action: "selectFeature",
+          payload: {
+            id: feature.id,
+          },
+        });
+      }, 100),
+    [features, send, setVisibleFeatureId],
   );
+
+  return <VisitorFeatureSelect onChange={handleChange} />;
+  // return (
+  //   <div className="h-[100dvh] w-[100dvw] bg-white overflow-hidden p-4">
+  //     <div className="max-w-sm m-auto flex flex-col justify-between w-full h-full">
+  //       <div>
+  //         <div className="px-4 mb-8 text-2xl">Controller</div>
+  //         <VisitorFeatureSelect />
+  //         <div className="px-4 mb-4">
+  //           <FeatureSelectDev />
+  //         </div>
+  //       </div>
+  //       <div>
+  //         <div className="px-4 mb-4">
+  //           <ConnectedStatus />
+  //         </div>
+  //         <div className="px-4 mb-4">
+  //           <ManualJoinRoom />
+  //         </div>
+  //         <div>
+  //           <Button
+  //             className="w-full"
+  //             onClick={() => {
+  //               navigate("/");
+  //             }}
+  //             variant="text"
+  //           >
+  //             Map View
+  //           </Button>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   </div>
+  // );
 }

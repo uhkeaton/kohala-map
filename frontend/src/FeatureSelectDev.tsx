@@ -2,8 +2,8 @@ import { useGlobal } from "./useGlobal";
 import { Box, FormControl, NativeSelect } from "@mui/material";
 import { useRoomCode } from "./room/room";
 import { useWebSocketConnection } from "./room/socket";
-import { Feature } from "./types";
 import { ChangeEventHandler } from "react";
+import { featuresByGroup } from "./feature";
 
 export function FeatureSelectDev() {
   const { features, visibleFeatureId, setVisibleFeatureId, isEditingRow } =
@@ -70,19 +70,4 @@ export function FeatureSelectDev() {
       </Box>
     </div>
   );
-}
-
-function featuresByGroup(features: Feature[]) {
-  const grouped = features.reduce<Map<string, Feature[]>>((acc, item) => {
-    const key = item.infoGroup.trim() || "Other";
-
-    if (!acc.has(key)) {
-      acc.set(key, []);
-    }
-
-    acc.get(key)!.push(item);
-    return acc;
-  }, new Map());
-
-  return Array.from(grouped.entries());
 }

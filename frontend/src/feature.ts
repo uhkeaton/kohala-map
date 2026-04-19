@@ -37,3 +37,18 @@ export const defaultInitialFeature: Feature = {
   mapMaskFilterNegative: filterBlue,
   mapTerrainFilter: "saturate(2.0)",
 };
+
+export function featuresByGroup(features: Feature[]) {
+  const grouped = features.reduce<Map<string, Feature[]>>((acc, item) => {
+    const key = item.infoGroup.trim() || "Other";
+
+    if (!acc.has(key)) {
+      acc.set(key, []);
+    }
+
+    acc.get(key)!.push(item);
+    return acc;
+  }, new Map());
+
+  return Array.from(grouped.entries());
+}
