@@ -1,5 +1,5 @@
 import cx from "classnames";
-import { FeatureSelectDevelopment } from "./FeatureSelectDevelopment";
+import { FeatureSelectDev } from "./FeatureSelectDev";
 import { useGlobal } from "./useGlobal";
 import { FeatureSlideInfo } from "./FeatureSlideInfo";
 import { MapDrawer } from "./Drawer";
@@ -80,7 +80,7 @@ export function Map() {
 
           {/* Positioned Top Left */}
           <div className="w-64 absolute top-0 left-0 mt-4 ml-2 bg-black/40 rounded-md">
-            {displaySettings.showFeatureList && <FeatureSelectDevelopment />}
+            {displaySettings.showFeatureList && <FeatureSelectDev />}
           </div>
           <MapDrawer />
         </div>
