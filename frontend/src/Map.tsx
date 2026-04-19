@@ -50,7 +50,7 @@ export function Map() {
                   })}
                 </Aspect>
               </div>
-              <div className="flex-1 relative">
+              <div className="h-full flex-1 relative">
                 {withEditedFeature.map((feature) => (
                   <FeatureSlideInfo feature={feature} />
                 ))}
