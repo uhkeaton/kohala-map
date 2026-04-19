@@ -3,6 +3,7 @@ import { AutoScale } from "./AutoScale";
 import { useGlobal } from "./useGlobal";
 import cx from "classnames";
 import { ID_EDITED_FEATURE } from "./feature";
+import { Aspect } from "./Aspect";
 
 export function FeatureSlideInfo({ feature }: { feature: Feature }) {
   const { visibleFeatureId, isEditingRow } = useGlobal();
@@ -30,7 +31,7 @@ export function FeatureSlideInfo({ feature }: { feature: Feature }) {
               <div>
                 <div
                   style={{
-                    fontSize: 36 * scale,
+                    fontSize: 32 * scale,
                   }}
                   className="mb-2 font-bold"
                 >
@@ -44,7 +45,9 @@ export function FeatureSlideInfo({ feature }: { feature: Feature }) {
                   {feature && feature.infoDescription}
                 </div>
               </div>
-              <Media feature={feature} scale={scale} />
+              <Aspect ratioX={5} ratioY={4}>
+                <Media feature={feature} scale={scale} />
+              </Aspect>
             </div>
           );
         }}
@@ -54,6 +57,29 @@ export function FeatureSlideInfo({ feature }: { feature: Feature }) {
 }
 
 function Media({ feature, scale }: { feature: Feature; scale: number }) {
+  if (feature?.mediaVideoSrc) {
+    return (
+      <video
+        className="w-full h-full object-cover rounded-lg"
+        src={feature.mediaVideoSrc}
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
+    );
+  }
+
+  if (feature?.mediaImgSrc) {
+    return (
+      <img
+        className="w-full h-full object-cover rounded-lg"
+        src={feature.mediaImgSrc}
+      />
+    );
+  }
+
+  return null;
   if (feature?.mediaVideoSrc) {
     return (
       <>

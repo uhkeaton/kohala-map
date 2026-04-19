@@ -7,33 +7,13 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { SidebarLayout } from "./Sidebar";
 import { FeatureSlideMap } from "./FeatureSlideMap";
 import { FeatureSlideBackground } from "./FeatureSlideBackground";
+import { Aspect } from "./Aspect";
 
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
   },
 });
-
-function Aspect({
-  children,
-  ratioX,
-  ratioY,
-}: {
-  children: React.ReactNode;
-  ratioX: number;
-  ratioY: number;
-}) {
-  return (
-    <div
-      className="relative w-full before:block before:content-[''] before:pt-[var(--aspect-pt)]"
-      style={
-        { "--aspect-pt": `${(ratioY / ratioX) * 100}%` } as React.CSSProperties
-      }
-    >
-      <div className="absolute inset-0">{children}</div>
-    </div>
-  );
-}
 
 export function Map() {
   const { features, displaySettings, worldConfig, editedFeature } = useGlobal();

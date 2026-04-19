@@ -3,6 +3,7 @@ import { Feature } from "./types";
 import { toCssFilterString } from "./filter";
 import { useGlobal } from "./useGlobal";
 import { ID_EDITED_FEATURE } from "./feature";
+import redSquare from "/red-square.png";
 
 export function FeatureSlideBackground({ feature }: { feature: Feature }) {
   const { visibleFeatureId, isEditingRow } = useGlobal();
@@ -14,13 +15,13 @@ export function FeatureSlideBackground({ feature }: { feature: Feature }) {
   })();
 
   return (
-    <div
-      className={cx("w-full absolute inset-0", {
+    <img
+      className={cx("w-full h-full absolute inset-0", {
         hidden: !visible,
       })}
+      src={redSquare}
       style={{
-        // the negative mask image should also be solid red, so they change together
-        background: "red",
+        objectFit: "cover",
         ...(filterNegative && { filter: filterNegative }),
       }}
     />
