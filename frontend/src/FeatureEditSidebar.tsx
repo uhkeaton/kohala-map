@@ -2,8 +2,11 @@ import { Divider, Slider, TextField } from "@mui/material";
 import { useGlobal } from "./useGlobal";
 import { ButtonClose } from "./ButtonClose";
 import { ButtonCopyEditedFeatureRow, ButtonCopyValue } from "./ButtonCopy";
-import { FilterForm } from "./FilterForm";
+import { FilterForm, FilterFormType } from "./FilterForm";
 import { fromCssFilterString, toCssFilterString } from "./filter";
+import { sliderStyles } from "./slider";
+import { defaultInitialFeature } from "./feature";
+import { ButtonReset } from "./ButtonReset";
 
 export function FeatureEditSidebar() {
   const { setIsEditingRow } = useGlobal();
@@ -28,19 +31,33 @@ export function FeatureEditSidebar() {
         <Divider sx={{ my: 4 }} />
         {/*  */}
         <div className="mb-8">
-          <SectionPointColor />
+          <GenericFilterSection
+            title="Point"
+            featureKey="pointFilter"
+            filterType="hsb"
+          />
         </div>
         <SectionPointCoordinatesForm />
         <Divider sx={{ my: 4 }} />
-        <SectionBackgroundColor />
+        <GenericFilterSection
+          title="Background Color"
+          featureKey="mapMaskFilterNegative"
+          filterType="hsb"
+        />
         <Divider sx={{ my: 4 }} />
-        <SectionMapColor />
+        <GenericFilterSection
+          title="Map Base Color"
+          featureKey="mapMaskFilterPositive"
+          filterType="hsb"
+        />
         <Divider sx={{ my: 4 }} />
-        <SectionTerrainFilter />
+        <GenericFilterSection
+          title="Terrain Filter"
+          featureKey="mapTerrainFilter"
+          filterType="hsbo"
+        />
         <Divider sx={{ my: 4 }} />
-        <SectionMapOverlayVideo />
-        <Divider sx={{ my: 4 }} />
-        <SectionMapOverlayImage />
+        <SectionMapOverlays />
         <Divider sx={{ my: 4 }} />
       </div>
     </div>
@@ -148,26 +165,56 @@ function SectionMediaForm() {
   );
 }
 
-function SectionBackgroundColor() {
+function GenericFilterSection({
+  title,
+  featureKey,
+  filterType,
+}: {
+  title: string;
+  featureKey:
+    | "pointFilter"
+    | "mapMaskFilterNegative"
+    | "mapMaskFilterPositive"
+    | "mapVideoFilter"
+    | "mapTerrainFilter"
+    | "mapImgFilter";
+  filterType: FilterFormType;
+}) {
   const { editedFeature, setEditedFeature } = useGlobal();
   return (
     <>
       <div className="flex justify-between">
-        <div className="text-xl mb-4">Background Color</div>
-        <div>
-          <ButtonCopyValue
-            value={
-              toCssFilterString(editedFeature?.mapMaskFilterNegative) || ""
-            }
-          />
+        <div className="text-xl mb-4">{title}</div>
+        <div className="flex gap-2">
+          <div>
+            <ButtonReset
+              disabled={
+                editedFeature[featureKey] == defaultInitialFeature[featureKey]
+              }
+              onClick={() => {
+                setEditedFeature((s) => {
+                  return {
+                    ...s,
+                    [featureKey]: defaultInitialFeature[featureKey],
+                  };
+                });
+              }}
+            />
+          </div>
+          <div>
+            <ButtonCopyValue
+              value={toCssFilterString(editedFeature?.[featureKey]) || ""}
+            />
+          </div>
         </div>
       </div>
       <FilterForm
-        type={"hsb"}
-        value={fromCssFilterString(editedFeature?.mapMaskFilterNegative)}
+        type={filterType}
+        value={fromCssFilterString(editedFeature?.[featureKey])}
         onChange={(value) => {
+          console.log(value, featureKey);
           setEditedFeature((s) => {
-            return { ...s, mapMaskFilterNegative: value };
+            return { ...s, [featureKey]: value };
           });
         }}
       />
@@ -175,85 +222,19 @@ function SectionBackgroundColor() {
   );
 }
 
-function SectionMapColor() {
+function SectionMapOverlays() {
   const { editedFeature, setEditedFeature } = useGlobal();
   return (
     <>
-      <div className="flex justify-between">
-        <div className="text-xl mb-4">Map Base Color</div>
-        <div>
-          <ButtonCopyValue
-            value={
-              toCssFilterString(editedFeature?.mapMaskFilterPositive) || ""
-            }
-          />
-        </div>
-      </div>
-      <FilterForm
-        type={"hsb"}
-        value={fromCssFilterString(editedFeature?.mapMaskFilterPositive)}
-        onChange={(value) => {
-          setEditedFeature((s) => {
-            return { ...s, mapMaskFilterPositive: value };
-          });
-        }}
+      <GenericFilterSection
+        title="Map Overlay Video"
+        featureKey="mapVideoFilter"
+        filterType="hsbo"
       />
-    </>
-  );
-}
-
-function SectionTerrainFilter() {
-  const { editedFeature, setEditedFeature } = useGlobal();
-  return (
-    <>
-      <div className="flex justify-between">
-        <div className="text-xl mb-4">Terrain Filter</div>
-        <div>
-          <ButtonCopyValue
-            value={toCssFilterString(editedFeature?.mapTerrainFilter) || ""}
-          />
-        </div>
-      </div>
-      <FilterForm
-        type={"hsbo"}
-        value={fromCssFilterString(editedFeature?.mapTerrainFilter)}
-        onChange={(value) => {
-          setEditedFeature((s) => {
-            return { ...s, mapTerrainFilter: value };
-          });
-        }}
-      />
-    </>
-  );
-}
-
-function SectionMapOverlayVideo() {
-  const { editedFeature, setEditedFeature } = useGlobal();
-  return (
-    <>
-      <div className="flex justify-between">
-        <div className="text-xl mb-4">Map Overlay Video</div>
-        <div>
-          <ButtonCopyValue
-            value={toCssFilterString(editedFeature?.mapVideoFilter) || ""}
-          />
-        </div>
-      </div>
-      <div className="mb-4">
-        <FilterForm
-          type={"hsbo"}
-          value={fromCssFilterString(editedFeature?.mapVideoFilter)}
-          onChange={(value) => {
-            setEditedFeature((s) => {
-              return { ...s, mapVideoFilter: value };
-            });
-          }}
-        />
-      </div>
-      <div className="mb-4">
+      <div className="my-6">
         <TextField
           id="info-img-src"
-          label="Map Image Link"
+          label="Overlay Video Link"
           variant="outlined"
           fullWidth
           value={editedFeature?.mapVideoSrc || ""}
@@ -263,37 +244,16 @@ function SectionMapOverlayVideo() {
           }}
         />
       </div>
-    </>
-  );
-}
-
-function SectionMapOverlayImage() {
-  const { editedFeature, setEditedFeature } = useGlobal();
-  return (
-    <>
-      <div className="flex justify-between">
-        <div className="text-xl mb-4">Map Overlay Image</div>
-        <div>
-          <ButtonCopyValue
-            value={toCssFilterString(editedFeature?.mapImgFilter) || ""}
-          />
-        </div>
-      </div>
-      <div className="mb-4">
-        <FilterForm
-          type={"hsbo"}
-          value={fromCssFilterString(editedFeature?.mapImgFilter)}
-          onChange={(value) => {
-            setEditedFeature((s) => {
-              return { ...s, mapImgFilter: value };
-            });
-          }}
-        />
-      </div>
-      <div className="mb-4">
+      <Divider sx={{ my: 4 }} />
+      <GenericFilterSection
+        title="Map Overlay Image"
+        featureKey="mapImgFilter"
+        filterType="hsbo"
+      />
+      <div className="my-6">
         <TextField
           id="info-img-src"
-          label="Map Image Link"
+          label="Overlay Image Link"
           variant="outlined"
           fullWidth
           value={editedFeature?.mapImgSrc || ""}
@@ -307,49 +267,11 @@ function SectionMapOverlayImage() {
   );
 }
 
-const sliderStyles = {
-  color: "white", // affects track + thumb by default
-  "& .MuiSlider-thumb": {
-    backgroundColor: "white",
-  },
-  "& .MuiSlider-track": {
-    backgroundColor: "white",
-  },
-  "& .MuiSlider-rail": {
-    backgroundColor: "#ccc", // optional contrast
-  },
-};
-
-function SectionPointColor() {
-  const { editedFeature, setEditedFeature } = useGlobal();
-  return (
-    <>
-      <div className="flex justify-between">
-        <div className="text-xl mb-4">Point</div>
-        <div>
-          <ButtonCopyValue
-            value={toCssFilterString(editedFeature?.pointFilter) || ""}
-          />
-        </div>
-      </div>
-      <FilterForm
-        type={"hsb"}
-        value={fromCssFilterString(editedFeature?.pointFilter)}
-        onChange={(value) => {
-          setEditedFeature((s) => {
-            return { ...s, pointFilter: value };
-          });
-        }}
-      />
-    </>
-  );
-}
-
 export function SectionPointCoordinatesForm() {
   const { editedFeature, setEditedFeature, worldConfig } = useGlobal();
   return (
     <div className="grid grid-cols-[max-content_1fr] gap-4">
-      <div className="w-36">{`Longitude: ${editedFeature?.pointLon?.toFixed(2)}`}</div>
+      <div className="w-36">{`Lon: ${editedFeature?.pointLon?.toFixed(2)}`}</div>
       <div className="relative w-full">
         <Slider
           sx={sliderStyles}
@@ -360,7 +282,7 @@ export function SectionPointCoordinatesForm() {
           onChange={(_, v) => setEditedFeature((s) => ({ ...s, pointLon: v }))}
         />
       </div>
-      <div className="w-36">{`Latitude: ${editedFeature?.pointLat?.toFixed(2)}`}</div>
+      <div className="w-36">{`Lat: ${editedFeature?.pointLat?.toFixed(2)}`}</div>
       <div className="relative w-full">
         <Slider
           sx={sliderStyles}

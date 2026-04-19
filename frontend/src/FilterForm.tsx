@@ -6,6 +6,7 @@ import {
   lerp,
   toCssFilterString,
 } from "./filter";
+import { sliderStyles } from "./slider";
 
 const NUM_SAMPLES = 32;
 const HUE_MIN = -180;
@@ -16,8 +17,6 @@ const BRIGHT_MIN = 0;
 const BRIGHT_MAX = 3;
 const OPACITY_MIN = 0;
 const OPACITY_MAX = 1;
-
-
 
 function Samples({
   filter,
@@ -52,23 +51,11 @@ function Samples({
   );
 }
 
+export type FilterFormType = "hsb" | "hsbo";
 type Props = {
   value: CssFilter;
   onChange: (next: CssFilter) => void;
-  type: "hsb" | "hsbo";
-};
-
-const sliderStyles = {
-  color: "white", // affects track + thumb by default
-  "& .MuiSlider-thumb": {
-    backgroundColor: "white",
-  },
-  "& .MuiSlider-track": {
-    backgroundColor: "white",
-  },
-  "& .MuiSlider-rail": {
-    backgroundColor: "#ccc", // optional contrast
-  },
+  type: FilterFormType;
 };
 
 export function FilterForm({ value, onChange, type }: Props) {

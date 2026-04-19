@@ -3,15 +3,14 @@ import { useGlobal } from "./useGlobal";
 import { defaultInitialFeature } from "./feature";
 
 export function FeatureCreateButton() {
-  const { setEditedFeature, setDisplaySettings, setIsEditingRow, worldConfig } =
-    useGlobal();
+  const { setEditedFeature, setDisplaySettings, setIsEditingRow } = useGlobal();
   return (
     <div>
       <Button
         className="w-full"
         onClick={() => {
           // initialize edited feature if there is none already
-          setEditedFeature((s) => (s ? s : defaultInitialFeature(worldConfig)));
+          setEditedFeature((s) => (s ? s : defaultInitialFeature));
           setDisplaySettings((s) => ({
             ...s,
             showMainDrawer: false,

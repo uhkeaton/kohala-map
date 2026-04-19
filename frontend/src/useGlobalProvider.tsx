@@ -16,7 +16,7 @@ export type GlobalContextValue = ReturnType<typeof useGlobalContext>;
 function useGlobalContext() {
   const [isEditingRow, setIsEditingRow] = useState(false);
   const [editedFeature, setEditedFeature] = useState<Feature>(
-    defaultInitialFeature(initialWorldConfig),
+    defaultInitialFeature,
   );
   const [visibleFeatureId, setVisibleFeatureId] = useState<string | null>(null);
 
