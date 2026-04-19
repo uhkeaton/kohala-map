@@ -1,12 +1,20 @@
-import { Divider, Slider, TextField } from "@mui/material";
+import {
+  Button,
+  Divider,
+  Slider,
+  TextareaAutosize,
+  TextField,
+} from "@mui/material";
 import { useGlobal } from "./useGlobal";
 import { ButtonClose } from "./ButtonClose";
 import { ButtonCopyEditedFeatureRow, ButtonCopyValue } from "./ButtonCopy";
 import { FilterForm, FilterFormType } from "./FilterForm";
 import { fromCssFilterString, toCssFilterString } from "./filter";
 import { sliderStyles } from "./slider";
-import { defaultInitialFeature } from "./feature";
+import { defaultInitialFeature, ID_EDITED_FEATURE } from "./feature";
 import { ButtonReset } from "./ButtonReset";
+import { useState } from "react";
+import { rowToFeature, SpreadsheetRow } from "./data/spreadsheet";
 
 export function FeatureEditSidebar() {
   const { setIsEditingRow } = useGlobal();
@@ -25,6 +33,8 @@ export function FeatureEditSidebar() {
         </div>
       </div>
       <div className="m-4 mt-8">
+        <SectionStartFromPaste />
+        <Divider sx={{ my: 4 }} />
         <SectionInfoForm />
         <Divider sx={{ my: 4 }} />
         <SectionMediaForm />
@@ -52,7 +62,7 @@ export function FeatureEditSidebar() {
         />
         <Divider sx={{ my: 4 }} />
         <GenericFilterSection
-          title="Terrain Filter"
+          title="Satellite Image Filter"
           featureKey="mapTerrainFilter"
           filterType="hsbo"
         />
@@ -61,6 +71,62 @@ export function FeatureEditSidebar() {
         <Divider sx={{ my: 4 }} />
       </div>
     </div>
+  );
+}
+
+function SectionStartFromPaste() {
+  const [value, setValue] = useState("");
+  const { headers, setEditedFeature } = useGlobal();
+  return (
+    <>
+      <div className="text-xl mb-4">Start From Paste</div>
+      <div className="mb-4 bg-neutral-300/15 rounded-lg">
+        <TextareaAutosize
+          id="paste"
+          placeholder="Paste Existing Row Here"
+          value={value}
+          onChange={(event) => {
+            const val = event.target.value;
+            setValue(val);
+          }}
+          minRows={2}
+          style={{ width: "100%", padding: 8 }}
+        />
+        {/* <TextField
+          id="paste"
+          label="Paste Existing Row Here"
+          variant="outlined"
+          fullWidth
+          value={value}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            const val = event.target.value;
+            setValue(val);
+          }}
+        /> */}
+      </div>
+      <div className="flex justify-end w-full">
+        <Button
+          disabled={value == ""}
+          variant="contained"
+          onClick={() => {
+            const columnValues = value.split("\t");
+
+            const row = Object.fromEntries(
+              headers.map((h, i) => {
+                const val = columnValues[i];
+                return [h, val];
+              }),
+            ) as SpreadsheetRow;
+
+            const feature = rowToFeature(row, ID_EDITED_FEATURE);
+            setEditedFeature(feature);
+            setValue("");
+          }}
+        >
+          Apply
+        </Button>
+      </div>
+    </>
   );
 }
 

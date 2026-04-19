@@ -12,10 +12,12 @@ export const knownSpreadsheetKeys = [
   "info_description_hawaiian",
   "info_img_src",
   "info_video_src",
+
   // points
   "point_lat",
   "point_lon",
   "point_filter",
+
   // featured map image
   "feature_img_src",
   "feature_img_filter",
@@ -24,6 +26,7 @@ export const knownSpreadsheetKeys = [
   "feature_mask_filter_positive",
   "feature_mask_filter_negative",
   "feature_terrain_filter",
+
   // map
   "world_min_lon",
   "world_min_lat",
@@ -69,7 +72,7 @@ export const initialWorldConfig: WorldConfig = {
 
 export type SpreadsheetRow = Record<SpreadsheetKey, string>;
 
-function rowToFeature(row: SpreadsheetRow, id: string): Feature {
+export function rowToFeature(row: SpreadsheetRow, id: string): Feature {
   return {
     id: id,
 
@@ -81,10 +84,12 @@ function rowToFeature(row: SpreadsheetRow, id: string): Feature {
     infoDescriptionHawaiian: row.info_description_hawaiian,
     mediaImgSrc: row.info_img_src,
     mediaVideoSrc: row.info_video_src,
+
     // point properties
     pointLat: parseFloat(row.point_lat),
     pointLon: parseFloat(row.point_lon),
     pointFilter: removeSemicolon(row.point_filter),
+
     // map properties
     mapImgSrc: row.feature_img_src,
     mapImgFilter: removeSemicolon(row.feature_img_filter),
@@ -117,6 +122,7 @@ export function featureToRow(feature: Feature, headers: string[]): string {
     feature_mask_filter_negative:
       toCssFilterString(feature?.mapMaskFilterNegative) || "",
     feature_terrain_filter: toCssFilterString(feature?.mapTerrainFilter) || "",
+
     // world config properties
     world_min_lon: "",
     world_min_lat: "",
