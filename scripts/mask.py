@@ -1,7 +1,7 @@
 from PIL import Image
 
 # Load image (ensure it has alpha channel)
-img = Image.open("5-4-transparent.png").convert("RGBA")
+img = Image.open("input/map.png").convert("RGBA")
 
 # Get pixel data
 pixels = img.getdata()
@@ -19,4 +19,4 @@ for r, g, b, a in pixels:
 img.putdata(new_pixels)
 
 # Save result
-img.save("kohala-volcano.png")
+img.save("output/mask.png")

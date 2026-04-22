@@ -1,6 +1,6 @@
 from PIL import Image
 
-img = Image.open("5-4-transparent.png").convert("RGBA")
+img = Image.open("input/map.png").convert("RGBA")
 pixels = img.getdata()
 
 new_pixels = []
@@ -13,4 +13,4 @@ for r, g, b, a in pixels:
         new_pixels.append((0, 0, 0, 0))
 
 img.putdata(new_pixels)
-img.save("mask-negative.png")
+img.save("output/mask-negative.png")
