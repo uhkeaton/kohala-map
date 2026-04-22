@@ -3,17 +3,26 @@ import { GlobalContext } from "./useGlobal";
 import type { DisplaySettings, Feature } from "./types";
 import { defaultDisplaySettings } from "./constants";
 import { useRoomCode } from "./room/room";
-import { GenericSocketMessage, useWebSocketConnection } from "./room/socket";
+import {
+  GenericSocketMessage,
+  useWebSocketConnection,
+} from "./room/roomSocket";
 import { useSearchParams } from "react-router";
 import { initialWorldConfig } from "./data/spreadsheet";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchSpreadsheet } from "./api";
-import { dataSourceOptions } from "./drawerDataSourceSelectOptions";
 import { defaultInitialFeature } from "./feature";
+import { DataSource, localStorageKeyDataSource, permanentDataSources } from "./data/dataSource";
+import { useLocalStorage } from "./useLocalStorage";
 
 export type GlobalContextValue = ReturnType<typeof useGlobalContext>;
 
 function useGlobalContext() {
+  const [savedDataSources, setSavedDataSources] = useLocalStorage<DataSource[]>(
+    localStorageKeyDataSource,
+    [],
+  );
+
   const [isEditingRow, setIsEditingRow] = useState(false);
   const [editedFeature, setEditedFeature] = useState<Feature>(
     defaultInitialFeature,
@@ -23,7 +32,7 @@ function useGlobalContext() {
   const [searchParams] = useSearchParams();
   const urlSheetId = searchParams.get("sheet_id");
   const [spreadsheetId, setSpeadsheetId] = useState(
-    urlSheetId ?? dataSourceOptions[0].id,
+    urlSheetId ?? permanentDataSources[0].id,
   );
 
   const [displaySettings, setDisplaySettings] = useState<DisplaySettings>(
@@ -96,6 +105,10 @@ function useGlobalContext() {
     setEditedFeature,
     isEditingRow,
     setIsEditingRow,
+
+    //
+    savedDataSources,
+    setSavedDataSources,
   };
 }
 

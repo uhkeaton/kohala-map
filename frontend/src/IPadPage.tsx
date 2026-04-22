@@ -2,7 +2,7 @@ import debounce from "lodash.debounce";
 import { useGlobal } from "./useGlobal";
 import { useRoomCode } from "./room/room";
 import { useEffect, useMemo } from "react";
-import { useWebSocketConnection } from "./room/socket";
+import { useWebSocketConnection } from "./room/roomSocket";
 import { useLocation, useNavigate } from "react-router";
 import { VisitorFeatureSelect } from "./VisitorFeatureSelect";
 

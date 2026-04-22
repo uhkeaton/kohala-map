@@ -3,7 +3,7 @@ import { useRoomCode } from "./room";
 import { Button, Divider } from "@mui/material";
 import { useGlobal } from "../useGlobal";
 
-export function CreateRoom() {
+export function RoomCreateDialog() {
   const { displaySettings, setDisplaySettings } = useGlobal();
 
   const { createRoomMutation } = useRoomCode();

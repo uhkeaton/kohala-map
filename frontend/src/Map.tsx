@@ -2,7 +2,7 @@ import cx from "classnames";
 import { FeatureSelectDev } from "./FeatureSelectDev";
 import { useGlobal } from "./useGlobal";
 import { FeatureSlideInfo } from "./FeatureSlideInfo";
-import { MapDrawer } from "./Drawer";
+import { AppDrawer } from "./Drawer";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { SidebarLayout } from "./Sidebar";
 import { FeatureSlideMap } from "./FeatureSlideMap";
@@ -62,7 +62,7 @@ export function Map() {
           <div className="w-64 absolute top-0 left-0 mt-4 ml-2 bg-black/40 rounded-md">
             {displaySettings.showFeatureList && <FeatureSelectDev />}
           </div>
-          <MapDrawer />
+          <AppDrawer />
         </div>
       </SidebarLayout>
     </ThemeProvider>

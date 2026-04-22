@@ -2,7 +2,7 @@ import { useRoomCode } from "./room";
 import { useGlobal } from "../useGlobal";
 import cx from "classnames";
 
-export function ConnectedStatus() {
+export function RoomConnectedStatus() {
   const { socketConnected } = useGlobal();
   const { roomCode } = useRoomCode();
 

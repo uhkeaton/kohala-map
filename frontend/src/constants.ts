@@ -22,5 +22,6 @@ export const defaultDisplaySettings: DisplaySettings = {
   showDialogShareRoom: false,
   showDialogCreateRoom: false,
   showDialogManualJoinRoom: false,
-  showDialogDataSource: false,
+  //
+  showDialogDataSourceCreate: false,
 };

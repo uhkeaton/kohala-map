@@ -4,7 +4,7 @@ import { useGlobal } from "../useGlobal";
 import { useState } from "react";
 import { useRoomCode } from "./room";
 
-export function ManualJoinRoom() {
+export function RoomJoinByCodeDialog() {
   const { displaySettings, setDisplaySettings } = useGlobal();
   const [code, setCode] = useState("");
 

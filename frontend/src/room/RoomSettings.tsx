@@ -1,8 +1,8 @@
 import { useRoomCode } from "./room";
-import { ShareRoom } from "./ShareRoom";
-import { CreateRoom } from "./CreateRoom";
-import { ManualJoinRoom } from "./ManualJoinRoom";
-import { ConnectedStatus } from "./ConnectedStatus";
+import { RoomShareDialog } from "./RoomShareDialog";
+import { RoomCreateDialog } from "./RoomCreateDialog";
+import { RoomJoinByCodeDialog } from "./RoomJoinByCodeDialog";
+import { RoomConnectedStatus } from "./RoomConnectedStatus";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router";
 
@@ -12,17 +12,17 @@ export function RoomSettings() {
 
   return (
     <>
-      <ConnectedStatus />
+      <RoomConnectedStatus />
       {roomCode && (
         <div className="my-4">
-          <ShareRoom />
+          <RoomShareDialog />
         </div>
       )}
       <div className="my-4">
-        <ManualJoinRoom />
+        <RoomJoinByCodeDialog />
       </div>
       <div className="my-4">
-        <CreateRoom />
+        <RoomCreateDialog />
       </div>
       <div>
         <Button

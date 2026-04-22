@@ -15,7 +15,8 @@ export type DisplaySettings = {
   showDialogShareRoom: boolean;
   showDialogCreateRoom: boolean;
   showDialogManualJoinRoom: boolean;
-  showDialogDataSource: boolean;
+  //
+  showDialogDataSourceCreate: boolean;
 };
 
 // [long, lat] follows the GeoJSON convention

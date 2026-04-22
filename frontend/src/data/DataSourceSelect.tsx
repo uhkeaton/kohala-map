@@ -1,5 +1,4 @@
-import { dataSourceOptions } from "./drawerDataSourceSelectOptions";
-import { useGlobal } from "./useGlobal";
+import { useGlobal } from "../useGlobal";
 import {
   Box,
   FormControl,
@@ -8,13 +7,14 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
+import { permanentDataSources } from "./dataSource";
 
-export function DrawerDataSourceSelect() {
-  const { spreadsheetId } = useGlobal();
+export function DataSourceSelect() {
+  const { spreadsheetId, savedDataSources } = useGlobal();
 
   const { handleChangeSpreadsheetId } = useGlobal();
 
-  const Options = dataSourceOptions.map((item) => {
+  const Options = [...permanentDataSources, ...savedDataSources].map((item) => {
     return <MenuItem value={item.id}>{item.title}</MenuItem>;
   });
 
@@ -23,7 +23,7 @@ export function DrawerDataSourceSelect() {
   };
 
   return (
-    <div>
+    <div className="mb-4">
       <Box sx={{ minWidth: 120 }}>
         <FormControl fullWidth>
           <InputLabel>Source</InputLabel>

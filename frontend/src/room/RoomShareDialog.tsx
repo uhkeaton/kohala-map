@@ -5,7 +5,7 @@ import { Button, Divider } from "@mui/material";
 import { useGlobal } from "../useGlobal";
 import { useSearchParams } from "react-router";
 
-export function ShareRoom() {
+export function RoomShareDialog() {
   const { displaySettings, setDisplaySettings, socketConnected } = useGlobal();
   const { roomCode } = useRoomCode();
   const [searchParams] = useSearchParams();

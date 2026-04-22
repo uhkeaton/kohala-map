@@ -1,12 +1,13 @@
 import { Divider, Drawer } from "@mui/material";
-import { DrawerDisplaySettings } from "./DrawerDisplaySettings";
+import { DrawerDisplaySettings } from "./DisplaySettings";
 import { RoomSettings } from "./room/RoomSettings";
-import { DrawerDataSourceSelect } from "./DrawerDataSourceSelect";
+import { DataSourceSelect } from "./data/DataSourceSelect";
 import { IconMenu } from "./icons";
 import { useGlobal } from "./useGlobal";
 import { FeatureCreateButton } from "./FeatureCreateButton";
+import { DataSourceCreateDialog } from "./data/DataSourceCreateDialog";
 
-export function MapDrawer() {
+export function AppDrawer() {
   const { displaySettings, setDisplaySettings } = useGlobal();
 
   return (
@@ -33,7 +34,8 @@ export function MapDrawer() {
           <FeatureCreateButton />
           <Divider sx={{ my: 4 }} />
           <div className="text-xl mb-4">Data Source</div>
-          <DrawerDataSourceSelect />
+          <DataSourceSelect />
+          <DataSourceCreateDialog />
           <Divider sx={{ my: 4 }} />
           <div className="text-xl mb-4">Display</div>
           <DrawerDisplaySettings />

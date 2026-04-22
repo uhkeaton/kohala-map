@@ -1,7 +1,7 @@
 import { useGlobal } from "./useGlobal";
 import { Box, FormControl, NativeSelect } from "@mui/material";
 import { useRoomCode } from "./room/room";
-import { useWebSocketConnection } from "./room/socket";
+import { useWebSocketConnection } from "./room/roomSocket";
 import { ChangeEventHandler } from "react";
 import { featuresByGroup } from "./feature";
 
