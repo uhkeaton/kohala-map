@@ -29,6 +29,9 @@ export function DataSourceCreateDialog() {
     }
 
     setSavedDataSources(addItem(sheetId, title));
+    handleChangeSpreadsheetId(sheetId)
+    setTitle("")
+    setGoogleLink("")
   }
 
   const handleClose = () => {
