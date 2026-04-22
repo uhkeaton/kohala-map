@@ -12,10 +12,10 @@ export const mapMaxY = 20.27;
 export const mapRealWidthInches = 29.5;
 export const tableRealWidthInches = 42.666;
 
-const isDevMode = import.meta.env.DEV;
+// const isDevMode = import.meta.env.DEV;
 
 export const defaultDisplaySettings: DisplaySettings = {
-  showFeatureList: isDevMode,
+  showFeatureList: true,
   //
   showMainDrawer: false,
   //

@@ -33,7 +33,7 @@ export function AppDrawer() {
           <div className="text-xl mb-4">Create</div>
           <FeatureCreateButton />
           <Divider sx={{ my: 4 }} />
-          <div className="text-xl mb-4">Data Source</div>
+          <div className="text-xl mb-4">Data Sources</div>
           <DataSourceSelect />
           <DataSourceCreateDialog />
           <Divider sx={{ my: 4 }} />
