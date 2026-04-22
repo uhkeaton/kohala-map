@@ -8,8 +8,6 @@ export const knownSpreadsheetKeys = [
   "info_group",
   "info_title",
   "info_description",
-  "info_title_hawaiian",
-  "info_description_hawaiian",
   "info_img_src",
   "info_video_src",
 
@@ -19,13 +17,14 @@ export const knownSpreadsheetKeys = [
   "point_filter",
 
   // featured map image
-  "feature_img_src",
-  "feature_img_filter",
-  "feature_video_src",
-  "feature_video_filter",
-  "feature_mask_filter_positive",
-  "feature_mask_filter_negative",
-  "feature_terrain_filter",
+  "map_img_src",
+  "map_img_filter",
+  "map_video_src",
+  "map_video_filter",
+  "map_mask_filter_positive",
+  "map_mask_filter_negative",
+  "map_terrain_filter",
+  "map_description_bottom_left",
 
   // map
   "world_min_lon",
@@ -37,7 +36,7 @@ export const knownSpreadsheetKeys = [
   "world_terrain_img_src",
   "world_red_mask_positive_src",
   "world_red_mask_negative_src",
-  "world_transform",
+  "world_flip",
 ] as const;
 
 export type SpreadsheetKey = (typeof knownSpreadsheetKeys)[number];
@@ -53,7 +52,7 @@ export type WorldConfig = {
   mapTerrainImgSrc: string;
   mapRedMaskPositiveSrc: string;
   mapRedMaskNegativeSrc: string;
-  mapTransform: string;
+  mapFlip: boolean;
 };
 
 export const initialWorldConfig: WorldConfig = {
@@ -67,7 +66,7 @@ export const initialWorldConfig: WorldConfig = {
   mapTerrainImgSrc: "",
   mapRedMaskPositiveSrc: "",
   mapRedMaskNegativeSrc: "",
-  mapTransform: "",
+  mapFlip: false,
 };
 
 export type SpreadsheetRow = Record<SpreadsheetKey, string>;
@@ -80,8 +79,7 @@ export function rowToFeature(row: SpreadsheetRow, id: string): Feature {
     infoGroup: row.info_group,
     infoTitle: row.info_title,
     infoDescription: row.info_description,
-    infoTitleHawaiian: row.info_title_hawaiian,
-    infoDescriptionHawaiian: row.info_description_hawaiian,
+    mapDescriptionBottomLeft: row.map_description_bottom_left,
     mediaImgSrc: row.info_img_src,
     mediaVideoSrc: row.info_video_src,
 
@@ -91,13 +89,13 @@ export function rowToFeature(row: SpreadsheetRow, id: string): Feature {
     pointFilter: removeSemicolon(row.point_filter),
 
     // map properties
-    mapImgSrc: row.feature_img_src,
-    mapImgFilter: removeSemicolon(row.feature_img_filter),
-    mapVideoSrc: row.feature_video_src,
-    mapVideoFilter: removeSemicolon(row.feature_video_filter),
-    mapMaskFilterPositive: removeSemicolon(row.feature_mask_filter_positive),
-    mapMaskFilterNegative: removeSemicolon(row.feature_mask_filter_negative),
-    mapTerrainFilter: removeSemicolon(row.feature_terrain_filter),
+    mapImgSrc: row.map_img_src,
+    mapImgFilter: removeSemicolon(row.map_img_filter),
+    mapVideoSrc: row.map_video_src,
+    mapVideoFilter: removeSemicolon(row.map_video_filter),
+    mapMaskFilterPositive: removeSemicolon(row.map_mask_filter_positive),
+    mapMaskFilterNegative: removeSemicolon(row.map_mask_filter_negative),
+    mapTerrainFilter: removeSemicolon(row.map_terrain_filter),
   };
 }
 
@@ -106,22 +104,21 @@ export function featureToRow(feature: Feature, headers: string[]): string {
     info_group: feature?.infoGroup || "",
     info_title: feature?.infoTitle || "",
     info_description: feature?.infoDescription || "",
-    info_title_hawaiian: feature?.infoTitleHawaiian || "",
-    info_description_hawaiian: feature?.infoDescriptionHawaiian || "",
     info_img_src: feature?.mediaImgSrc || "",
     info_video_src: feature?.mediaVideoSrc || "",
     point_lat: String(feature?.pointLat),
     point_lon: String(feature?.pointLon),
     point_filter: toCssFilterString(feature?.pointFilter) || "",
-    feature_img_src: feature?.mapImgSrc || "",
-    feature_img_filter: toCssFilterString(feature?.mapImgFilter) || "",
-    feature_video_src: feature?.mapVideoSrc || "",
-    feature_video_filter: toCssFilterString(feature?.mapVideoFilter) || "",
-    feature_mask_filter_positive:
+    map_img_src: feature?.mapImgSrc || "",
+    map_img_filter: toCssFilterString(feature?.mapImgFilter) || "",
+    map_video_src: feature?.mapVideoSrc || "",
+    map_video_filter: toCssFilterString(feature?.mapVideoFilter) || "",
+    map_mask_filter_positive:
       toCssFilterString(feature?.mapMaskFilterPositive) || "",
-    feature_mask_filter_negative:
+    map_mask_filter_negative:
       toCssFilterString(feature?.mapMaskFilterNegative) || "",
-    feature_terrain_filter: toCssFilterString(feature?.mapTerrainFilter) || "",
+    map_terrain_filter: toCssFilterString(feature?.mapTerrainFilter) || "",
+    map_description_bottom_left: feature?.mapDescriptionBottomLeft || "",
 
     // world config properties
     world_min_lon: "",
@@ -133,7 +130,7 @@ export function featureToRow(feature: Feature, headers: string[]): string {
     world_terrain_img_src: "",
     world_red_mask_positive_src: "",
     world_red_mask_negative_src: "",
-    world_transform: "",
+    world_flip: "",
   };
 
   return headers
@@ -174,7 +171,7 @@ export function parseSheet(tsv: string) {
         mapTerrainImgSrc: row.world_terrain_img_src,
         mapRedMaskPositiveSrc: row.world_red_mask_positive_src,
         mapRedMaskNegativeSrc: row.world_red_mask_negative_src,
-        mapTransform: row.world_transform,
+        mapFlip: strIsTrue(row.world_flip),
       };
     }
 
@@ -224,4 +221,8 @@ function slugify(input: string): string {
       .trim()
       .replace(/\s+/g, "-")
   );
+}
+
+function strIsTrue(str: string | undefined) {
+  return (str || "").toLowerCase() === "true";
 }

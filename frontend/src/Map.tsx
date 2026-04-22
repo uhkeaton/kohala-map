@@ -37,7 +37,7 @@ export function Map() {
                 // this is important for the <Aspect/> to work correctly
                 style={{
                   width: `${worldConfig.mapWidthPercent * 100}%`,
-                  // transform: `${worldConfig.mapTransform}`,
+                  // transform: `${worldConfig.mapFlip}`,
                   height: "fit-content",
                 }}
               >

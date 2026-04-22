@@ -43,7 +43,7 @@ export function VisitorFeatureSelect({
       const closestItem = candidates.sort((a, b) => a.distance - b.distance)[0];
 
       if (!closestItem) return;
-
+      if (closestItem.id === activeId) return;
       setActiveId(closestItem.id);
       onChange(closestItem.id);
     };
@@ -76,13 +76,19 @@ export function VisitorFeatureSelect({
 
               return (
                 <li
+                  onClick={() =>
+                    itemRefs.current[index]?.scrollIntoView({
+                      behavior: "smooth",
+                      block: "center",
+                    })
+                  }
                   key={id}
                   ref={(el) => {
                     itemRefs.current[index] = el;
                   }}
                   data-id={id}
                   className={cx(
-                    "lexend-500 text-4xl px-3 py-2 rounded-md transition w-full max-w-full truncate",
+                    "cursor-pointer lexend-500 text-4xl px-3 py-2 rounded-md transition w-full max-w-full truncate",
                     {
                       "bg-blue-700/70 text-white scale-[101%]": activeId === id,
                       "opacity-[87%]": activeId !== id,

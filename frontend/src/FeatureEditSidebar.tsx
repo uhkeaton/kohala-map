@@ -164,28 +164,15 @@ function SectionInfoForm() {
       </div>
       <div className="mb-4">
         <TextField
-          id="info-title-hawaiian"
-          label="ʻŌlelo Title"
-          variant="outlined"
-          fullWidth
-          value={editedFeature?.infoTitleHawaiian || ""}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            const val = event.target.value;
-            setEditedFeature((s) => ({ ...s, infoTitleHawaiian: val }));
-          }}
-        />
-      </div>
-      <div className="mb-4">
-        <TextField
           id="info-description-hawaiian"
-          label="ʻŌlelo Description"
+          label="Bottom Left Description"
           variant="outlined"
           fullWidth
           multiline
-          value={editedFeature?.infoDescriptionHawaiian || ""}
+          value={editedFeature?.mapDescriptionBottomLeft || ""}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             const val = event.target.value;
-            setEditedFeature((s) => ({ ...s, infoDescriptionHawaiian: val }));
+            setEditedFeature((s) => ({ ...s, mapDescriptionBottomLeft: val }));
           }}
         />
       </div>

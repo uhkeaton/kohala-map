@@ -4,6 +4,7 @@ import { Feature } from "./types";
 import { toCssFilterString } from "./filter";
 import { ID_EDITED_FEATURE } from "./feature";
 import { Point } from "./Point";
+import { FeatureBottomLeftInfo } from "./FeatureBottomLeftInfo";
 
 export function FeatureSlideMap({ feature }: { feature: Feature }) {
   const { worldConfig, visibleFeatureId, isEditingRow } = useGlobal();
@@ -36,7 +37,7 @@ export function FeatureSlideMap({ feature }: { feature: Feature }) {
           className={cx("w-full absolute inset-0")}
           src={worldConfig?.mapRedMaskPositiveSrc}
           style={{
-            transform: `${worldConfig.mapTransform}`,
+            transform: flipTransform(worldConfig.mapFlip),
             ...(filterPositive && { filter: filterPositive }),
           }}
         />
@@ -46,7 +47,7 @@ export function FeatureSlideMap({ feature }: { feature: Feature }) {
           className={cx("w-full absolute inset-0")}
           src={worldConfig?.mapTerrainImgSrc}
           style={{
-            transform: `${worldConfig.mapTransform}`,
+            transform: flipTransform(worldConfig.mapFlip),
             ...(filterTerrain && { filter: filterTerrain }),
           }}
         />
@@ -71,7 +72,7 @@ export function FeatureSlideMap({ feature }: { feature: Feature }) {
           className={cx("w-full absolute inset-0")}
           src={worldConfig?.mapRedMaskNegativeSrc}
           style={{
-            transform: `${worldConfig.mapTransform}`,
+            transform: flipTransform(worldConfig.mapFlip),
             ...(filterNegative && { filter: filterNegative }),
           }}
         />
@@ -79,7 +80,7 @@ export function FeatureSlideMap({ feature }: { feature: Feature }) {
       {imgSrc && (
         <img
           style={{
-            transform: `${worldConfig.mapTransform}`,
+            transform: flipTransform(worldConfig.mapFlip),
             ...(filterImg && {
               filter: filterImg,
             }),
@@ -88,14 +89,22 @@ export function FeatureSlideMap({ feature }: { feature: Feature }) {
           src={imgSrc}
         />
       )}
+      {feature.mapDescriptionBottomLeft && (
+        <FeatureBottomLeftInfo feature={feature} />
+      )}
       <div
         className={cx("w-full absolute inset-0")}
         style={{
-          transform: `${worldConfig.mapTransform}`,
+          transform: flipTransform(worldConfig.mapFlip),
         }}
       >
         <Point point={feature} />
       </div>
     </div>
   );
+}
+
+function flipTransform(flip: boolean) {
+  if (flip) return "rotate(180deg)";
+  return "";
 }

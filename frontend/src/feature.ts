@@ -18,8 +18,6 @@ export const defaultInitialFeature: Feature = {
   // info properties
   infoTitle: "Untitled",
   infoDescription: "This is a new feature.",
-  infoTitleHawaiian: "",
-  infoDescriptionHawaiian: "",
   mediaImgSrc: hawaiianChainImgSrc,
   mediaVideoSrc: hawaiianVideoSrc,
   // point properties
@@ -36,6 +34,7 @@ export const defaultInitialFeature: Feature = {
   mapMaskFilterPositive: filterLimeGreen,
   mapMaskFilterNegative: filterBlue,
   mapTerrainFilter: "saturate(2.0)",
+  mapDescriptionBottomLeft: "",
 };
 
 export function featuresByGroup(features: Feature[]) {

@@ -33,8 +33,6 @@ type FeatureInfoProperties = {
   infoGroup: string;
   infoTitle: string;
   infoDescription: string;
-  infoTitleHawaiian: string;
-  infoDescriptionHawaiian: string;
   mediaImgSrc: string;
   mediaVideoSrc: string;
 };
@@ -47,6 +45,7 @@ type FeatureMapProperties = {
   mapMaskFilterPositive: CssFilter | string;
   mapMaskFilterNegative: CssFilter | string;
   mapTerrainFilter: CssFilter | string;
+  mapDescriptionBottomLeft: string;
 };
 
 export type Feature = {

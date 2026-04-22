@@ -1,10 +1,10 @@
-import { useLocation, useNavigate } from "react-router";
-import { useEffect, useMemo } from "react";
-import { useRoomCode } from "./room/room";
-import { VisitorFeatureSelect } from "./VisitorFeatureSelect";
-import { useGlobal } from "./useGlobal";
-import { useWebSocketConnection } from "./room/socket";
 import debounce from "lodash.debounce";
+import { useGlobal } from "./useGlobal";
+import { useRoomCode } from "./room/room";
+import { useEffect, useMemo } from "react";
+import { useWebSocketConnection } from "./room/socket";
+import { useLocation, useNavigate } from "react-router";
+import { VisitorFeatureSelect } from "./VisitorFeatureSelect";
 
 export function IPadPage() {
   const navigate = useNavigate();
