@@ -8,10 +8,9 @@ import { Aspect } from "./Aspect";
 export function FeatureSlideInfo({ feature }: { feature: Feature }) {
   const { visibleFeatureId, isEditingRow } = useGlobal();
 
-  const visible = (function () {
-    if (isEditingRow) return feature.id === ID_EDITED_FEATURE;
-    return visibleFeatureId == feature.id;
-  })();
+  const visible = isEditingRow
+    ? feature.id === ID_EDITED_FEATURE
+    : visibleFeatureId == feature.id;
 
   return (
     <div

@@ -22,6 +22,7 @@ export function Map() {
     ...features,
     ...(editedFeature != null ? [editedFeature] : []),
   ];
+
   return (
     <ThemeProvider theme={darkTheme}>
       <SidebarLayout>
@@ -29,8 +30,13 @@ export function Map() {
           <Aspect ratioX={16} ratioY={9}>
             <div className={cx("w-full h-full flex relative")}>
               {/* Background */}
-              {withEditedFeature.map((item) => {
-                return <FeatureSlideBackground key={item.id} feature={item} />;
+              {withEditedFeature.map((item, i) => {
+                return (
+                  <FeatureSlideBackground
+                    key={`${item.id}-${i}`}
+                    feature={item}
+                  />
+                );
               })}
               <div
                 // map width is a percentage of the table width
@@ -51,8 +57,8 @@ export function Map() {
                 </Aspect>
               </div>
               <div className="h-full flex-1 relative">
-                {withEditedFeature.map((feature) => (
-                  <FeatureSlideInfo key={feature.id} feature={feature} />
+                {withEditedFeature.map((item, i) => (
+                  <FeatureSlideInfo key={`${item.id}-${i}`} feature={item} />
                 ))}
               </div>
             </div>

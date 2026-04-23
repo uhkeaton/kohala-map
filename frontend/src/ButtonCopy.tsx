@@ -22,7 +22,7 @@ export function ButtonCopyEditedFeatureRow() {
         onClick={handleClick}
         aria-label="Close"
       >
-        <span className="font-semibold">Copy Row</span>
+        <span className="font-semibold">Copy Result</span>
         <IconContentCopy className="w-5" />
       </button>
     </div>

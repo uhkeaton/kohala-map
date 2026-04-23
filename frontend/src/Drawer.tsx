@@ -30,12 +30,12 @@ export function AppDrawer() {
         }
       >
         <div className="m-4 mt-8">
-          <div className="text-xl mb-4">Create</div>
-          <FeatureCreateButton />
-          <Divider sx={{ my: 4 }} />
           <div className="text-xl mb-4">Data Sources</div>
           <DataSourceSelect />
           <DataSourceCreateDialog />
+          <Divider sx={{ my: 4 }} />
+          <div className="text-xl mb-4">Edit Data</div>
+          <FeatureCreateButton />
           <Divider sx={{ my: 4 }} />
           <div className="text-xl mb-4">Display</div>
           <DrawerDisplaySettings />
