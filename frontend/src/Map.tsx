@@ -45,7 +45,6 @@ export function Map() {
                 feature={editedFeature}
                 visible={isEditingRow}
               />
-              ;
               <div
                 // map width is a percentage of the table width
                 // this is important for the <Aspect/> to work correctly
