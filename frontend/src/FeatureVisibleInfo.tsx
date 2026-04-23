@@ -2,6 +2,8 @@ import { Feature } from "./types";
 import cx from "classnames";
 import { Aspect } from "./Aspect";
 import { AutoFitText } from "./AutoFitText";
+import { useGlobal } from "./useGlobal";
+import { MediaItem, toMediaItems } from "./media";
 
 export function FeatureVisibleInfo({
   feature,
@@ -10,11 +12,11 @@ export function FeatureVisibleInfo({
   feature: Feature;
   visible: boolean;
 }) {
+  const { slideCount } = useGlobal();
   const text = feature.infoDescription;
 
-  if (feature.infoTitle == "Pololu Valley") {
-    console.log();
-  }
+  const mediaItems = toMediaItems(feature);
+  const idxToShow = slideCount % mediaItems.length;
 
   return (
     <div
@@ -41,19 +43,40 @@ export function FeatureVisibleInfo({
       </div>
       <div className="flex-0 w-full p-4">
         <Aspect ratioX={5} ratioY={4}>
-          <Media feature={feature} />
+          {mediaItems.map((item, i) => {
+            return (
+              <Media
+                key={`${i}-${item.src}`}
+                item={item}
+                visible={i == idxToShow}
+              />
+            );
+          })}
         </Aspect>
       </div>
     </div>
   );
 }
 
-function Media({ feature }: { feature: Feature }) {
-  if (feature?.mediaVideoSrc) {
+function Media({
+  item,
+  visible,
+}: {
+  item: MediaItem;
+
+  visible: boolean;
+}) {
+  if (item.type == "video") {
     return (
       <video
-        className="w-full h-full object-cover rounded-lg"
-        src={feature.mediaVideoSrc}
+        className={cx(
+          "absolute inset-0 w-full h-full object-cover rounded-lg",
+          {
+            "opacity-0": !visible,
+            "transition-opacity duration-900": visible,
+          },
+        )}
+        src={item.src}
         autoPlay
         loop
         muted
@@ -62,11 +85,17 @@ function Media({ feature }: { feature: Feature }) {
     );
   }
 
-  if (feature?.mediaImgSrc) {
+  if (item.type == "img") {
     return (
       <img
-        className="w-full h-full object-cover rounded-lg"
-        src={feature.mediaImgSrc}
+        className={cx(
+          "absolute inset-0 w-full h-full object-cover rounded-lg",
+          {
+            "opacity-0": !visible,
+            "transition-opacity duration-900": visible,
+          },
+        )}
+        src={item.src}
       />
     );
   }
