@@ -1,15 +1,21 @@
 import { Feature } from "./types";
-import { AutoScale } from "./AutoScale";
 import cx from "classnames";
 import { Aspect } from "./Aspect";
+import { AutoFitText } from "./AutoFitText";
 
-export function FeatureSlideInfo({
+export function FeatureVisibleInfo({
   feature,
   visible,
 }: {
   feature: Feature;
   visible: boolean;
 }) {
+  const text = feature.infoDescription;
+
+  if (feature.infoTitle == "Pololu Valley") {
+    console.log();
+  }
+
   return (
     <div
       className={cx(
@@ -20,38 +26,18 @@ export function FeatureSlideInfo({
         },
       )}
     >
-      <div className="flex-1 overflow-hidden">
-        <AutoScale>
-          {(scale) => {
-            return (
-              <div
-                style={{
-                  padding: 16 * scale,
-                  gap: 16 * scale,
-                }}
-                className={"w-full h-full flex flex-col justify-center"}
-              >
-                <div>
-                  <div
-                    style={{
-                      fontSize: 32 * scale,
-                    }}
-                    className="lexend-600 mb-2 font-bold"
-                  >
-                    {feature && feature.infoTitle}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: 16 * scale,
-                    }}
-                  >
-                    {feature && feature.infoDescription}
-                  </div>
-                </div>
-              </div>
-            );
+      <div className="overflow-hidden w-full min-h-[20%] flex flex-col justify-end items-center">
+        <div
+          style={{
+            fontSize: 36,
           }}
-        </AutoScale>
+          className="lexend-600 mb-2 font-bold text-center"
+        >
+          {feature && feature.infoTitle}
+        </div>
+      </div>
+      <div className="flex-1 p-2 w-full box-border overflow-hidden">
+        <AutoFitText>{text}</AutoFitText>
       </div>
       <div className="flex-0 w-full p-4">
         <Aspect ratioX={5} ratioY={4}>

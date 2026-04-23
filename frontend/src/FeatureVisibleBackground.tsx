@@ -3,7 +3,7 @@ import { Feature } from "./types";
 import { toCssFilterString } from "./filter";
 import redSquare from "/red-square.png";
 
-export function FeatureSlideBackground({
+export function FeatureVisibleBackground({
   feature,
   visible,
 }: {

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useLayoutEffect, useMemo, useState } from "react";
 import { GlobalContext } from "./useGlobal";
 import type { DisplaySettings, Feature } from "./types";
 import { defaultDisplaySettings } from "./constants";
@@ -18,6 +18,7 @@ import {
   permanentDataSources,
 } from "./data/dataSource";
 import { useLocalStorage } from "./useLocalStorage";
+import { useResettableInterval } from "./useResettableInterval";
 
 export type GlobalContextValue = ReturnType<typeof useGlobalContext>;
 
@@ -26,6 +27,8 @@ function useGlobalContext() {
     localStorageKeyDataSource,
     [],
   );
+
+  const [slideCount, setSlideCount] = useState(0);
 
   const [isEditingRow, setIsEditingRow] = useState(false);
   const [editedFeature, setEditedFeature] = useState<Feature>(
@@ -93,6 +96,18 @@ function useGlobalContext() {
     });
   };
 
+  // the slide counter increases every 10 seconds
+  const reset = useResettableInterval(() => {
+    // fires every 10 seconds
+    setSlideCount((c) => c + 1);
+  }, 10000);
+
+  // when the visible feature changes, reset the slide counter to 0
+  useLayoutEffect(() => {
+    setSlideCount(0);
+    reset();
+  }, [reset, visibleFeatureId]);
+
   return {
     visibleFeatureId,
     setVisibleFeatureId,
@@ -116,6 +131,10 @@ function useGlobalContext() {
     //
     savedDataSources,
     setSavedDataSources,
+
+    //
+    slideCount,
+    setSlideCount,
   };
 }
 

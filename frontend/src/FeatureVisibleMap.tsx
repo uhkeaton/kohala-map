@@ -5,7 +5,7 @@ import { toCssFilterString } from "./filter";
 import { Point } from "./Point";
 import { FeatureBottomLeftInfo } from "./FeatureBottomLeftInfo";
 
-export function FeatureSlideMap({
+export function FeatureVisibleMap({
   feature,
   visible,
 }: {

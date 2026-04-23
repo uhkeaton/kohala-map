@@ -1,12 +1,12 @@
 import cx from "classnames";
 import { FeatureSelectDev } from "./FeatureSelectDev";
 import { useGlobal } from "./useGlobal";
-import { FeatureSlideInfo } from "./FeatureSlideInfo";
+import { FeatureVisibleInfo } from "./FeatureVisibleInfo";
 import { AppDrawer } from "./Drawer";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { SidebarLayout } from "./Sidebar";
-import { FeatureSlideMap } from "./FeatureSlideMap";
-import { FeatureSlideBackground } from "./FeatureSlideBackground";
+import { FeatureVisibleMap } from "./FeatureVisibleMap";
+import { FeatureVisibleBackground } from "./FeatureVisibleBackground";
 import { Aspect } from "./Aspect";
 
 const darkTheme = createTheme({
@@ -34,14 +34,14 @@ export function Map() {
               {/* Background */}
               {features.map((item, i) => {
                 return (
-                  <FeatureSlideBackground
+                  <FeatureVisibleBackground
                     key={`${item.id}-${i}`}
                     feature={item}
                     visible={!isEditingRow && item.id == visibleFeatureId}
                   />
                 );
               })}
-              <FeatureSlideBackground
+              <FeatureVisibleBackground
                 feature={editedFeature}
                 visible={isEditingRow}
               />
@@ -60,14 +60,14 @@ export function Map() {
                 >
                   {features.map((item) => {
                     return (
-                      <FeatureSlideMap
+                      <FeatureVisibleMap
                         key={item.id}
                         feature={item}
                         visible={!isEditingRow && item.id == visibleFeatureId}
                       />
                     );
                   })}
-                  <FeatureSlideMap
+                  <FeatureVisibleMap
                     feature={editedFeature}
                     visible={isEditingRow}
                   />
@@ -75,13 +75,13 @@ export function Map() {
               </div>
               <div className="h-full flex-1 relative">
                 {features.map((item, i) => (
-                  <FeatureSlideInfo
+                  <FeatureVisibleInfo
                     key={`${item.id}-${i}`}
                     feature={item}
                     visible={!isEditingRow && item.id == visibleFeatureId}
                   />
                 ))}
-                <FeatureSlideInfo
+                <FeatureVisibleInfo
                   key={`${editedFeature.id}-${isEditingRow}`}
                   feature={editedFeature}
                   visible={isEditingRow}
