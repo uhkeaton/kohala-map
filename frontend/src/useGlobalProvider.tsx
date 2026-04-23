@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { GlobalContext } from "./useGlobal";
 import type { DisplaySettings, Feature } from "./types";
 import { defaultDisplaySettings } from "./constants";
@@ -12,7 +12,11 @@ import { initialWorldConfig } from "./data/spreadsheet";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchSpreadsheet } from "./api";
 import { defaultInitialFeature } from "./feature";
-import { DataSource, localStorageKeyDataSource, permanentDataSources } from "./data/dataSource";
+import {
+  DataSource,
+  localStorageKeyDataSource,
+  permanentDataSources,
+} from "./data/dataSource";
 import { useLocalStorage } from "./useLocalStorage";
 
 export type GlobalContextValue = ReturnType<typeof useGlobalContext>;
@@ -67,9 +71,12 @@ function useGlobalContext() {
     placeholderData: keepPreviousData,
   });
 
-  const headers = query.data?.headers ?? [];
-  const worldConfig = query.data?.worldConfig ?? initialWorldConfig;
-  const features = query.data?.features ?? [];
+  const { features, worldConfig, headers } = useMemo(() => {
+    const features = query.data?.features ?? [];
+    const worldConfig = query.data?.worldConfig ?? initialWorldConfig;
+    const headers = query.data?.headers ?? [];
+    return { features, worldConfig, headers };
+  }, [query.data]);
 
   const handleChangeSpreadsheetId = (id: string) => {
     setSpeadsheetId(id);

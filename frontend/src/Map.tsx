@@ -83,6 +83,7 @@ export function Map() {
                   />
                 ))}
                 <FeatureSlideInfo
+                  key={`${editedFeature.id}-${isEditingRow}`}
                   feature={editedFeature}
                   visible={isEditingRow}
                 />
