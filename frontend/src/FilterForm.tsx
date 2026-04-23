@@ -39,6 +39,7 @@ function Samples({
 
         return (
           <div
+            key={i}
             style={{
               background: "red",
               filter: filterString,

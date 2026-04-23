@@ -30,7 +30,7 @@ export function Map() {
             <div className={cx("w-full h-full flex relative")}>
               {/* Background */}
               {withEditedFeature.map((item) => {
-                return <FeatureSlideBackground feature={item} />;
+                return <FeatureSlideBackground key={item.id} feature={item} />;
               })}
               <div
                 // map width is a percentage of the table width
@@ -46,13 +46,13 @@ export function Map() {
                   ratioY={worldConfig.mapAspectRatioY}
                 >
                   {withEditedFeature.map((item) => {
-                    return <FeatureSlideMap feature={item} />;
+                    return <FeatureSlideMap key={item.id} feature={item} />;
                   })}
                 </Aspect>
               </div>
               <div className="h-full flex-1 relative">
                 {withEditedFeature.map((feature) => (
-                  <FeatureSlideInfo feature={feature} />
+                  <FeatureSlideInfo key={feature.id} feature={feature} />
                 ))}
               </div>
             </div>

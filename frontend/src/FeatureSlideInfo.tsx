@@ -13,8 +13,6 @@ export function FeatureSlideInfo({ feature }: { feature: Feature }) {
     return visibleFeatureId == feature.id;
   })();
 
-  if (visible) console.log({ feature });
-
   return (
     <div
       className={cx(
