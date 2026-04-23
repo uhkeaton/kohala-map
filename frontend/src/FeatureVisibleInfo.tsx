@@ -3,7 +3,10 @@ import cx from "classnames";
 import { Aspect } from "./Aspect";
 import { AutoFitText } from "./AutoFitText";
 import { useGlobal } from "./useGlobal";
-import { MediaItem, toMediaItems } from "./media";
+import { DELIM, MediaItem, toMediaItems } from "./media";
+
+const fadeOutClasses = "transition-opacity duration-1000";
+const fadeInClasses = "transition-opacity delay-500 duration-2500";
 
 export function FeatureVisibleInfo({
   feature,
@@ -13,10 +16,11 @@ export function FeatureVisibleInfo({
   visible: boolean;
 }) {
   const { slideCount } = useGlobal();
-  const text = feature.infoDescription;
 
   const mediaItems = toMediaItems(feature);
-  const idxToShow = slideCount % mediaItems.length;
+  const mediaIdxToShow = slideCount % mediaItems.length;
+  const descriptions = feature.infoDescription.split(DELIM);
+  const descriptionIdxToShow = slideCount % descriptions.length;
 
   return (
     <div
@@ -38,8 +42,24 @@ export function FeatureVisibleInfo({
           {feature && feature.infoTitle}
         </div>
       </div>
-      <div className="flex-1 p-2 w-full box-border overflow-hidden">
-        <AutoFitText>{text}</AutoFitText>
+      <div className="relative flex-1 p-2 w-full box-border overflow-hidden">
+        {descriptions.map((d, i) => {
+          const vis = i == descriptionIdxToShow;
+          return (
+            <div
+              className={cx(
+                "p-2 absolute inset-0 w-full h-full object-cover rounded-lg",
+                {
+                  "opacity-0": !vis,
+                  [fadeOutClasses]: !vis,
+                  [fadeInClasses]: vis,
+                },
+              )}
+            >
+              <AutoFitText>{d}</AutoFitText>;
+            </div>
+          );
+        })}
       </div>
       <div className="flex-0 w-full p-4">
         <Aspect ratioX={5} ratioY={4}>
@@ -48,7 +68,7 @@ export function FeatureVisibleInfo({
               <Media
                 key={`${i}-${item.src}`}
                 item={item}
-                visible={i == idxToShow}
+                visible={i == mediaIdxToShow}
               />
             );
           })}
@@ -73,7 +93,8 @@ function Media({
           "absolute inset-0 w-full h-full object-cover rounded-lg",
           {
             "opacity-0": !visible,
-            "transition-opacity duration-900": visible,
+            [fadeOutClasses]: !visible,
+            [fadeInClasses]: visible,
           },
         )}
         src={item.src}
@@ -92,7 +113,8 @@ function Media({
           "absolute inset-0 w-full h-full object-cover rounded-lg",
           {
             "opacity-0": !visible,
-            "transition-opacity duration-900": visible,
+            [fadeOutClasses]: !visible,
+            [fadeInClasses]: visible,
           },
         )}
         src={item.src}
