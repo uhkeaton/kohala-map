@@ -16,12 +16,14 @@ const darkTheme = createTheme({
 });
 
 export function Map() {
-  const { features, displaySettings, worldConfig, editedFeature } = useGlobal();
-
-  const withEditedFeature = [
-    ...features,
-    ...(editedFeature != null ? [editedFeature] : []),
-  ];
+  const {
+    features,
+    displaySettings,
+    worldConfig,
+    visibleFeatureId,
+    editedFeature,
+    isEditingRow,
+  } = useGlobal();
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -30,14 +32,20 @@ export function Map() {
           <Aspect ratioX={16} ratioY={9}>
             <div className={cx("w-full h-full flex relative")}>
               {/* Background */}
-              {withEditedFeature.map((item, i) => {
+              {features.map((item, i) => {
                 return (
                   <FeatureSlideBackground
                     key={`${item.id}-${i}`}
                     feature={item}
+                    visible={!isEditingRow && item.id == visibleFeatureId}
                   />
                 );
               })}
+              <FeatureSlideBackground
+                feature={editedFeature}
+                visible={isEditingRow}
+              />
+              ;
               <div
                 // map width is a percentage of the table width
                 // this is important for the <Aspect/> to work correctly
@@ -51,15 +59,33 @@ export function Map() {
                   ratioX={worldConfig.mapAspectRatioX}
                   ratioY={worldConfig.mapAspectRatioY}
                 >
-                  {withEditedFeature.map((item) => {
-                    return <FeatureSlideMap key={item.id} feature={item} />;
+                  {features.map((item) => {
+                    return (
+                      <FeatureSlideMap
+                        key={item.id}
+                        feature={item}
+                        visible={!isEditingRow && item.id == visibleFeatureId}
+                      />
+                    );
                   })}
+                  <FeatureSlideMap
+                    feature={editedFeature}
+                    visible={isEditingRow}
+                  />
                 </Aspect>
               </div>
               <div className="h-full flex-1 relative">
-                {withEditedFeature.map((item, i) => (
-                  <FeatureSlideInfo key={`${item.id}-${i}`} feature={item} />
+                {features.map((item, i) => (
+                  <FeatureSlideInfo
+                    key={`${item.id}-${i}`}
+                    feature={item}
+                    visible={!isEditingRow && item.id == visibleFeatureId}
+                  />
                 ))}
+                <FeatureSlideInfo
+                  feature={editedFeature}
+                  visible={isEditingRow}
+                />
               </div>
             </div>
           </Aspect>

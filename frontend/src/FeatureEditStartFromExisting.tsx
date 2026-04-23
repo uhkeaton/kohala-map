@@ -64,7 +64,7 @@ export function FeatureEditStartFromExisting() {
       <div className="mb-4 bg-neutral-300/15 rounded-lg">
         <TextareaAutosize
           id="paste"
-          placeholder="Paste Existing Row Here"
+          placeholder="or paste existing row here"
           value={value}
           onChange={(event) => {
             const val = event.target.value;

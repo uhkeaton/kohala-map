@@ -1,18 +1,16 @@
 import cx from "classnames";
 import { Feature } from "./types";
 import { toCssFilterString } from "./filter";
-import { useGlobal } from "./useGlobal";
-import { ID_EDITED_FEATURE } from "./feature";
 import redSquare from "/red-square.png";
 
-export function FeatureSlideBackground({ feature }: { feature: Feature }) {
-  const { visibleFeatureId, isEditingRow } = useGlobal();
+export function FeatureSlideBackground({
+  feature,
+  visible,
+}: {
+  feature: Feature;
+  visible: boolean;
+}) {
   const filterNegative = toCssFilterString(feature?.mapMaskFilterNegative);
-
-  const visible = (function () {
-    if (isEditingRow) return feature.id === ID_EDITED_FEATURE;
-    return visibleFeatureId == feature.id;
-  })();
 
   return (
     <img

@@ -1,4 +1,10 @@
-import { Divider, Slider, TextField } from "@mui/material";
+import {
+  Button,
+  Divider,
+  Slider,
+  TextareaAutosize,
+  TextField,
+} from "@mui/material";
 import { useGlobal } from "./useGlobal";
 import { ButtonClose } from "./ButtonClose";
 import { ButtonCopyEditedFeatureRow, ButtonCopyValue } from "./ButtonCopy";
@@ -8,9 +14,12 @@ import { sliderStyles } from "./slider";
 import { defaultInitialFeature } from "./feature";
 import { ButtonReset } from "./ButtonReset";
 import { FeatureEditStartFromExisting } from "./FeatureEditStartFromExisting";
+import { featureToRow } from "./data/spreadsheet";
+import toast from "react-hot-toast";
+import { copyRowSuccessMessage, copyToClipboard } from "./copy";
 
 export function FeatureEditSidebar() {
-  const { setIsEditingRow } = useGlobal();
+  const { setIsEditingRow, editedFeature, headers } = useGlobal();
   return (
     <div className="text-white w-full h-full overflow-y-scroll">
       <div className="flex sticky top-0 bg-[#3d3d3d] z-10 w-full justify-between border-b border-white/20">
@@ -22,7 +31,13 @@ export function FeatureEditSidebar() {
           />
         </div>
         <div>
-          <ButtonCopyEditedFeatureRow />
+          <ButtonCopyEditedFeatureRow
+            onClick={() => {
+              const row = featureToRow(editedFeature, headers);
+              copyToClipboard(row);
+              toast.success(copyRowSuccessMessage);
+            }}
+          />
         </div>
       </div>
       <div className="m-4 mt-8">
@@ -45,6 +60,10 @@ export function FeatureEditSidebar() {
           featureKey="mapMaskFilterPositive"
           filterType="hsb"
         />
+        <div className="mt-6 opacity-70">
+          The map's base color is visible only when the satellite image's
+          opacity is lowered.
+        </div>
         <Divider sx={{ my: 4 }} />
         <GenericFilterSection
           title="Satellite Image Filter"
@@ -63,6 +82,7 @@ export function FeatureEditSidebar() {
         </div>
         <SectionPointCoordinatesForm />
         <Divider sx={{ my: 4 }} />
+        <SectionCopyResult />
       </div>
     </div>
   );
@@ -72,7 +92,7 @@ function SectionInfoForm() {
   const { editedFeature, setEditedFeature } = useGlobal();
   return (
     <>
-      <div className="text-xl mb-4">Feature Info</div>
+      <div className="text-xl mb-4">Information</div>
       <div className="mb-4">
         <TextField
           id="info-title"
@@ -194,7 +214,12 @@ function GenericFilterSection({
           </div>
           <div>
             <ButtonCopyValue
-              value={toCssFilterString(editedFeature?.[featureKey]) || ""}
+              onClick={() => {
+                const val =
+                  toCssFilterString(editedFeature?.[featureKey]) || "";
+                copyToClipboard(val);
+                toast.success(`Copied value to clipboard: ${val}`);
+              }}
             />
           </div>
         </div>
@@ -283,6 +308,51 @@ export function SectionPointCoordinatesForm() {
           step={0.001}
           onChange={(_, v) => setEditedFeature((s) => ({ ...s, pointLat: v }))}
         />
+      </div>
+    </div>
+  );
+}
+export function SectionCopyResult() {
+  const { editedFeature, headers } = useGlobal();
+
+  const result = featureToRow(editedFeature, headers);
+
+  return (
+    <div className="mb-8">
+      <div className="flex justify-between">
+        <div className="text-xl mb-4">Result</div>
+        <div>
+          <ButtonCopyValue
+            onClick={() => {
+              copyToClipboard(result);
+              toast.success(copyRowSuccessMessage);
+            }}
+          />
+        </div>
+      </div>
+      <div className="mb-4 bg-neutral-300/15 rounded-lg">
+        <TextareaAutosize
+          id="paste"
+          placeholder="or paste existing row here"
+          value={result}
+          minRows={2}
+          style={{ width: "100%", padding: 8 }}
+        />
+      </div>
+      <div className="mb-4 opacity-70">
+        The resulting row can be pasted into google sheets.
+      </div>
+      <div className="my-4">
+        <Button
+          className="w-full"
+          onClick={() => {
+            copyToClipboard(result);
+            toast.success(copyRowSuccessMessage);
+          }}
+          variant="contained"
+        >
+          Copy Result
+        </Button>
       </div>
     </div>
   );

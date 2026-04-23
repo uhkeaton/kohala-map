@@ -2,12 +2,17 @@ import cx from "classnames";
 import { useGlobal } from "./useGlobal";
 import { Feature } from "./types";
 import { toCssFilterString } from "./filter";
-import { ID_EDITED_FEATURE } from "./feature";
 import { Point } from "./Point";
 import { FeatureBottomLeftInfo } from "./FeatureBottomLeftInfo";
 
-export function FeatureSlideMap({ feature }: { feature: Feature }) {
-  const { worldConfig, visibleFeatureId, isEditingRow } = useGlobal();
+export function FeatureSlideMap({
+  feature,
+  visible,
+}: {
+  feature: Feature;
+  visible: boolean;
+}) {
+  const { worldConfig } = useGlobal();
 
   const filterImg = toCssFilterString(feature?.mapImgFilter);
   const filterVideo = toCssFilterString(feature?.mapVideoFilter);
@@ -17,11 +22,6 @@ export function FeatureSlideMap({ feature }: { feature: Feature }) {
 
   const videoSrc = feature?.mapVideoSrc;
   const imgSrc = feature?.mapImgSrc;
-
-  const visible = (function () {
-    if (isEditingRow) return feature.id === ID_EDITED_FEATURE;
-    return visibleFeatureId == feature.id;
-  })();
 
   return (
     <div

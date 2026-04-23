@@ -1,17 +1,15 @@
 import { Feature } from "./types";
 import { AutoScale } from "./AutoScale";
-import { useGlobal } from "./useGlobal";
 import cx from "classnames";
-import { ID_EDITED_FEATURE } from "./feature";
 import { Aspect } from "./Aspect";
 
-export function FeatureSlideInfo({ feature }: { feature: Feature }) {
-  const { visibleFeatureId, isEditingRow } = useGlobal();
-
-  const visible = isEditingRow
-    ? feature.id === ID_EDITED_FEATURE
-    : visibleFeatureId == feature.id;
-
+export function FeatureSlideInfo({
+  feature,
+  visible,
+}: {
+  feature: Feature;
+  visible: boolean;
+}) {
   return (
     <div
       className={cx(
