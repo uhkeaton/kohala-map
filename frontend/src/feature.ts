@@ -16,8 +16,9 @@ export const defaultInitialFeature: Feature = {
   id: ID_EDITED_FEATURE,
   infoGroup: "",
   // info properties
-  infoTitle: "Untitled",
-  infoDescription: "This is a new feature.",
+  infoTitle: "Kohala Map",
+  infoDescription:
+    "Edit your map features here, then paste the result into Google Sheets. Customize map colors, background color, point latitude and longitude, and add overlay images or videos.",
   mediaImgSrc: hawaiianChainImgSrc,
   mediaVideoSrc: hawaiianVideoSrc,
   // point properties
@@ -25,16 +26,14 @@ export const defaultInitialFeature: Feature = {
   pointLon: NaN,
   pointFilter: "",
   // map properties
-  mapImgSrc:
-    "https://pub-152d85f2b45343dd9221cf5d705d3ddb.r2.dev/volcano-mask.png",
+  mapImgSrc: "",
   mapImgFilter: "",
-  mapVideoSrc:
-    "https://videos.pexels.com/video-files/10470719/10470719-hd_1920_1080_24fps.mp4",
-  mapVideoFilter: "opacity(0.3)",
+  mapVideoSrc: "",
+  mapVideoFilter: "",
   mapMaskFilterPositive: filterLimeGreen,
   mapMaskFilterNegative: filterBlue,
   mapTerrainFilter: "saturate(2.0)",
-  mapDescriptionBottomLeft: "",
+  mapDescriptionBottomLeft: "E hoʻokomo i ka ʻōlelo ma ʻaneʻi nō kekahi.",
 };
 
 export function featuresByGroup(features: Feature[]) {
