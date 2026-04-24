@@ -74,6 +74,7 @@ export function Map() {
                 </Aspect>
               </div>
               <div className="h-full flex-1 relative">
+  
                 {features.map((item, i) => (
                   <FeatureVisibleInfo
                     key={`${item.id}-${i}`}

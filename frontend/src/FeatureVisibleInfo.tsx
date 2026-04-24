@@ -3,7 +3,8 @@ import cx from "classnames";
 import { Aspect } from "./Aspect";
 import { AutoFitText } from "./AutoFitText";
 import { useGlobal } from "./useGlobal";
-import { DELIM, MediaItem, toMediaItems } from "./media";
+import { MediaItem, toDescriptions, toMediaItems } from "./media";
+import { SlideCountdown } from "./SlideCountdown";
 
 const fadeOutClasses = "transition-opacity duration-1000";
 const fadeInClasses = "transition-opacity delay-500 duration-2500";
@@ -19,7 +20,7 @@ export function FeatureVisibleInfo({
 
   const mediaItems = toMediaItems(feature);
   const mediaIdxToShow = slideCount % mediaItems.length;
-  const descriptions = feature.infoDescription.split(DELIM);
+  const descriptions = toDescriptions(feature);
   const descriptionIdxToShow = slideCount % descriptions.length;
 
   return (
@@ -37,6 +38,7 @@ export function FeatureVisibleInfo({
           {feature && feature.infoTitle}
         </div>
       </div>
+
       <div className="relative flex-1 p-2 w-full box-border">
         {descriptions.map((d, i) => {
           const vis = i == descriptionIdxToShow;
@@ -68,6 +70,7 @@ export function FeatureVisibleInfo({
             );
           })}
         </Aspect>
+        <SlideCountdown feature={feature} />
       </div>
     </div>
   );

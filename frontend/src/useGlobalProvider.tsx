@@ -100,7 +100,7 @@ function useGlobalContext() {
   const reset = useResettableInterval(() => {
     // fires every 10 seconds
     setSlideCount((c) => c + 1);
-  }, 10000);
+  }, 20000);
 
   // when the visible feature changes, reset the slide counter to 0
   useLayoutEffect(() => {

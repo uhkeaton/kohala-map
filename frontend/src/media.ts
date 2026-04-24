@@ -17,3 +17,6 @@ export function toMediaItems(feature: Feature): MediaItem[] {
   });
   return items;
 }
+export function toDescriptions(feature: Feature): string[] {
+  return feature.infoDescription.split(DELIM);
+}
