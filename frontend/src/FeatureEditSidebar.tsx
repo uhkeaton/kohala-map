@@ -228,7 +228,6 @@ function GenericFilterSection({
         type={filterType}
         value={fromCssFilterString(editedFeature?.[featureKey])}
         onChange={(value) => {
-          console.log(value, featureKey);
           setEditedFeature((s) => {
             return { ...s, [featureKey]: value };
           });

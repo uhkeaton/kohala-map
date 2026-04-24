@@ -1,77 +1,62 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import cx from "classnames";
 
-type AutoFitTextProps = {
-  children: React.ReactNode;
-  min?: number;
-  max?: number;
-  className?: string;
-};
+export function AutoFitText({ text }: { text: string }) {
+  const min = 1;
+  const max = 20;
 
-export function AutoFitText({
-  children,
-  min = 8,
-  max = 24,
-  className,
-}: AutoFitTextProps) {
+  const sizes = Array.from({ length: max - min + 1 }, (_, i) => min + i);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const textRef = useRef<HTMLDivElement | null>(null);
   const [fontSize, setFontSize] = useState(max);
 
-  useLayoutEffect(() => {
+  function computeBestSize() {
     const container = containerRef.current;
-    const el = textRef.current;
-    if (!container || !el) return;
+    if (!container) return;
 
-    const fits = (size: number) => {
-      el.style.fontSize = `${size}px`;
+    const children = Array.from(container.children) as HTMLElement[];
 
-      return (
-        el.scrollWidth <= container.clientWidth &&
-        el.scrollHeight <= container.clientHeight
-      );
-    };
+    let bestSize = min;
 
-    const compute = () => {
-      let low = min;
-      let high = max;
-      let best = min;
+    for (const el of children) {
+      const fits = el.scrollHeight <= container.clientHeight;
 
-      while (low <= high) {
-        const mid = (low + high) >> 1;
-        if (fits(mid)) {
-          best = mid;
-          low = mid + 1;
-        } else {
-          high = mid - 1;
-        }
+      if (fits) {
+        const size = Number(el.dataset.size);
+        bestSize = Math.max(bestSize, size);
       }
+    }
 
-      setFontSize(best);
-    };
+    setFontSize(bestSize);
+  }
 
-    compute();
+  useEffect(() => {
+    if (!containerRef.current) return;
 
-    const ro = new ResizeObserver(compute);
-    ro.observe(container);
+    const ro = new ResizeObserver(() => {
+      computeBestSize();
+    });
+
+    ro.observe(containerRef.current);
 
     return () => ro.disconnect();
-  }, [children, min, max]);
+  }, [text]);
 
   return (
-    <div ref={containerRef} className={`w-full h-full ${className ?? ""}`}>
-      <div
-        ref={textRef}
-        style={{
-          fontSize,
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        {children}
-      </div>
+    <div ref={containerRef} className={"relative w-full h-full overflow-hidden"}>
+      {sizes?.map((size) => {
+        return (
+          <div
+            key={size}
+            data-size={size}
+            className={cx("absolute inset-0 pointer-events-none", {
+              "opacity-0 ": fontSize != size,
+            })}
+            style={{ fontSize: size }}
+          >
+            {text}
+          </div>
+        );
+      })}
     </div>
   );
 }

@@ -33,16 +33,11 @@ export function FeatureVisibleInfo({
       )}
     >
       <div className="overflow-hidden w-full min-h-[20%] flex flex-col justify-end items-center">
-        <div
-          style={{
-            fontSize: 36,
-          }}
-          className="lexend-600 mb-2 font-bold text-center"
-        >
+        <div className="lexend-600 mb-2 font-bold text-center  md:text-3xl sm:text-2xl xs:text-xl xs:line-clamp-2 line-clamp-1">
           {feature && feature.infoTitle}
         </div>
       </div>
-      <div className="relative flex-1 p-2 w-full box-border overflow-hidden">
+      <div className="relative flex-1 p-2 w-full box-border">
         {descriptions.map((d, i) => {
           const vis = i == descriptionIdxToShow;
           return (
@@ -56,7 +51,7 @@ export function FeatureVisibleInfo({
                 },
               )}
             >
-              <AutoFitText>{d}</AutoFitText>;
+              {visible && <AutoFitText text={d} />}
             </div>
           );
         })}
