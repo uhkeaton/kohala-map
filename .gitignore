@@ -1,5 +1,6 @@
 *.env
 
-notes
+scripts/input/*
+scripts/output/*
 
 .DS_Store

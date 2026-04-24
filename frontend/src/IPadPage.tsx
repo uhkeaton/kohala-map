@@ -14,6 +14,14 @@ export function IPadPage() {
   const { send } = useWebSocketConnection(roomCode);
   const { mutate } = joinRoomMutation;
 
+  useEffect(() => {
+    const root = document.documentElement;
+    root.style.backgroundColor = "white";
+    return () => {
+      root.style.backgroundColor = "black";
+    };
+  }, []);
+
   //  check url for room code
   useEffect(() => {
     const params = new URLSearchParams(location.search);
