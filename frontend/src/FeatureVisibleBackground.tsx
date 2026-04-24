@@ -19,6 +19,11 @@ export function FeatureVisibleBackground({
       })}
       src={redSquare}
       style={{
+        // in Safari, force GPU compositing. 
+        // This is done to match the color of the negative mask filter, which
+        // also uses GPU compositing in Safari when placed over a video
+        // and there doesn't seem to be a way to disable that
+        transform: "translate3d(0,0,0)",
         objectFit: "cover",
         ...(filterNegative && { filter: filterNegative }),
       }}

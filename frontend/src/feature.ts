@@ -3,7 +3,7 @@ import { Feature } from "./types";
 export const ID_EDITED_FEATURE = "editedFeature";
 
 const filterLimeGreen = "hue-rotate(90deg) saturate(2.5) brightness(2)";
-const filterBlue = "hue-rotate(-132deg)";
+const filterBlue = "hue-rotate(-141deg)";
 // const filterWheat =
 //   "hue-rotate(54deg) saturate(0.59) brightness(2.37) opacity(0.7)";
 

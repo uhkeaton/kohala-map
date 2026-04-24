@@ -68,14 +68,25 @@ export function FeatureVisibleMap({
       )}
       {/*  */}
       {worldConfig?.mapRedMaskNegativeSrc && (
-        <img
+        <div
           className={cx("w-full absolute inset-0")}
-          src={worldConfig?.mapRedMaskNegativeSrc}
           style={{
-            transform: flipTransform(worldConfig.mapFlip),
-            ...(filterNegative && { filter: filterNegative }),
+            ...(filterNegative && {
+              filter: filterNegative,
+            }),
           }}
-        />
+        >
+          <img
+            className={cx("w-full absolute inset-0")}
+            src={worldConfig?.mapRedMaskNegativeSrc}
+            style={{
+              transform: flipTransform(worldConfig.mapFlip),
+              // this small drop shadow covers up the small (<1px)
+              // gap that can occur with the video showing through
+              filter: "drop-shadow(-1px -1px 0 red)",
+            }}
+          />
+        </div>
       )}
       {imgSrc && (
         <img
@@ -105,6 +116,10 @@ export function FeatureVisibleMap({
 }
 
 function flipTransform(flip: boolean) {
-  if (flip) return "rotate(180deg)";
-  return "";
+  if (flip) return "translate3d(0,0,0) rotate(180deg)";
+  // in Safari, force GPU compositing.
+  // This is done to match the color of the negative mask filter, which
+  // also uses GPU compositing in Safari when placed over a video
+  // and there doesn't seem to be a way to disable that
+  return "translate3d(0,0,0)";
 }
