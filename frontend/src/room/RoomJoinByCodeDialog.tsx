@@ -6,10 +6,8 @@ import { useRoomCode } from "./room";
 
 export function RoomJoinByCodeDialog() {
   const { displaySettings, setDisplaySettings } = useGlobal();
-  const [code, setCode] = useState("");
 
-  const { joinRoomMutation } = useRoomCode();
-  const { mutate } = joinRoomMutation;
+  const { roomCode } = useRoomCode();
 
   const handleClose = () => {
     setDisplaySettings((s) => ({ ...s, showDialogManualJoinRoom: false }));
@@ -22,7 +20,7 @@ export function RoomJoinByCodeDialog() {
   return (
     <>
       <Button className="w-full" onClick={handleOpen} variant="outlined">
-        Join A Room
+        Join A {roomCode ? "Different " : ""}Room
       </Button>
       <Dialog
         maxWidth="sm"
@@ -35,29 +33,7 @@ export function RoomJoinByCodeDialog() {
             <Divider sx={{ width: "100%" }} />
             <div className="p-4 pb-8">
               <div className="mb-8 text-lg">Enter the 4-letter code</div>
-              <div>
-                <TextField
-                  id="outlined-controlled"
-                  label="4-letter Code"
-                  value={code}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                    setCode(event.target.value.toUpperCase().slice(0, 4));
-                  }}
-                />
-              </div>
-              <div className="my-4">
-                <Button
-                  disabled={code.length != 4}
-                  className="w-full"
-                  onClick={() => {
-                    mutate(code);
-                    handleClose();
-                  }}
-                  variant="contained"
-                >
-                  Join
-                </Button>
-              </div>
+              <JoinRoomCodeInput />
               <div className="my-4">
                 <Button
                   className="w-full"
@@ -71,6 +47,47 @@ export function RoomJoinByCodeDialog() {
           </div>
         </div>
       </Dialog>
+    </>
+  );
+}
+
+export function JoinRoomCodeInput() {
+  const { setDisplaySettings } = useGlobal();
+  const [code, setCode] = useState("");
+
+  const { joinRoomMutation } = useRoomCode();
+  const { mutate } = joinRoomMutation;
+
+  const handleClose = () => {
+    setDisplaySettings((s) => ({ ...s, showDialogManualJoinRoom: false }));
+  };
+
+  return (
+    <>
+      <div>
+        <TextField
+          fullWidth
+          id="outlined-controlled"
+          label="4-letter Code"
+          value={code}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            setCode(event.target.value.toUpperCase().slice(0, 4));
+          }}
+        />
+      </div>
+      <div className="my-4">
+        <Button
+          disabled={code.length != 4}
+          className="w-full"
+          onClick={() => {
+            mutate(code);
+            handleClose();
+          }}
+          variant="contained"
+        >
+          Join
+        </Button>
+      </div>
     </>
   );
 }

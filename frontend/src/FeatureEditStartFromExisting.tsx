@@ -75,8 +75,9 @@ export function FeatureEditStartFromExisting() {
           style={{ width: "100%", padding: 8 }}
         />
       </div>
-      <div className="flex w-full justify-end">
+      <div className="flex w-full">
         <Button
+          fullWidth
           disabled={value == ""}
           variant="contained"
           onClick={handleSubmit}

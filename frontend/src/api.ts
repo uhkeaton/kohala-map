@@ -15,7 +15,7 @@ export async function fetchSpreadsheet(id: string) {
   );
 
   if (!res.ok) {
-    toast.error("Spreadsheet Not Found");
+    toast.error(`Spreadsheet with id (${id}) not found`);
     throw new Error(`Error: ${res.status}`);
   }
 

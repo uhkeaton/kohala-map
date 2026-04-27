@@ -1,3 +1,5 @@
+import { viteDataSources } from "../env";
+
 export type DataSource = {
   id: string;
   title: string;
@@ -16,6 +18,4 @@ export function removeItem(id: string) {
   };
 }
 
-export const permanentDataSources: DataSource[] = [
-  { title: "Simple", id: "1qvVlMVF_DRpag5JdpwCI4QRBDnIh6-2m1Yo9-5RK-to" },
-];
+export const permanentDataSources: DataSource[] = viteDataSources;

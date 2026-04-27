@@ -4,11 +4,23 @@ import QRCode from "react-qr-code";
 import { Button, Divider } from "@mui/material";
 import { useGlobal } from "../useGlobal";
 import { useSearchParams } from "react-router";
+import { controllerLink } from "../url";
+
+export function RoomQrCode() {
+  const { roomCode } = useRoomCode();
+  const [searchParams] = useSearchParams();
+  const qrCode = controllerLink({ searchParams, roomCode });
+
+  return (
+    <>
+      <QRCode className="w-full" value={qrCode} />
+    </>
+  );
+}
 
 export function RoomShareDialog() {
   const { displaySettings, setDisplaySettings, socketConnected } = useGlobal();
   const { roomCode } = useRoomCode();
-  const [searchParams] = useSearchParams();
 
   const handleClose = () => {
     setDisplaySettings((s) => ({ ...s, showDialogShareRoom: false }));
@@ -17,12 +29,6 @@ export function RoomShareDialog() {
   const handleOpen = () => {
     setDisplaySettings((s) => ({ ...s, showDialogShareRoom: true }));
   };
-
-  const qrCode = (function () {
-    const next = new URLSearchParams(searchParams);
-    next.set("code", roomCode ?? "");
-    return `https://kohala.pages.dev/controller?${next.toString()}`;
-  })();
 
   return (
     <>
@@ -49,7 +55,7 @@ export function RoomShareDialog() {
                 <span>{roomCode}</span>
               </div>
               <div className="w-full">
-                <QRCode className="w-full" value={qrCode} />
+                <RoomQrCode />
               </div>
             </div>
           </div>

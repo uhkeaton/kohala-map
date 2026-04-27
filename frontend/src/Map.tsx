@@ -2,7 +2,7 @@ import cx from "classnames";
 import { FeatureSelectDev } from "./FeatureSelectDev";
 import { useGlobal } from "./useGlobal";
 import { FeatureVisibleInfo } from "./FeatureVisibleInfo";
-import { AppDrawer } from "./Drawer";
+import { EditorDrawer } from "./EditorDrawer";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { SidebarLayout } from "./Sidebar";
 import { FeatureVisibleMap } from "./FeatureVisibleMap";
@@ -92,9 +92,9 @@ export function Map() {
 
           {/* Positioned Top Left */}
           <div className="w-64 absolute top-0 left-0 mt-4 ml-2 bg-black/40 rounded-md">
-            {displaySettings.showFeatureList && <FeatureSelectDev />}
+            {displaySettings.view === "editor" && <FeatureSelectDev />}
           </div>
-          <AppDrawer />
+          {displaySettings.view == "editor" && <EditorDrawer />}
         </div>
       </SidebarLayout>
     </ThemeProvider>

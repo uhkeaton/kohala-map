@@ -6,17 +6,6 @@ import { useGlobal } from "../useGlobal";
 export function RoomCreateDialog() {
   const { displaySettings, setDisplaySettings } = useGlobal();
 
-  const { createRoomMutation } = useRoomCode();
-
-  function createRoom() {
-    setDisplaySettings((s) => ({
-      ...s,
-      showDialogCreateRoom: false,
-      showDialogShareRoom: true,
-    }));
-    createRoomMutation.mutate();
-  }
-
   const handleClose = () => {
     setDisplaySettings((s) => ({ ...s, showDialogCreateRoom: false }));
   };
@@ -28,7 +17,7 @@ export function RoomCreateDialog() {
   return (
     <>
       <Button className="w-full" onClick={handleOpen} variant="outlined">
-        Create New Room
+        Create A New Room
       </Button>
       <Dialog
         maxWidth="sm"
@@ -43,15 +32,7 @@ export function RoomCreateDialog() {
               <div className="mb-8 text-lg">
                 Are you sure you want to create a new room?
               </div>
-              <div className="my-4">
-                <Button
-                  className="w-full"
-                  onClick={createRoom}
-                  variant="contained"
-                >
-                  Create Room
-                </Button>
-              </div>
+              <ButtonCreateNewRoom variant="contained" />
               <div className="my-4">
                 <Button
                   className="w-full"
@@ -66,5 +47,31 @@ export function RoomCreateDialog() {
         </div>
       </Dialog>
     </>
+  );
+}
+
+export function ButtonCreateNewRoom({
+  variant,
+}: {
+  variant: "contained" | "outlined";
+}) {
+  const { setDisplaySettings } = useGlobal();
+  const { createRoomMutation } = useRoomCode();
+
+  function createRoom() {
+    setDisplaySettings((s) => ({
+      ...s,
+      showDialogCreateRoom: false,
+      showDialogShareRoom: true,
+    }));
+    createRoomMutation.mutate();
+  }
+
+  return (
+    <div className="my-4">
+      <Button className="w-full" onClick={createRoom} variant={variant}>
+        Create A New Room
+      </Button>
+    </div>
   );
 }

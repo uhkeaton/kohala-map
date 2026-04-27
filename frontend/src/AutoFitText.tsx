@@ -42,7 +42,10 @@ export function AutoFitText({ text }: { text: string }) {
   }, [text]);
 
   return (
-    <div ref={containerRef} className={"relative w-full h-full overflow-hidden"}>
+    <div
+      ref={containerRef}
+      className={"relative w-full h-full overflow-hidden"}
+    >
       {sizes?.map((size) => {
         return (
           <div

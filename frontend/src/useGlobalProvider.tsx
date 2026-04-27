@@ -1,4 +1,10 @@
-import React, { useCallback, useLayoutEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from "react";
 import { GlobalContext } from "./useGlobal";
 import type { DisplaySettings, Feature } from "./types";
 import { defaultDisplaySettings } from "./constants";
@@ -39,7 +45,7 @@ function useGlobalContext() {
   const [searchParams] = useSearchParams();
   const urlSheetId = searchParams.get("sheet_id");
   const [spreadsheetId, setSpeadsheetId] = useState(
-    urlSheetId ?? permanentDataSources[0].id,
+    urlSheetId ?? permanentDataSources[0]?.id ?? "",
   );
 
   const [displaySettings, setDisplaySettings] = useState<DisplaySettings>(
@@ -63,23 +69,31 @@ function useGlobalContext() {
 
   const { socketConnected } = useWebSocketConnection(roomCode, callback);
 
-  // Pasting contents of body of useSpreadsheets
   const [, setSearchParams] = useSearchParams();
   const { send } = useWebSocketConnection(roomCode);
 
-  // Maybe eve these into global?
-  const query = useQuery({
+  const featuresQuery = useQuery({
     queryKey: ["spreadsheet", spreadsheetId],
     queryFn: () => fetchSpreadsheet(spreadsheetId),
     placeholderData: keepPreviousData,
   });
 
+  // on load
+  useEffect(() => {
+    if (featuresQuery.data) {
+      const first = (featuresQuery.data?.features ?? [])[0];
+      if (first?.id) {
+        setVisibleFeatureId(first?.id);
+      }
+    }
+  }, [featuresQuery.data]);
+
   const { features, worldConfig, headers } = useMemo(() => {
-    const features = query.data?.features ?? [];
-    const worldConfig = query.data?.worldConfig ?? initialWorldConfig;
-    const headers = query.data?.headers ?? [];
+    const features = featuresQuery.data?.features ?? [];
+    const worldConfig = featuresQuery.data?.worldConfig ?? initialWorldConfig;
+    const headers = featuresQuery.data?.headers ?? [];
     return { features, worldConfig, headers };
-  }, [query.data]);
+  }, [featuresQuery.data]);
 
   const handleChangeSpreadsheetId = (id: string) => {
     setSpeadsheetId(id);
@@ -116,7 +130,7 @@ function useGlobalContext() {
     socketConnected,
     spreadsheetId,
     setSpeadsheetId,
-    query,
+    featuresQuery,
     //
     features,
     worldConfig,

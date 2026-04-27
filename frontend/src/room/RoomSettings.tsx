@@ -3,13 +3,14 @@ import { RoomShareDialog } from "./RoomShareDialog";
 import { RoomCreateDialog } from "./RoomCreateDialog";
 import { RoomJoinByCodeDialog } from "./RoomJoinByCodeDialog";
 import { RoomConnectedStatus } from "./RoomConnectedStatus";
-import { Button } from "@mui/material";
-import { useNavigate } from "react-router";
+import { useSearchParams } from "react-router";
+import { controllerLink } from "../url";
 
 export function RoomSettings() {
-  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { roomCode } = useRoomCode();
 
+  const href = controllerLink({ roomCode, searchParams });
   return (
     <>
       <RoomConnectedStatus />
@@ -24,8 +25,18 @@ export function RoomSettings() {
       <div className="my-4">
         <RoomCreateDialog />
       </div>
-      <div>
-        <Button
+      <div className="py-4">
+        <div>Go to controller view:</div>
+        <div className="max-w-48">
+          <a
+            className="block max-w-full break-all cursor-pointer text-blue-300 underline hover:text-blue-400"
+            target="_blank"
+            href={href}
+          >
+            {href}
+          </a>
+        </div>
+        {/* <Button
           className="w-full"
           onClick={() => {
             navigate("/controller");
@@ -33,7 +44,7 @@ export function RoomSettings() {
           variant="text"
         >
           Controller View
-        </Button>
+        </Button> */}
       </div>
     </>
   );
