@@ -8,5 +8,4 @@ export const defaultDisplaySettings: DisplaySettings = {
   showDialogManualJoinRoom: false,
   //
   showDialogDataSourceCreate: false,
-  view: "welcome",
 };

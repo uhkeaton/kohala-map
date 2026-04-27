@@ -4,8 +4,9 @@ import { useRoomCode } from "./room/room";
 import { useEffect, useMemo } from "react";
 import { useWebSocketConnection } from "./room/roomSocket";
 import { VisitorFeatureSelect } from "./VisitorFeatureSelect";
+import { DrawerApp } from "./DrawerApp";
 
-export function ControllerView() {
+export function PageController() {
   const { features, setVisibleFeatureId, featuresQuery } = useGlobal();
   const { roomCode } = useRoomCode();
   const { send } = useWebSocketConnection(roomCode);
@@ -48,6 +49,7 @@ export function ControllerView() {
 
   return (
     <>
+      <DrawerApp mode="controller" />
       <VisitorFeatureSelect onChange={handleChange} />
     </>
   );

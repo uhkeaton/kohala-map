@@ -1,7 +1,17 @@
 import { CssFilter } from "./filter";
 
-export type DisplaySettings = {
+export type View =
+  | "welcome"
+  | "map-connect"
+  | "controller-connect"
+  | "controller"
+  | "map"
+  | "editor";
 
+export type MapMode = "map" | "editor";
+export type DrawerMode = "map" | "editor" | "controller";
+
+export type DisplaySettings = {
   /**
    * Drawer
    */
@@ -14,14 +24,6 @@ export type DisplaySettings = {
   showDialogManualJoinRoom: boolean;
   //
   showDialogDataSourceCreate: boolean;
-  //
-  view:
-    | "welcome"
-    | "map-connect"
-    | "controller-connect"
-    | "controller"
-    | "map"
-    | "editor";
 };
 
 // [long, lat] follows the GeoJSON convention

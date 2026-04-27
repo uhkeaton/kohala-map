@@ -1,10 +1,11 @@
 import Dialog, { DialogProps } from "@mui/material/Dialog";
 import { useGlobal } from "./useGlobal";
 import { IconEdit, IconGlobe, IconTabletMac } from "./icons";
-import { Button, Divider } from "@mui/material";
-import { DisplaySettings } from "./types";
+import { Button, Divider, ThemeProvider } from "@mui/material";
+import { View } from "./types";
 import { RoomConnectedStatus } from "./room/RoomConnectedStatus";
-import { RoomQrCode } from "./room/RoomShareDialog";
+import { RoomQrCode } from "./room/RoomShare";
+import { Outlet } from "react-router-dom";
 import {
   JoinRoomCodeInput,
   RoomJoinByCodeDialog,
@@ -13,10 +14,10 @@ import { useRoomCode } from "./room/room";
 import { ButtonCreateNewRoom, RoomCreateDialog } from "./room/RoomCreateDialog";
 import { Title } from "./Title";
 import { viteWelcomeTitle } from "./env";
+import { darkTheme } from "./theme";
+import { Hero } from "./Hero";
 
-export function WelcomeDialog() {
-  const { displaySettings } = useGlobal();
-
+export function PageWelcome() {
   const handleClose: DialogProps["onClose"] = (_, reason) => {
     if (reason === "backdropClick") {
       return; // block backdrop close
@@ -24,26 +25,23 @@ export function WelcomeDialog() {
   };
 
   return (
-    <>
-      <Dialog
-        maxWidth="sm"
-        fullWidth
-        onClose={handleClose}
-        open={
-          displaySettings.view == "welcome" ||
-          displaySettings.view == "map-connect" ||
-          displaySettings.view == "controller-connect"
-        }
-      >
-        {displaySettings.view == "welcome" && <Home />}
-        {displaySettings.view == "map-connect" && <ConnectMap />}
-        {displaySettings.view == "controller-connect" && <ConnectController />}
-      </Dialog>
-    </>
+    <ThemeProvider theme={darkTheme}>
+      <Hero>
+        <Dialog
+          hideBackdrop
+          maxWidth="sm"
+          fullWidth
+          onClose={handleClose}
+          open={true}
+        >
+          <Outlet />
+        </Dialog>
+      </Hero>
+    </ThemeProvider>
   );
 }
 
-function Home() {
+export function PageWelcomeNavigate() {
   return (
     <div className="p-4">
       <div className="mb-8">
@@ -70,8 +68,19 @@ function Home() {
   );
 }
 
-function ConnectMap() {
-  const { setDisplaySettings } = useGlobal();
+export function MessageController() {
+  const { roomCode } = useRoomCode();
+  return (
+    <>
+      To control the map, enter the 4-letter room code{" "}
+      <span className="text-lime-500 font-semibold">{roomCode}</span> in the
+      controller app on another device, or scan the QR code.
+    </>
+  );
+}
+
+export function PageWelcomeConnectMap() {
+  const { goTo } = useGlobal();
   const { roomCode } = useRoomCode();
   if (!roomCode) {
     return (
@@ -104,28 +113,25 @@ function ConnectMap() {
           <RoomConnectedStatus />
         </div>
       </div>
-      <div className="my-4">
-        To control the map, enter the 4-letter room code{" "}
-        <span className="text-lime-500 font-semibold">{roomCode}</span> in the
-        controller app on another device, or scan the QR code.
-      </div>
-
-      <div>
-        <div className="w-48 m-auto">
+      <div className="flex mb-6 gap-6">
+        <div className="flex-1">
+          <MessageController />
+        </div>
+        <div className="w-1/2 max-w-40 ml-auto">
           <RoomQrCode />
         </div>
       </div>
-      <div className="flex w-full">
+      <div className="flex w-full mb-6">
         <Button
           fullWidth
           disabled={!roomCode}
           variant="contained"
-          onClick={() => setDisplaySettings((s) => ({ ...s, view: "map" }))}
+          onClick={() => goTo("map")}
         >
           Continue To Map
         </Button>
       </div>
-      <Divider sx={{ my: 4 }} />
+      <Divider sx={{ mb: 3 }} />
       <div className="my-4">
         <RoomCreateDialog />
       </div>
@@ -136,8 +142,8 @@ function ConnectMap() {
   );
 }
 
-function ConnectController() {
-  const { setDisplaySettings } = useGlobal();
+export function PageWelcomeConnectController() {
+  const { goTo } = useGlobal();
   const { roomCode } = useRoomCode();
   if (!roomCode) {
     return (
@@ -180,9 +186,7 @@ function ConnectController() {
           fullWidth
           disabled={!roomCode}
           variant="contained"
-          onClick={() =>
-            setDisplaySettings((s) => ({ ...s, view: "controller" }))
-          }
+          onClick={() => goTo("controller")}
         >
           Continue To Controller
         </Button>
@@ -205,20 +209,22 @@ function NavLink({
 }: {
   title: string;
   icon: React.ReactNode;
-  to: DisplaySettings["view"];
+  to: View;
 }) {
-  const { setDisplaySettings } = useGlobal();
+  const { goTo } = useGlobal();
   return (
-    <div
-      onClick={() => setDisplaySettings((s) => ({ ...s, view: to }))}
-      className={
-        "cursor-pointer border hover:bg-neutral-300/20 border-(--line) mb-4 p-4 rounded-lg"
-      }
-    >
-      <div className="w-full flex gap-4">
-        {icon}
-        <div className="lexend-500 text-3xl ">{title}</div>
-      </div>
+    <div className={"mb-4"}>
+      <button
+        className="w-full h-full cursor-pointer p-4 border hover:bg-neutral-300/20 border-(--line) rounded-lg"
+        onClick={() => {
+          goTo(to);
+        }}
+      >
+        <div className="w-full flex gap-4">
+          {icon}
+          <div className="lexend-500 text-3xl ">{title}</div>
+        </div>
+      </button>
     </div>
   );
 }

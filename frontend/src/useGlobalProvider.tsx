@@ -6,14 +6,14 @@ import React, {
   useState,
 } from "react";
 import { GlobalContext } from "./useGlobal";
-import type { DisplaySettings, Feature } from "./types";
+import type { DisplaySettings, Feature, View } from "./types";
 import { defaultDisplaySettings } from "./constants";
 import { useRoomCode } from "./room/room";
 import {
   GenericSocketMessage,
   useWebSocketConnection,
 } from "./room/roomSocket";
-import { useSearchParams } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 import { initialWorldConfig } from "./data/spreadsheet";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchSpreadsheet } from "./api";
@@ -29,6 +29,8 @@ import { useResettableInterval } from "./useResettableInterval";
 export type GlobalContextValue = ReturnType<typeof useGlobalContext>;
 
 function useGlobalContext() {
+  const navigate = useNavigate();
+
   const [savedDataSources, setSavedDataSources] = useLocalStorage<DataSource[]>(
     localStorageKeyDataSource,
     [],
@@ -122,6 +124,39 @@ function useGlobalContext() {
     reset();
   }, [reset, visibleFeatureId]);
 
+  const goTo = (view: View) => {
+    if (view === "welcome") {
+      navigate({
+        pathname: "/welcome",
+      });
+    }
+    if (view === "map-connect") {
+      navigate({
+        pathname: "/welcome/map",
+      });
+    }
+    if (view === "map") {
+      navigate({
+        pathname: "/map",
+      });
+    }
+    if (view === "controller-connect") {
+      navigate({
+        pathname: "/welcome/controller",
+      });
+    }
+    if (view === "controller") {
+      navigate({
+        pathname: "/controller",
+      });
+    }
+    if (view === "editor") {
+      navigate({
+        pathname: "/editor",
+      });
+    }
+  };
+
   return {
     visibleFeatureId,
     setVisibleFeatureId,
@@ -149,6 +184,9 @@ function useGlobalContext() {
     //
     slideCount,
     setSlideCount,
+
+    //
+    goTo,
   };
 }
 

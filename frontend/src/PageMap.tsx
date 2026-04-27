@@ -2,12 +2,13 @@ import cx from "classnames";
 import { FeatureSelectDev } from "./FeatureSelectDev";
 import { useGlobal } from "./useGlobal";
 import { FeatureVisibleInfo } from "./FeatureVisibleInfo";
-import { EditorDrawer } from "./EditorDrawer";
+import { DrawerApp } from "./DrawerApp";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { SidebarLayout } from "./Sidebar";
 import { FeatureVisibleMap } from "./FeatureVisibleMap";
 import { FeatureVisibleBackground } from "./FeatureVisibleBackground";
 import { Aspect } from "./Aspect";
+import { MapMode } from "./types";
 
 const darkTheme = createTheme({
   palette: {
@@ -15,10 +16,9 @@ const darkTheme = createTheme({
   },
 });
 
-export function Map() {
+export function PageMap({ mode }: { mode: MapMode }) {
   const {
     features,
-    displaySettings,
     worldConfig,
     visibleFeatureId,
     editedFeature,
@@ -92,9 +92,9 @@ export function Map() {
 
           {/* Positioned Top Left */}
           <div className="w-64 absolute top-0 left-0 mt-4 ml-2 bg-black/40 rounded-md">
-            {displaySettings.view === "editor" && <FeatureSelectDev />}
+            {mode === "editor" && <FeatureSelectDev />}
           </div>
-          {displaySettings.view == "editor" && <EditorDrawer />}
+          <DrawerApp mode={mode} />
         </div>
       </SidebarLayout>
     </ThemeProvider>
