@@ -12,11 +12,12 @@ import {
 import { useRoomCode } from "./room/room";
 import { ButtonCreateNewRoom, RoomCreateDialog } from "./room/RoomCreateDialog";
 import { Title } from "./Title";
+import { viteWelcomeTitle } from "./env";
 
 export function WelcomeDialog() {
   const { displaySettings } = useGlobal();
 
-  const handleClose: DialogProps["onClose"] = (event, reason) => {
+  const handleClose: DialogProps["onClose"] = (_, reason) => {
     if (reason === "backdropClick") {
       return; // block backdrop close
     }
@@ -46,9 +47,8 @@ function Home() {
   return (
     <div className="p-4">
       <div className="mb-8">
-        <Title>Welcome to Kohala Map</Title>
+        <Title>{viteWelcomeTitle}</Title>
       </div>
-      {/* <Divider sx={{ my: 2 }} /> */}
       <div className="">
         <NavLink
           to={"map-connect"}
