@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-import { parseSheet } from "./spreadsheet/spreadsheet";
+import { parseSheet } from "./data/spreadsheet";
 
 // export const WS_URL = "http://localhost:54410/ws";
 export const WS_URL = "https://sockets-api.georgekwilliamson.workers.dev/ws";
@@ -11,18 +11,19 @@ export async function fetchSpreadsheet(id: string) {
     `https://docs.google.com/spreadsheets/d/${id}/export?format=tsv&gid=0`,
     {
       method: "GET",
-    }
+    },
   );
 
   if (!res.ok) {
-    toast.error("Spreadsheet Not Found");
+    toast.error(`Spreadsheet with id (${id}) not found`);
     throw new Error(`Error: ${res.status}`);
   }
 
-  const { mapConfig, features } = parseSheet(await res.text());
+  const { worldConfig, features, headers } = parseSheet(await res.text());
 
   return {
-    mapConfig,
+    worldConfig,
     features,
+    headers,
   };
 }

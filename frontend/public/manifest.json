@@ -1,0 +1,20 @@
+{
+  "name": "Kohala Map App",
+  "short_name": "Kohala Map App",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/kohala.jpg",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/kohala.jpgg",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

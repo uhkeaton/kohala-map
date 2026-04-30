@@ -3,10 +3,17 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
-import { Controller } from "./controller/Controller.tsx";
-import { GlobalProvider } from "./global/useGlobalProvider.tsx";
+import { GlobalProvider } from "./useGlobalProvider.tsx";
 import { Toaster } from "react-hot-toast";
-import { Map } from "./map/Map.tsx";
+import {
+  PageWelcome,
+  PageWelcomeConnectController,
+  PageWelcomeConnectMap,
+  PageWelcomeNavigate,
+} from "./PageWelcome.tsx";
+import { PageMap } from "./PageMap.tsx";
+import { PageController } from "./PageController.tsx";
+import { RoomJoinRedirect } from "./room/RoomJoinRedirect.tsx";
 
 const queryClient = new QueryClient();
 
@@ -22,21 +29,28 @@ createRoot(document.getElementById("root")!).render(
           color: "#fff",
         },
       }}
-      // position="bottom-center"
     />
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <GlobalProvider>
           <Routes>
-            <Route index path="/" element={<Map />} />
-            <Route path="/controller" element={<Controller />} />
-            {/* <Route path="/map" element={<MapApp />} /> */}
-            {/* <Route path="/scan" element={<Scan />} /> */}
-            {/* Redirect all others to home */}
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="/welcome" element={<PageWelcome />}>
+              <Route index element={<PageWelcomeNavigate />} />
+              <Route path="/welcome/map" element={<PageWelcomeConnectMap />} />
+              <Route
+                path="/welcome/controller"
+                element={<PageWelcomeConnectController />}
+              />
+            </Route>
+            <Route path="/map" element={<PageMap mode={"map"} />} />
+            <Route path="/editor" element={<PageMap mode={"editor"} />} />
+            <Route path="/controller" element={<PageController />} />
+            <Route path="/join/:roomCode" element={<RoomJoinRedirect />} />
+            {/* Fallback to welcome page */}
+            <Route path="*" element={<Navigate to="/welcome" replace />} />
           </Routes>
         </GlobalProvider>
       </QueryClientProvider>
     </BrowserRouter>
-  </StrictMode>
+  </StrictMode>,
 );

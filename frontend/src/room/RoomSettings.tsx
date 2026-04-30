@@ -1,39 +1,18 @@
-import { useRoomCode } from "./room";
-import { ShareRoom } from "./ShareRoom";
-import { CreateRoom } from "./CreateRoom";
-import { ManualJoinRoom } from "./ManualJoinRoom";
-import { ConnectedStatus } from "./ConnectedStatus";
-import { Button } from "@mui/material";
-import { useNavigate } from "react-router";
+import { RoomCreateDialog } from "./RoomCreateDialog";
+import { RoomJoinByCodeDialog } from "./RoomJoinByCodeDialog";
+import { RoomConnectedStatus } from "./RoomConnectedStatus";
 
 export function RoomSettings() {
-  const navigate = useNavigate();
-  const { roomCode } = useRoomCode();
-
   return (
     <>
-      <ConnectedStatus />
-      {roomCode && (
-        <div className="my-4">
-          <ShareRoom />
-        </div>
-      )}
-      <div className="my-4">
-        <ManualJoinRoom />
+      <div className="flex justify-end">
+        <RoomConnectedStatus />
       </div>
       <div className="my-4">
-        <CreateRoom />
+        <RoomJoinByCodeDialog />
       </div>
-      <div>
-        <Button
-          className="w-full"
-          onClick={() => {
-            navigate("/controller");
-          }}
-          variant="text"
-        >
-          Controller View
-        </Button>
+      <div className="my-4">
+        <RoomCreateDialog />
       </div>
     </>
   );
