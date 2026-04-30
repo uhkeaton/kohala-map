@@ -8,19 +8,16 @@ import { SlideCountdown } from "./SlideCountdown";
 import { slideFadeInClasses, slideFadeOutClasses } from "./fade";
 import { MediaCard } from "./MediaCard";
 
-export function FeatureVisibleInfo({
-  feature,
-  visible,
-}: {
-  feature: Feature;
-  visible: boolean;
-}) {
-  const { slideCount } = useGlobal();
+export function FeatureVisibleInfo({ feature }: { feature: Feature }) {
+  const { slideCount, visibleFeatureState } = useGlobal();
 
   const mediaItems = toMediaItems(feature);
   const mediaIdxToShow = slideCount % mediaItems.length;
   const descriptions = toDescriptions(feature);
   const descriptionIdxToShow = slideCount % descriptions.length;
+
+  // for the purposes of fading
+  const isRecent = visibleFeatureState.recentlyVisibleIds[feature.id];
 
   return (
     <div
@@ -31,9 +28,7 @@ export function FeatureVisibleInfo({
       <div
         className={cx(
           "overflow-hidden w-full min-h-[20%] flex flex-col justify-end items-center",
-          {
-            "opacity-0 fade-in-delay": visible,
-          },
+          "opacity-0 fade-in-delay",
         )}
       >
         <div className="lexend-600 mb-2 font-bold text-center  md:text-3xl sm:text-2xl xs:text-xl xs:line-clamp-2 line-clamp-1">
@@ -42,9 +37,10 @@ export function FeatureVisibleInfo({
       </div>
 
       <div
-        className={cx("relative flex-1 p-2 w-full box-border", {
-          "opacity-0 fade-in-delay": visible,
-        })}
+        className={cx(
+          "relative flex-1 p-2 w-full box-border",
+          "opacity-0 fade-in-delay",
+        )}
       >
         {descriptions.map((d, i) => {
           const vis = i == descriptionIdxToShow;
@@ -59,7 +55,7 @@ export function FeatureVisibleInfo({
                 },
               )}
             >
-              {visible && <AutoFitText text={d} />}
+              {isRecent && <AutoFitText text={d} />}
             </div>
           );
         })}

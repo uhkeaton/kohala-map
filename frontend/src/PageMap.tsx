@@ -84,11 +84,7 @@ function FeatureItem({ feature }: { feature: Feature }) {
         </Aspect>
       </div>
       <div className="h-full flex-1 relative">
-        <FeatureVisibleInfo
-          key={`${feature.id}`}
-          feature={feature}
-          visible={true}
-        />
+        <FeatureVisibleInfo key={`${feature.id}`} feature={feature} />
       </div>
     </div>
   );

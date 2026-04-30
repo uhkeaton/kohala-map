@@ -8,9 +8,12 @@
 }
 
 .fade-in {
-  animation: fadeIn 600ms ease-out forwards;
+  animation: fadeIn 1000ms ease-out forwards;
 }
 
 .fade-in-delay {
-  animation: fadeIn 600ms ease-out forwards 600ms;
+  animation: fadeIn 1000ms ease-out forwards 800ms;
+}
+.fade-in-slow {
+  animation: fadeIn 15000ms ease-out forwards;
 }

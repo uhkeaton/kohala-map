@@ -107,7 +107,7 @@ export function VisitorFeatureSelect({
   );
 }
 
-function SimpleCard({
+export function SimpleCard({
   feature,
   active,
 }: {
