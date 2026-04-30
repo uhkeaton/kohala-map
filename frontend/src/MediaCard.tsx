@@ -7,7 +7,6 @@ export function MediaCard({
   visible,
 }: {
   item: MediaItem;
-
   visible: boolean;
 }) {
   if (item.type == "video") {
