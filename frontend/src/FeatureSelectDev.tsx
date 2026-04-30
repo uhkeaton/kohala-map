@@ -4,9 +4,10 @@ import { useRoomCode } from "./room/room";
 import { useWebSocketConnection } from "./room/roomSocket";
 import { ChangeEventHandler } from "react";
 import { featuresByGroup } from "./feature";
+import { dispatchVisibleFeatureId } from "./fade";
 
 export function FeatureSelectDev() {
-  const { features, visibleFeatureId, setVisibleFeatureId, isEditingRow } =
+  const { features, visibleFeatureId, setVisibleFeatureState, isEditingRow } =
     useGlobal();
 
   const { roomCode } = useRoomCode();
@@ -14,7 +15,7 @@ export function FeatureSelectDev() {
 
   const handleChange: ChangeEventHandler<HTMLSelectElement> = (event) => {
     if (event.target.value) {
-      setVisibleFeatureId(event.target.value);
+      setVisibleFeatureState(dispatchVisibleFeatureId(event.target.value));
     }
 
     //

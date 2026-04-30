@@ -13,6 +13,7 @@ import {
 } from "./PageWelcome.tsx";
 import { PageMap } from "./PageMap.tsx";
 import { PageController } from "./PageController.tsx";
+import { RoomJoinRedirect } from "./room/RoomJoinRedirect.tsx";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +45,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/map" element={<PageMap mode={"map"} />} />
             <Route path="/editor" element={<PageMap mode={"editor"} />} />
             <Route path="/controller" element={<PageController />} />
+            <Route path="/join/:roomCode" element={<RoomJoinRedirect />} />
             {/* Fallback to welcome page */}
             <Route path="*" element={<Navigate to="/welcome" replace />} />
           </Routes>

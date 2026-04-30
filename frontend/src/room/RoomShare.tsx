@@ -1,12 +1,10 @@
 import { useRoomCode } from "./room";
 import QRCode from "react-qr-code";
 import { controllerLink } from "../url";
-import { useSearchParams } from "react-router";
 
 export function RoomQrCode() {
   const { roomCode } = useRoomCode();
-  const [searchParams] = useSearchParams();
-  const qrCode = controllerLink({ searchParams, roomCode });
+  const qrCode = controllerLink({ roomCode });
 
   return (
     <>
@@ -16,10 +14,9 @@ export function RoomQrCode() {
 }
 
 export function RoomShare() {
-  const [searchParams] = useSearchParams();
   const { roomCode } = useRoomCode();
 
-  const href = controllerLink({ roomCode, searchParams });
+  const href = controllerLink({ roomCode });
   return (
     <>
       <div className="max-w-52">

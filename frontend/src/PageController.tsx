@@ -5,9 +5,10 @@ import { useEffect, useMemo } from "react";
 import { useWebSocketConnection } from "./room/roomSocket";
 import { VisitorFeatureSelect } from "./VisitorFeatureSelect";
 import { DrawerApp } from "./DrawerApp";
+import { dispatchVisibleFeatureId } from "./fade";
 
 export function PageController() {
-  const { features, setVisibleFeatureId, featuresQuery } = useGlobal();
+  const { features, setVisibleFeatureState, featuresQuery } = useGlobal();
   const { roomCode } = useRoomCode();
   const { send } = useWebSocketConnection(roomCode);
 
@@ -27,7 +28,7 @@ export function PageController() {
         const feature = features.find((item) => item.id === id);
         if (!feature) return;
 
-        setVisibleFeatureId(id);
+        setVisibleFeatureState(dispatchVisibleFeatureId(id));
 
         send?.({
           action: "selectFeature",
@@ -35,8 +36,8 @@ export function PageController() {
             id: feature.id,
           },
         });
-      }, 100),
-    [features, send, setVisibleFeatureId],
+      }, 50),
+    [features, send, setVisibleFeatureState],
   );
 
   if (featuresQuery?.isLoading) {

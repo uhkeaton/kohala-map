@@ -3,7 +3,7 @@ import { featuresByGroup } from "./feature";
 import { useGlobal } from "./useGlobal";
 import { useEffect, useRef, useState } from "react";
 
-export function VisitorFeatureSelect({
+export function VisitorFeatureSelectRich({
   onChange,
 }: {
   onChange: (id: string) => void;
@@ -52,7 +52,7 @@ export function VisitorFeatureSelect({
     container.addEventListener("scroll", onScroll, { passive: true });
 
     return () => container.removeEventListener("scroll", onScroll);
-  }, [onChange, activeId]);
+  }, [onChange]);
 
   let flatIndex = 0;
 

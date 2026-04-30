@@ -25,6 +25,11 @@ import {
 } from "./data/dataSource";
 import { useLocalStorage } from "./useLocalStorage";
 import { useResettableInterval } from "./useResettableInterval";
+import {
+  dispatchVisibleFeatureId,
+  initialVisibilityState,
+  VisibleFeatureState,
+} from "./fade";
 
 export type GlobalContextValue = ReturnType<typeof useGlobalContext>;
 
@@ -42,7 +47,12 @@ function useGlobalContext() {
   const [editedFeature, setEditedFeature] = useState<Feature>(
     defaultInitialFeature,
   );
-  const [visibleFeatureId, setVisibleFeatureId] = useState<string | null>(null);
+
+  const [visibleFeatureState, setVisibleFeatureState] =
+    useState<VisibleFeatureState>(initialVisibilityState);
+
+  // the first item in the list is the visible one
+  const visibleFeatureId = visibleFeatureState.visibleId;
 
   const [searchParams] = useSearchParams();
   const urlSheetId = searchParams.get("sheet_id");
@@ -56,18 +66,24 @@ function useGlobalContext() {
 
   const { roomCode } = useRoomCode();
 
-  const callback = useCallback((msg: GenericSocketMessage) => {
-    switch (msg.action) {
-      case "selectFeature":
-        setVisibleFeatureId(msg.payload?.id || "");
-        break;
-      case "selectSpreadsheetId":
-        setSpeadsheetId(msg.payload?.id || "");
-        break;
-      default:
-        console.log("Unhandled action:", msg);
-    }
-  }, []);
+  const callback = useCallback(
+    (msg: GenericSocketMessage) => {
+      switch (msg.action) {
+        case "selectFeature":
+          setVisibleFeatureState(
+            dispatchVisibleFeatureId(msg.payload?.id || ""),
+          );
+          break;
+        case "selectSpreadsheetId":
+          setSpeadsheetId(msg.payload?.id || "");
+          break;
+        default:
+          break;
+        // console.log("Unhandled action:", msg);
+      }
+    },
+    [setVisibleFeatureState],
+  );
 
   const { socketConnected } = useWebSocketConnection(roomCode, callback);
 
@@ -85,7 +101,7 @@ function useGlobalContext() {
     if (featuresQuery.data) {
       const first = (featuresQuery.data?.features ?? [])[0];
       if (first?.id) {
-        setVisibleFeatureId(first?.id);
+        setVisibleFeatureState(dispatchVisibleFeatureId(first?.id));
       }
     }
   }, [featuresQuery.data]);
@@ -116,7 +132,7 @@ function useGlobalContext() {
   const reset = useResettableInterval(() => {
     // fires every 10 seconds
     setSlideCount((c) => c + 1);
-  }, 20000);
+  }, 15000);
 
   // when the visible feature changes, reset the slide counter to 0
   useLayoutEffect(() => {
@@ -159,7 +175,8 @@ function useGlobalContext() {
 
   return {
     visibleFeatureId,
-    setVisibleFeatureId,
+    visibleFeatureState,
+    setVisibleFeatureState,
     displaySettings,
     setDisplaySettings,
     socketConnected,

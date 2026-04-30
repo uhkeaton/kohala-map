@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./fade.css";
 @plugin '@tailwindcss/typography';
 
 :root {

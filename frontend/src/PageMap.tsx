@@ -8,7 +8,8 @@ import { SidebarLayout } from "./Sidebar";
 import { FeatureVisibleMap } from "./FeatureVisibleMap";
 import { FeatureVisibleBackground } from "./FeatureVisibleBackground";
 import { Aspect } from "./Aspect";
-import { MapMode } from "./types";
+import { Feature, MapMode } from "./types";
+import { findZIndex } from "./fade";
 
 const darkTheme = createTheme({
   palette: {
@@ -17,76 +18,30 @@ const darkTheme = createTheme({
 });
 
 export function PageMap({ mode }: { mode: MapMode }) {
-  const {
-    features,
-    worldConfig,
-    visibleFeatureId,
-    editedFeature,
-    isEditingRow,
-  } = useGlobal();
+  const { features, visibleFeatureState } = useGlobal();
 
   return (
     <ThemeProvider theme={darkTheme}>
       <SidebarLayout>
         <div className="relative bg-black text-white w-full h-full flex items-center">
           <Aspect ratioX={16} ratioY={9}>
-            <div className={cx("w-full h-full flex relative")}>
-              {/* Background */}
-              {features.map((item, i) => {
+            <div className={cx("w-full h-full relative")}>
+              {features.map((feature) => {
+                const z = findZIndex(feature.id, visibleFeatureState.queue);
+
                 return (
-                  <FeatureVisibleBackground
-                    key={`${item.id}-${i}`}
-                    feature={item}
-                    visible={!isEditingRow && item.id == visibleFeatureId}
-                  />
+                  <div
+                    key={visibleFeatureState.animationKeys[feature.id]}
+                    id={feature.id}
+                    style={{
+                      zIndex: z,
+                    }}
+                    className={cx("fade-in absolute inset-0")}
+                  >
+                    <FeatureItem feature={feature} key={feature.id} />
+                  </div>
                 );
               })}
-              <FeatureVisibleBackground
-                feature={editedFeature}
-                visible={isEditingRow}
-              />
-              <div
-                // map width is a percentage of the table width
-                // this is important for the <Aspect/> to work correctly
-                style={{
-                  width: `${worldConfig.mapWidthPercent * 100}%`,
-                  // transform: `${worldConfig.mapFlip}`,
-                  height: "fit-content",
-                }}
-              >
-                <Aspect
-                  ratioX={worldConfig.mapAspectRatioX}
-                  ratioY={worldConfig.mapAspectRatioY}
-                >
-                  {features.map((item) => {
-                    return (
-                      <FeatureVisibleMap
-                        key={item.id}
-                        feature={item}
-                        visible={!isEditingRow && item.id == visibleFeatureId}
-                      />
-                    );
-                  })}
-                  <FeatureVisibleMap
-                    feature={editedFeature}
-                    visible={isEditingRow}
-                  />
-                </Aspect>
-              </div>
-              <div className="h-full flex-1 relative">
-                {features.map((item, i) => (
-                  <FeatureVisibleInfo
-                    key={`${item.id}-${i}`}
-                    feature={item}
-                    visible={!isEditingRow && item.id == visibleFeatureId}
-                  />
-                ))}
-                <FeatureVisibleInfo
-                  key={`${editedFeature.id}-${isEditingRow}`}
-                  feature={editedFeature}
-                  visible={isEditingRow}
-                />
-              </div>
             </div>
           </Aspect>
 
@@ -98,5 +53,43 @@ export function PageMap({ mode }: { mode: MapMode }) {
         </div>
       </SidebarLayout>
     </ThemeProvider>
+  );
+}
+
+function FeatureItem({ feature }: { feature: Feature }) {
+  const { worldConfig } = useGlobal();
+
+  return (
+    <div className="relative w-full h-full flex">
+      {/* Background */}
+
+      <FeatureVisibleBackground
+        key={`background-${feature.id}`}
+        feature={feature}
+      />
+
+      <div
+        // map width is a percentage of the table width
+        // this is important for the <Aspect/> to work correctly
+        style={{
+          width: `${worldConfig.mapWidthPercent * 100}%`,
+          height: "fit-content",
+        }}
+      >
+        <Aspect
+          ratioX={worldConfig.mapAspectRatioX}
+          ratioY={worldConfig.mapAspectRatioY}
+        >
+          <FeatureVisibleMap key={feature.id} feature={feature} />
+        </Aspect>
+      </div>
+      <div className="h-full flex-1 relative">
+        <FeatureVisibleInfo
+          key={`${feature.id}`}
+          feature={feature}
+          visible={true}
+        />
+      </div>
+    </div>
   );
 }

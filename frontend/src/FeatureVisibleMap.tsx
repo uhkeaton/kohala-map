@@ -5,13 +5,7 @@ import { toCssFilterString } from "./filter";
 import { Point } from "./Point";
 import { FeatureBottomLeftInfo } from "./FeatureBottomLeftInfo";
 
-export function FeatureVisibleMap({
-  feature,
-  visible,
-}: {
-  feature: Feature;
-  visible: boolean;
-}) {
+export function FeatureVisibleMap({ feature }: { feature: Feature }) {
   const { worldConfig } = useGlobal();
 
   const filterImg = toCssFilterString(feature?.mapImgFilter);
@@ -24,12 +18,7 @@ export function FeatureVisibleMap({
   const imgSrc = feature?.mapImgSrc;
 
   return (
-    <div
-      className={cx("w-full absolute inset-0", {
-        // only show the visible feature
-        hidden: !visible,
-      })}
-    >
+    <div className={cx("w-full absolute inset-0")}>
       {/*  */}
 
       {worldConfig?.mapRedMaskPositiveSrc && (

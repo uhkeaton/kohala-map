@@ -31,7 +31,7 @@ export function SlideCountdown({ feature }: { feature: Feature }) {
         <div
           className="absolute inset-0 origin-left bg-neutral-200/40"
           style={{
-            animation: "shrink 20s linear forwards",
+            animation: "shrink 15s linear forwards",
           }}
         />
       </div>

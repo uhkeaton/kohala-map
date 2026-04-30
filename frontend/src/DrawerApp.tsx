@@ -17,7 +17,7 @@ export function DrawerApp({ mode }: { mode: DrawerMode }) {
 
   return (
     <>
-      <div className="absolute top-0 right-0">
+      <div className="absolute top-0 right-0 z-10">
         <div
           onClick={() =>
             setDisplaySettings((s) => ({ ...s, showMainDrawer: true }))
