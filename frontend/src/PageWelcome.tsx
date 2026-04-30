@@ -1,6 +1,12 @@
 import Dialog, { DialogProps } from "@mui/material/Dialog";
 import { useGlobal } from "./useGlobal";
-import { IconArrowBack, IconEdit, IconGlobe, IconTabletMac } from "./icons";
+import {
+  IconArrowBack,
+  IconArrowForward,
+  IconEdit,
+  IconGlobe,
+  IconTabletMac,
+} from "./icons";
 import { Button, Divider } from "@mui/material";
 import { View } from "./types";
 import { RoomConnectedStatus } from "./room/RoomConnectedStatus";
@@ -15,6 +21,7 @@ import { ButtonCreateNewRoom, RoomCreateDialog } from "./room/RoomCreateDialog";
 import { Title } from "./Title";
 import { viteWelcomeTitle } from "./env";
 import { Hero } from "./Hero";
+import { Aspect } from "./Aspect";
 
 export function PageWelcome() {
   const handleClose: DialogProps["onClose"] = (_, reason) => {
@@ -45,23 +52,26 @@ export function PageWelcomeNavigate() {
       <div className="mb-8">
         <Title>{viteWelcomeTitle}</Title>
       </div>
-      <div className="">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <NavLink
           to={"map-connect"}
           title={"Map"}
-          icon={<IconGlobe className="w-8" />}
+          subtitle={"Go to map view"}
+          icon={<IconGlobe className="w-6" />}
           imageSrc={"/kohala-aerial.jpg"}
         />
         <NavLink
           to={"controller-connect"}
           title={"Controller"}
-          icon={<IconTabletMac className="w-8" />}
+          subtitle={"Go to controller view"}
+          icon={<IconTabletMac className="w-6" />}
           imageSrc={"/controller.jpg"}
         />
         <NavLink
           to={"editor"}
           title={"Editor"}
-          icon={<IconEdit className="w-8" />}
+          subtitle={"Go to editor"}
+          icon={<IconEdit className="w-6" />}
           imageSrc={"/pencils.jpg"}
         />
       </div>
@@ -229,11 +239,13 @@ export function PageWelcomeConnectController() {
 
 function NavLink({
   title,
+  subtitle,
   icon,
   to,
   imageSrc,
 }: {
   title: string;
+  subtitle: string;
   icon: React.ReactNode;
   to: View;
   imageSrc: string;
@@ -242,23 +254,35 @@ function NavLink({
   return (
     <div
       className={
-        "w-full max-w-72 bg-white mb-4 relative border border-(--line) drop-shadow-md rounded-lg overflow-hidden"
+        "group w-full bg-white mb-4 relative border border-(--line) drop-shadow-md rounded-lg overflow-hidden"
       }
     >
       <button
-        className="w-full  text-black/80 relative cursor-pointer p-4"
+        className="w-full text-black/80 relative cursor-pointer p-4"
         onClick={() => {
           goTo(to);
         }}
       >
         <div className="flex w-full justify-between mb-4">
-          <div className="lexend-500 text-2xl ">{title}</div>
-          <div className="text-blue-500">{icon}</div>
+          <div className="text-left">
+            <div className="lexend-500 text-2xl group-hover:underline group-hover:text-blue-500">
+              {title}
+            </div>
+            <div className="flex gap-1 text-neutral-500">
+              <span>{subtitle}</span>
+              <IconArrowForward className="w-5" />
+            </div>
+          </div>
+          <div className="text-neutral-500 group-hover:text-blue-500">
+            {icon}
+          </div>
         </div>
-        <div className="relative h-32 w-full max-w-64 rounded-lg overflow-hidden">
-          <Hero imageSrc={imageSrc}>
-            <></>
-          </Hero>
+        <div className="relative rounded-lg overflow-hidden">
+          <Aspect ratioX={2} ratioY={1}>
+            <Hero imageSrc={imageSrc}>
+              <></>
+            </Hero>
+          </Aspect>
         </div>
       </button>
     </div>

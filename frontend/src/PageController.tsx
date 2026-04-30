@@ -36,7 +36,7 @@ export function PageController() {
             id: feature.id,
           },
         });
-      }, 50),
+      }, 150),
     [features, send, setVisibleFeatureState],
   );
 
