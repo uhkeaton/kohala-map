@@ -166,14 +166,14 @@ function RichCard({ feature, active }: { feature: Feature; active: boolean }) {
   return (
     <div
       className={cx(
-        "relative cursor-pointer lexend-500 py-2 rounded-lg overflow-hidden transition w-full",
+        "relative cursor-pointer lexend-500 rounded-lg overflow-hidden transition w-full mb-3",
         {
           "text-white scale-[101%]": active,
         },
       )}
     >
-      <div className="flex gap-2 w-full overflow-hidden pr-2 py-1">
-        <div className="relative basis-2/3 shrink-0 w-full rounded-lg overflow-hidden">
+      <div className="flex gap-3 w-full overflow-hidden">
+        <div className="relative w-full rounded-lg overflow-hidden">
           <AbsoluteColorCard feature={feature} active={active} />
           <div className="flex">
             <div className="z-20 p-2 px-3 md:text-4xl sm:text-3xl xs:text-2xl text-2xl">
@@ -182,19 +182,17 @@ function RichCard({ feature, active }: { feature: Feature; active: boolean }) {
           </div>
         </div>
         <div className="basis-1/3 shrink-0">
-          <div className="w-full">
-            <Aspect ratioX={5} ratioY={4}>
-              {mediaItems.map((item, i) => {
-                return (
-                  <MediaCard
-                    key={`${i}-${item.src}`}
-                    item={item}
-                    visible={i == mediaIdxToShow}
-                  />
-                );
-              })}
-            </Aspect>
-          </div>
+          <Aspect ratioX={5} ratioY={4}>
+            {mediaItems.map((item, i) => {
+              return (
+                <MediaCard
+                  key={`${i}-${item.src}`}
+                  item={item}
+                  visible={i == mediaIdxToShow}
+                />
+              );
+            })}
+          </Aspect>
         </div>
       </div>
     </div>
