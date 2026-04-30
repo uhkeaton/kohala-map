@@ -22,9 +22,9 @@ export function PageMap({ mode }: { mode: MapMode }) {
     useGlobal();
 
   return (
-    <ThemeProvider theme={darkTheme}>
-      <SidebarLayout>
-        <div className="relative bg-black text-white w-full h-full flex items-center">
+    <SidebarLayout>
+      <div className="relative bg-black text-white w-full h-dvh">
+        <div className="absolute inset-0 z-0 flex items-center">
           <Aspect ratioX={16} ratioY={9}>
             <div className={cx("w-full h-full relative")}>
               {isEditingRow ? (
@@ -51,15 +51,17 @@ export function PageMap({ mode }: { mode: MapMode }) {
               )}
             </div>
           </Aspect>
-
+        </div>
+        <ThemeProvider theme={darkTheme}>
           {/* Positioned Top Left */}
           <div className="w-64 absolute top-0 left-0 mt-4 ml-2 bg-black/40 rounded-md">
             {mode === "editor" && <FeatureSelectDev />}
           </div>
+          {/* Positioned Top Right */}
           <DrawerApp mode={mode} />
-        </div>
-      </SidebarLayout>
-    </ThemeProvider>
+        </ThemeProvider>
+      </div>
+    </SidebarLayout>
   );
 }
 
