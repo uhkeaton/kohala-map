@@ -9,7 +9,7 @@ import { slideFadeInClasses, slideFadeOutClasses } from "./fade";
 import { MediaCard } from "./MediaCard";
 
 export function FeatureVisibleInfo({ feature }: { feature: Feature }) {
-  const { slideCount, visibleFeatureState } = useGlobal();
+  const { slideCount, visibleFeatureState, isEditingRow } = useGlobal();
 
   const mediaItems = toMediaItems(feature);
   const mediaIdxToShow = slideCount % mediaItems.length;
@@ -31,9 +31,11 @@ export function FeatureVisibleInfo({ feature }: { feature: Feature }) {
           "opacity-0 fade-in-delay",
         )}
       >
-        <div className="lexend-600 mb-2 font-bold text-center  md:text-3xl sm:text-2xl xs:text-xl xs:line-clamp-2 line-clamp-1">
-          {feature && feature.infoTitle}
-        </div>
+        {(isRecent || isEditingRow) && (
+          <div className="lexend-600 mb-2 font-bold text-center  md:text-3xl sm:text-2xl xs:text-xl xs:line-clamp-2 line-clamp-1">
+            {feature && feature.infoTitle}
+          </div>
+        )}
       </div>
 
       <div
@@ -55,7 +57,7 @@ export function FeatureVisibleInfo({ feature }: { feature: Feature }) {
                 },
               )}
             >
-              {isRecent && <AutoFitText text={d} />}
+              {(isRecent || isEditingRow) && <AutoFitText text={d} />}
             </div>
           );
         })}
@@ -63,15 +65,16 @@ export function FeatureVisibleInfo({ feature }: { feature: Feature }) {
       <div className={cx("flex-0 w-full p-4")}>
         <div>
           <Aspect ratioX={5} ratioY={4}>
-            {mediaItems.map((item, i) => {
-              return (
-                <MediaCard
-                  key={`${i}-${item.src}`}
-                  item={item}
-                  visible={i == mediaIdxToShow}
-                />
-              );
-            })}
+            {(isRecent || isEditingRow) &&
+              mediaItems.map((item, i) => {
+                return (
+                  <MediaCard
+                    key={`${i}-${item.src}`}
+                    item={item}
+                    visible={i == mediaIdxToShow}
+                  />
+                );
+              })}
           </Aspect>
         </div>
         <SlideCountdown feature={feature} />

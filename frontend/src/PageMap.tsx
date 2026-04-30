@@ -18,7 +18,8 @@ const darkTheme = createTheme({
 });
 
 export function PageMap({ mode }: { mode: MapMode }) {
-  const { features, visibleFeatureState } = useGlobal();
+  const { features, visibleFeatureState, isEditingRow, editedFeature } =
+    useGlobal();
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -26,22 +27,28 @@ export function PageMap({ mode }: { mode: MapMode }) {
         <div className="relative bg-black text-white w-full h-full flex items-center">
           <Aspect ratioX={16} ratioY={9}>
             <div className={cx("w-full h-full relative")}>
-              {features.map((feature) => {
-                const z = findZIndex(feature.id, visibleFeatureState.queue);
+              {isEditingRow ? (
+                <>
+                  <FeatureItem feature={editedFeature} />
+                </>
+              ) : (
+                features.map((feature) => {
+                  const z = findZIndex(feature.id, visibleFeatureState.queue);
 
-                return (
-                  <div
-                    key={visibleFeatureState.animationKeys[feature.id]}
-                    id={feature.id}
-                    style={{
-                      zIndex: z,
-                    }}
-                    className={cx("fade-in absolute inset-0")}
-                  >
-                    <FeatureItem feature={feature} key={feature.id} />
-                  </div>
-                );
-              })}
+                  return (
+                    <div
+                      key={visibleFeatureState.animationKeys[feature.id]}
+                      id={feature.id}
+                      style={{
+                        zIndex: z,
+                      }}
+                      className={cx("fade-in absolute inset-0")}
+                    >
+                      <FeatureItem feature={feature} key={feature.id} />
+                    </div>
+                  );
+                })
+              )}
             </div>
           </Aspect>
 
@@ -58,15 +65,15 @@ export function PageMap({ mode }: { mode: MapMode }) {
 
 function FeatureItem({ feature }: { feature: Feature }) {
   const { worldConfig } = useGlobal();
-
   return (
     <div className="relative w-full h-full flex">
       {/* Background */}
-
+      {/* {(isRecent || isEditingRow) && ( */}
       <FeatureVisibleBackground
         key={`background-${feature.id}`}
         feature={feature}
       />
+      {/* )} */}
 
       <div
         // map width is a percentage of the table width

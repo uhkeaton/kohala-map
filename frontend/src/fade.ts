@@ -46,7 +46,7 @@ export function dispatchVisibleFeatureId(id: string) {
           .map((id) => [id, true])
           .slice(
             0,
-            3, // take the three most recent
+            5, // take the most recent
           ),
       ),
     };

@@ -7,7 +7,7 @@ import { FeatureBottomLeftInfo } from "./FeatureBottomLeftInfo";
 import { useRef, useState } from "react";
 
 export function FeatureVisibleMap({ feature }: { feature: Feature }) {
-  const { worldConfig, visibleFeatureState } = useGlobal();
+  const { worldConfig, visibleFeatureState, isEditingRow } = useGlobal();
   const filterPositive = toCssFilterString(feature?.mapMaskFilterPositive);
   const filterNegative = toCssFilterString(feature?.mapMaskFilterNegative);
   const filterTerrain = toCssFilterString(feature?.mapTerrainFilter);
@@ -29,7 +29,7 @@ export function FeatureVisibleMap({ feature }: { feature: Feature }) {
           }}
         />
       )}
-      {isRecent && worldConfig?.mapTerrainImgSrc && (
+      {(isRecent || isEditingRow) && worldConfig?.mapTerrainImgSrc && (
         <img
           className={cx("w-full absolute inset-0")}
           src={worldConfig?.mapTerrainImgSrc}
@@ -39,7 +39,7 @@ export function FeatureVisibleMap({ feature }: { feature: Feature }) {
           }}
         />
       )}
-      {isRecent && <MapVideo feature={feature} />}
+      {(isRecent || isEditingRow) && <MapVideo feature={feature} />}
       {/*  */}
       {worldConfig?.mapRedMaskNegativeSrc && (
         <div
@@ -62,11 +62,11 @@ export function FeatureVisibleMap({ feature }: { feature: Feature }) {
           />
         </div>
       )}
-      {isRecent && imgSrc && <MapImage feature={feature} />}
-      {isRecent && feature.mapDescriptionBottomLeft && (
+      {(isRecent || isEditingRow) && imgSrc && <MapImage feature={feature} />}
+      {(isRecent || isEditingRow) && feature.mapDescriptionBottomLeft && (
         <FeatureBottomLeftInfo feature={feature} />
       )}
-      {isRecent && (
+      {(isRecent || isEditingRow) && (
         <div
           className={cx("w-full absolute inset-0")}
           style={{
