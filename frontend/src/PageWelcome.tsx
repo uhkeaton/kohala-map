@@ -1,7 +1,7 @@
 import Dialog, { DialogProps } from "@mui/material/Dialog";
 import { useGlobal } from "./useGlobal";
-import { IconEdit, IconGlobe, IconTabletMac } from "./icons";
-import { Button, Divider, ThemeProvider } from "@mui/material";
+import { IconArrowBack, IconEdit, IconGlobe, IconTabletMac } from "./icons";
+import { Button, Divider } from "@mui/material";
 import { View } from "./types";
 import { RoomConnectedStatus } from "./room/RoomConnectedStatus";
 import { RoomQrCode } from "./room/RoomShare";
@@ -14,7 +14,6 @@ import { useRoomCode } from "./room/room";
 import { ButtonCreateNewRoom, RoomCreateDialog } from "./room/RoomCreateDialog";
 import { Title } from "./Title";
 import { viteWelcomeTitle } from "./env";
-import { darkTheme } from "./theme";
 import { Hero } from "./Hero";
 
 export function PageWelcome() {
@@ -25,19 +24,18 @@ export function PageWelcome() {
   };
 
   return (
-    <ThemeProvider theme={darkTheme}>
-      <Hero>
-        <Dialog
-          hideBackdrop
-          maxWidth="sm"
-          fullWidth
-          onClose={handleClose}
-          open={true}
-        >
-          <Outlet />
-        </Dialog>
-      </Hero>
-    </ThemeProvider>
+    <Hero imageSrc="/kohala-aerial.jpg">
+      <Dialog
+        hideBackdrop
+        maxWidth="sm"
+        scroll="body"
+        fullWidth
+        onClose={handleClose}
+        open={true}
+      >
+        <Outlet />
+      </Dialog>
+    </Hero>
   );
 }
 
@@ -52,16 +50,19 @@ export function PageWelcomeNavigate() {
           to={"map-connect"}
           title={"Map"}
           icon={<IconGlobe className="w-8" />}
+          imageSrc={"/kohala-aerial.jpg"}
         />
         <NavLink
           to={"controller-connect"}
           title={"Controller"}
           icon={<IconTabletMac className="w-8" />}
+          imageSrc={"/controller.jpg"}
         />
         <NavLink
           to={"editor"}
           title={"Editor"}
           icon={<IconEdit className="w-8" />}
+          imageSrc={"/pencils.jpg"}
         />
       </div>
     </div>
@@ -92,10 +93,10 @@ export function PageWelcomeConnectMap() {
           </Title>
         </div>
 
-        <div className="my-4">
+        <div className="my-3">
           <ButtonCreateNewRoom variant="contained" />
         </div>
-        <div className="my-4">
+        <div className="my-3">
           <RoomJoinByCodeDialog />
         </div>
       </div>
@@ -127,16 +128,28 @@ export function PageWelcomeConnectMap() {
           disabled={!roomCode}
           variant="contained"
           onClick={() => goTo("map")}
+          className="flex gap-2"
         >
+          <IconGlobe className="w-8" />
           Continue To Map
         </Button>
       </div>
       <Divider sx={{ mb: 3 }} />
-      <div className="my-4">
+      <div className="my-3">
         <RoomCreateDialog />
       </div>
-      <div className="my-4">
+      <div className="my-3">
         <RoomJoinByCodeDialog />
+      </div>
+      <div className="my-3">
+        <Button
+          className="w-full flex gap-2"
+          onClick={() => goTo("welcome")}
+          variant="outlined"
+        >
+          <IconArrowBack className="w-6" />
+          Go Back
+        </Button>
       </div>
     </div>
   );
@@ -155,10 +168,10 @@ export function PageWelcomeConnectController() {
           </Title>
         </div>
 
-        <div className="my-4">
+        <div className="my-3">
           <JoinRoomCodeInput />
         </div>
-        <div className="my-4">
+        <div className="my-3">
           <ButtonCreateNewRoom variant="outlined" />
         </div>
       </div>
@@ -176,7 +189,7 @@ export function PageWelcomeConnectController() {
           <RoomConnectedStatus />
         </div>
       </div>
-      <div className="my-4 mb-8">
+      <div className="my-3 mb-8">
         Make sure the map app is connected to the same room using code{" "}
         <span className="text-lime-500 font-semibold">{roomCode}</span> on
         another device.
@@ -187,16 +200,28 @@ export function PageWelcomeConnectController() {
           disabled={!roomCode}
           variant="contained"
           onClick={() => goTo("controller")}
+          className="flex gap-2"
         >
+          <IconTabletMac className="w-8" />
           Continue To Controller
         </Button>
       </div>
       <Divider sx={{ my: 4 }} />
-      <div className="my-4">
+      <div className="my-3">
         <RoomJoinByCodeDialog />
       </div>
-      <div className="my-4">
+      <div className="my-3">
         <RoomCreateDialog />
+      </div>
+      <div className="my-3">
+        <Button
+          className="w-full flex gap-2"
+          onClick={() => goTo("welcome")}
+          variant="outlined"
+        >
+          <IconArrowBack className="w-6" />
+          Go Back
+        </Button>
       </div>
     </div>
   );
@@ -206,23 +231,34 @@ function NavLink({
   title,
   icon,
   to,
+  imageSrc,
 }: {
   title: string;
   icon: React.ReactNode;
   to: View;
+  imageSrc: string;
 }) {
   const { goTo } = useGlobal();
   return (
-    <div className={"mb-4"}>
+    <div
+      className={
+        "w-full max-w-72 bg-white mb-4 relative border border-(--line) drop-shadow-md rounded-lg overflow-hidden"
+      }
+    >
       <button
-        className="w-full h-full cursor-pointer p-4 border hover:bg-neutral-300/20 border-(--line) rounded-lg"
+        className="w-full  text-black/80 relative cursor-pointer p-4"
         onClick={() => {
           goTo(to);
         }}
       >
-        <div className="w-full flex gap-4">
-          {icon}
-          <div className="lexend-500 text-3xl ">{title}</div>
+        <div className="flex w-full justify-between mb-4">
+          <div className="lexend-500 text-2xl ">{title}</div>
+          <div className="text-blue-500">{icon}</div>
+        </div>
+        <div className="relative h-32 w-full max-w-64 rounded-lg overflow-hidden">
+          <Hero imageSrc={imageSrc}>
+            <></>
+          </Hero>
         </div>
       </button>
     </div>

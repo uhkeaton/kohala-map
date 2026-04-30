@@ -14,7 +14,7 @@
 
   background: black;
 
-  --line: oklab(0.556 0 0 / 0.5);
+  --line: rgb(237, 237, 237);
 }
 
 #root,
@@ -65,22 +65,18 @@ body {
 }
 
 .hero {
-  position: fixed;
+  position: absolute;
   inset: 0;
-  height: 100vh;
+  height: 100%;
   width: 100%;
-  background-image: url("/kohala-aerial.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  z-index: -1;
 }
 
 .backdrop {
-  position: fixed;
+  position: absolute;
   inset: 0;
-  height: 100vh;
+  height: 100%;
   width: 100%;
-  background: var(--bg-backdrop);
-  z-index: -1;
 }
