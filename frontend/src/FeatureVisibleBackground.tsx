@@ -8,7 +8,7 @@ export function FeatureVisibleBackground({ feature }: { feature: Feature }) {
 
   return (
     <img
-      className={cx("w-full h-full absolute inset-0")}
+      className={cx("w-full h-full absolute inset-0 z-0")}
       src={redSquare}
       style={{
         // in Safari, force GPU compositing.
